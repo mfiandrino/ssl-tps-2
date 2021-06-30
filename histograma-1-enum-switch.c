@@ -1,21 +1,18 @@
 #include "histograma.h"
 #include <stdio.h>
 
+
 unsigned int *histograma1()
 {
+    typedef enum {
+        OUT /* fuera de una palabra*/, 
+        IN /* dentro de una palabra*/
+    }STATUS;
+
     static unsigned int contadores[10] = {0,1,2,3,5,4,3,2,1,0};
     printf("\nHas entrado a la implementacion con enum y switch\n");
     return contadores;
-}
 
-typedef enum {
-    OUT /* fuera de una palabra*/, 
-    IN /* dentro de una palabra*/
-}STATUS;
-
-
-void main()
-{
     STATUS state = OUT;
     //unsigned nw[100];
     int c, nc;
@@ -54,4 +51,3 @@ void main()
        //fclose(fp);
     }
 }
-/* Falta guardar los datos en archivo txt y ver el tema de los arrays. */
