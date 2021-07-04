@@ -5,7 +5,7 @@ void graficarHistograma(char simbolo, unsigned int *contadores , unsigned int ca
     for(--cantidadContadores ; contadores[cantidadContadores] == 0 ; cantidadContadores--);
 
     printf("\nHISTOGRAMA\n");
-    for(int i=0 ; i<=cantidadContadores ; i++)
+    for(int i=1 ; i<=cantidadContadores ; i++)
     {
         printf("\n%4d- ",i);
         for (int j=0 ; j<contadores[i] ; j++)

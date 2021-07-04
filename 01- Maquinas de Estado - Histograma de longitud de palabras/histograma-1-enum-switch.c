@@ -14,8 +14,7 @@ unsigned int *histograma1()
 
     state s = OUT;
     static unsigned conts[largoMaxPalabra];
-    int c, nc;
-    nc = 0;
+    int c, nc=0;
     while ((c=getchar( ))!= EOF) 
     {
         switch (s){
