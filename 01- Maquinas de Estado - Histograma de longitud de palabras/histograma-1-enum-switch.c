@@ -13,7 +13,7 @@ unsigned int *histograma1()
     printf("\nHas entrado a la implementacion con enum y switch\n");
 
     state s = OUT;
-    static unsigned conts[largoMaxPalabra];
+    static unsigned conts[largoMaxPalabra] = {0};
     int c, nc=0;
     while ((c=getchar( ))!= EOF) 
     {
