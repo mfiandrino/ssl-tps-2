@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#define largoMaxPalabra 100
 
 int *implementarHistograma(char *);
 int validarHistograma(char *);
