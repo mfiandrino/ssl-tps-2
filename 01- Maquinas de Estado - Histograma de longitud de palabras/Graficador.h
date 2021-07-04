@@ -1,5 +1,5 @@
-#ifndef CONVERSION_H_INCLUDED
-#define CONVERSION_H_INCLUDED
+#ifndef GRAFICADOR_H_INCLUDED
+#define GRAFICADOR_H_INCLUDED
 
 #include <stdio.h>
 

@@ -1,5 +1,5 @@
-#ifndef CONVERSION_H_INCLUDED
-#define CONVERSION_H_INCLUDED
+#ifndef HISTOGRAMA_H_INCLUDED
+#define HISTOGRAMA_H_INCLUDED
 #include <string.h>
 #include <stdio.h>
 

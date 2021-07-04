@@ -2,12 +2,6 @@
 #include "histograma.h"
 #include <stdio.h>
 
-//No se por que no los reconoce de histograma.h--------------
-#define largoMaxPalabra 100
-int *implementarHistograma(char *);
-int validarHistograma(char *);
-//-----------------------------------------------------------
-
 int main (int argc , char *argv[])
 {
     if(argc == 2)
