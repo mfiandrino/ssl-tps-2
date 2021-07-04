@@ -13,7 +13,7 @@ unsigned int *histograma2()
     c = nc = 0;
     bool primeraLectura = true;
     state = OUT;
-    unsigned int nw[100] = {0};
+    static unsigned int nw[100] = {0};
     while ((c=getchar())!=EOF){
         if ((c == ' ' || c == '\n' || c == '\t')||(state == OUT)){
             goto fueraDePalabra;

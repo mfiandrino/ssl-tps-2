@@ -1,53 +1,49 @@
 #include "histograma.h"
+#include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
+typedef enum {
+    OUT /* fuera de una palabra*/, 
+    IN /* dentro de una palabra*/
+}state;
 
 unsigned int *histograma1()
 {
-    typedef enum {
-        OUT /* fuera de una palabra*/, 
-        IN /* dentro de una palabra*/
-    }STATUS;
-
-    static unsigned int contadores[10] = {0,1,2,3,5,4,3,2,1,0};
     printf("\nHas entrado a la implementacion con enum y switch\n");
-    return contadores;
 
-    STATUS state = OUT;
-    //unsigned nw[100];
-    int c, nc;
-    nc = 0;
-    while ((c=getchar( ))!= EOF) {
-        //FILE *fp = fopen("text.txt","w");
-        switch (state){
+    state s = OUT;
+    static unsigned conts[largoMaxPalabra] = {0};
+    int c, nc=0;
+    while ((c=getchar( ))!= EOF) 
+    {
+        switch (s){
             case OUT:
-                switch (c){
+                switch (c)
+                {
                     case ' ': case '\t': case '\n':
-                        state=OUT;
+                        s=OUT;
                     break;
                     default:
                         ++nc;
-                        state = IN;
-                        printf("nc1 : %d ", nc, "\n");
+                        s = IN;
                     break;
                 }
             break;
             default: /* IN*/
-                switch (c){
+                switch (c)
+                {
                     case ' ': case '\t': case '\n':
-                        state = OUT;
-                        //++nw[nc];
-                        //fputs(nw[nc], fp);
-                        printf("nc2 : %d ", nc, "\n");
-                        //printf("nw[nc]: %d ", nw[nc], "\n");                        
+                        s = OUT;
+                        ++conts[nc];                       
                         nc = 0;
                     break;
                     default:
                         ++nc;
-                        state = IN;
+                        s = IN;
                     break;
                 }
        }
-       //fclose(fp);
     }
+    return conts;
 }
