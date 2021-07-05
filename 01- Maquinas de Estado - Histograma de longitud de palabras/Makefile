@@ -7,6 +7,7 @@ BIN		= Main
 OBJ		= Main.o Graficador.o histograma1.o histograma2.o histograma3.o histogramaX.o funcionesHistograma.o
 CC		= gcc
 CFLAGS	= -std=c18
+RM = rm -f
 
 # Creo el ejecutable de Tablas de Conversion
 $(BIN): $(OBJ) 
@@ -40,5 +41,7 @@ histogramaX.o: histograma-x.c histograma.h
 funcionesHistograma.o: funcionesHistograma.c histograma.h
 	$(CC) $(CFLAGS) -c funcionesHistograma.c -o funcionesHistograma.o
 
+clean:
+	$(RM) *.o *.exe
 
 
