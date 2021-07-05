@@ -38,7 +38,7 @@ unsigned int *histograma3()
     printf("\nHas entrado a la implementacion recursiva\n");
 
     int caracter,nc;
-    unsigned int nw[100]= {0};
+    unsigned int nw[largoMaxPalabra]= {0};
 
     caracter = getchar();
       if ((caracter == ' ' || caracter == '\n' || caracter == '\t' || caracter == EOF))

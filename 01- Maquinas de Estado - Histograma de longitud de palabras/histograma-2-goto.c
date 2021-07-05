@@ -1,4 +1,4 @@
-//#include "histograma.h"
+#include "histograma.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -7,13 +7,12 @@
 
 unsigned int *histograma2()
 {
-    //static unsigned int contadores[10] = {0,3,3};
     printf("\nHas entrado a la implementacion con goto\n");
     int c,nc,state;
     c = nc = 0;
     bool primeraLectura = true;
     state = OUT;
-    static unsigned int nw[100] = {0};
+    static unsigned int nw[largoMaxPalabra] = {0};
     while ((c=getchar())!=EOF){
         if ((c == ' ' || c == '\n' || c == '\t')||(state == OUT)){
             goto fueraDePalabra;

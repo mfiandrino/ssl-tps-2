@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #define largoMaxPalabra 100
+//const unsigned int largoMaxPalabra = 100;
 
 int *implementarHistograma(char *);
 int validarHistograma(char *);
