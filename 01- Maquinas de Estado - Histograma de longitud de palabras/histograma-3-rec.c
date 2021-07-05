@@ -12,7 +12,7 @@ int in( int caracter, int contador, unsigned int* nw )
      else
      {
          ++contador;
-         printf("%c espacio %d \n",caracter,contador); // Para ver si recorría correctamente el bucle
+         printf("%c espacio %d \n",caracter,contador); // Para ver si recorrï¿½a correctamente el bucle
          in (caracter = getchar(), contador,nw);
      }
 
@@ -31,7 +31,7 @@ void out( int caracter, int contadorCaracter, unsigned int* nw)
     contadorCaracter = 0; // lo vuelvo cero para iniciar el bucle.
     caracter = getchar();
     in(caracter,contadorCaracter,nw);
-    // return nw; -> No tengo muy en claro si este return va, creería que no hace falta
+    // return nw; -> No tengo muy en claro si este return va, creerï¿½a que no hace falta
 }
 unsigned int *histograma3()
 {
