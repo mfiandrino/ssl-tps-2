@@ -2,15 +2,15 @@
 
 ## Integrantes: 
 
-✒️ **Nombre y apellido:** Argüeso, Matias Emanuel | **Legajo:** 166690-3 | **Usuario:** MatiasArgueso
+✒️ **Apellido y Nombre:** Argüeso, Matias Emanuel | **Legajo:** 166690-3 | **Usuario:** MatiasArgueso
 
-✒️ **Nombre y apellido:** Fiandrino, Maximiliano | **Legajo:** 152277-2 | **Usuario:** mfiandrino
+✒️ **Apellido y Nombre:** Fiandrino, Maximiliano | **Legajo:** 152277-2 | **Usuario:** mfiandrino
 
-✒️ **Nombre y apellido:** Gomez, Tomas Leonel | **Legajo:** 175801-9 | **Usuario:** tgomez00
+✒️ **Apellido y Nombre:** Gomez, Tomas Leonel | **Legajo:** 175801-9 | **Usuario:** tgomez00
 
-✒️ **Nombre y apellido:** Lobianco, Agustín Francisco | **Legajo:** 147139-9 | **Usuario:** alobianco
+✒️ **Apellido y Nombre:** Lobianco, Agustín Francisco | **Legajo:** 147139-9 | **Usuario:** alobianco
 
-✒️ **Nombre y apellido:** Martínez Gross, Natalia | **Legajo:** 168861-3 | **Usuario:** nmartinezgross
+✒️ **Apellido y Nombre:** Martínez Gross, Natalia | **Legajo:** 168861-3 | **Usuario:** nmartinezgross
 
-✒️ **Nombre y apellido:** Roldán, Iván Gabriel | **Legajo:** 167705-6 | **Usuario:** ivan3256   
+✒️ **Apellido y Nombre:** Roldán, Iván Gabriel | **Legajo:** 167705-6 | **Usuario:** ivan3256   
     
