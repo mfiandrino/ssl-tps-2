@@ -1,7 +1,7 @@
 # Makefile
 # Makefile para compilar histograma
 # Grupo Nro 3 del curso K2051 Lunes TN
-# 20210704
+# 20210707
 
 BIN		= Main
 OBJ		= Main.o Graficador.o histograma1.o histograma2.o histograma3.o histogramaX.o funcionesHistograma.o
@@ -9,7 +9,7 @@ CC		= gcc
 CFLAGS	= -std=c18
 RM = rm -f
 
-# Creo el ejecutable de Tablas de Conversion
+# Creo el ejecutable
 $(BIN): $(OBJ) 
 	$(CC) $(CFLAGS) $(OBJ) -o $(BIN)
 

@@ -8,12 +8,11 @@ typedef enum {
     IN /* dentro de una palabra*/
 }state;
 
-unsigned int *histograma1()
+unsigned int *histograma1(unsigned int* contadores, unsigned int cantContadores)
 {
     printf("\nHas entrado a la implementacion con enum y switch\n");
 
     state s = OUT;
-    static unsigned conts[largoMaxPalabra] = {0};
     int c, nc=0;
     while ((c=getchar( ))!= EOF) 
     {
@@ -35,7 +34,9 @@ unsigned int *histograma1()
                 {
                     case ' ': case '\t': case '\n':
                         s = OUT;
-                        ++conts[nc];                       
+                        if(nc >= cantContadores)
+                            nc = --cantContadores;
+                        ++contadores[nc];                       
                         nc = 0;
                     break;
                     default:
@@ -45,5 +46,5 @@ unsigned int *histograma1()
                 }
        }
     }
-    return conts;
+    return contadores;
 }

@@ -5,14 +5,15 @@
 #define IN 1
 #define OUT 0
 
-unsigned int *histograma2()
+unsigned int *histograma2(unsigned int* contadores, unsigned int cantContadores)
+//unsigned int *histograma2()
 {
     printf("\nHas entrado a la implementacion con goto\n");
     int c,nc,state;
     c = nc = 0;
     bool primeraLectura = true;
     state = OUT;
-    static unsigned int nw[largoMaxPalabra] = {0};
+    //static unsigned int nw[largoMaxPalabra] = {0};
     while ((c=getchar())!=EOF){
         if ((c == ' ' || c == '\n' || c == '\t')||(state == OUT)){
             goto fueraDePalabra;
@@ -22,7 +23,9 @@ unsigned int *histograma2()
         }
         fueraDePalabra:
             if (primeraLectura == false && nc >= 1){
-                ++nw[nc];
+                if(nc >= cantContadores)
+                    nc = --cantContadores;
+                ++contadores[nc];
                 //printf("palabra[CantCaracteres]: %d | Cantidad de caracteres: %d\n ", nw[nc],nc);
                 nc = 0;
                 state = OUT;
@@ -36,5 +39,5 @@ unsigned int *histograma2()
             state = IN;
             }
     }
-    return nw;
+    return contadores;
 }
