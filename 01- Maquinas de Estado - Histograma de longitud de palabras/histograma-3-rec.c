@@ -30,7 +30,7 @@ void out( int caracter, int contadorCaracter, unsigned int* nw)
             printf("\n%d Palabras con: %u",c,nw2);
         }
         printf("\n fin \n"); //PAra verificar si con eof entra al cierre.
-        return ;
+        return;
     }
     else 
     {
@@ -42,6 +42,7 @@ void out( int caracter, int contadorCaracter, unsigned int* nw)
     
  
 }
+/*
 //unsigned int *histograma3()
 void main()
 {
@@ -66,3 +67,4 @@ for(int c = 0;c<10;c++) // Puse esto para comprobar que al final lleguen los val
             printf("\n%d Palabras con: %u",c,nw2);
         }
 }
+*/
