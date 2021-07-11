@@ -13,7 +13,7 @@ void histograma1(unsigned int*, unsigned int); //Histograma con enum y switch
 
 void histograma2(unsigned int*, unsigned int); //Histograma con goto
 
-void histograma3(); //Histograma con recursividad
+void histograma3(unsigned int*, unsigned int); //Histograma con recursividad
 
 void histograma4(); //Histograma x
 

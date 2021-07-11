@@ -7,10 +7,10 @@ int *implementarHistograma(char *implementacion, unsigned int* contadores, unsig
 
     else if(strcmp(implementacion,"2") == 0)
         histograma2(contadores,cantContadores);
-/*
+
     else if(strcmp(implementacion,"3") == 0)
-        return histograma3();
-        
+        histograma3(contadores,cantContadores);
+/*        
     else
         return histograma4();
         */
