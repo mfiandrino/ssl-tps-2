@@ -56,6 +56,9 @@ c)
 ¿Es necesario que las funciones accedan a contadores? Si es así, ¿cómo hacerlo?
 -	Es necesario en este caso que las funciones accedan a contadores, ya que utilizamos y modificamos sus valores dentro de las funciones recursivas. Para
 que las funciones recursivas accedan a los contadores debemos declararlas y pasarlas por parametro. 
-
-			
-	
+  
+d)  
+Diseñar una nueva implementación e indicar en Readme.md cómo esa implementación representa los estados y cómo las transiciones.  
+- Respresentación de estados: son realizadas mediante etiquetas
+- Representación de transiciones: son realizadas mediante saltos de goto's tomando en consideración la condición del if que analiza el valor de "c".  
+  
