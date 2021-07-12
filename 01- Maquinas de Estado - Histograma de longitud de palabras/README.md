@@ -6,7 +6,7 @@
 
 2. Máquina de Estado:
  
-3. 
+Implementacion 2. 
 	- a. ii.
 
 	- b. iv.
@@ -16,3 +16,10 @@
 			Muchos lenguajes tienen GOTO o similares, pero en todos, utilizarlos discriminadamente esta visto como una mala practica de programacion.
 	- c. ii.
 	- d. i.
+
+Implementacion 3.
+	-a.ii.
+		-  ¿Es necesario que las funciones accedan a contadores? Si es así, ¿cómo hacerlo?.
+			Es necesario en este caso que las funciones accedan a contadores, ya que utilizamos y modificamos sus valores dentro de las funciones recursivas. Para
+			que las funciones recursivas accedan a los contadores debemos declararlas y pasarlas por parametro.
+
