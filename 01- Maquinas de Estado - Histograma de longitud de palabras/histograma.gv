@@ -1,0 +1,18 @@
+digraph Histograma {
+    //main [shape=box];
+    //main -> OUT;
+    OUT [shape=box];
+    IN [shape=box];
+    IN -> IN [label=" c!=('\\n'||'\\t'||' ')"];
+    OUT -> OUT [label=" c==('\\n'||'\\t'||' ')"];
+    OUT -> IN [label="  ++nc"];
+    IN -> OUT [label="  ++contadores[nc] \n nc = 0"];
+    
+}
+
+/* Para descargar el Graphviz y sumarlo al PATH https://graphviz.org/download/
+    Esta Linux, Windows, MAC 
+    En VSC ir a extenciones y agregar el Graphviz (dot)
+    Para correr por consola -> dot -Tpng histograma.gv -o histograma.png 
+    Despues del -T se pueden agregar otros formatos soportados por Graphviz
+*/
