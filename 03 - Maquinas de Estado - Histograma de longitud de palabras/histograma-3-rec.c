@@ -47,11 +47,5 @@ void histograma3(unsigned int* contadores, unsigned int cantContadores)
         {
             in(caracter,nc ,contadores,cantContadores);
         }   
-
-    for(int c = 0;c<10;c++) // Puse esto para comprobar que al final lleguen los valores de nw
-        {
-            unsigned int nw2= contadores[c];
-            printf("\n%d Palabras con: %u",nw2,c);
-        }   
 }
 
