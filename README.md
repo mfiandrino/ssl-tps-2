@@ -1,8 +1,14 @@
-# Somos el Grupo 3 del curso K2051 (Lunes TN)
+# Sintaxis y Semántica de los Lenguajes
 
-## Integrantes: 
+## Curso: K2051 (Lunes TN)
 
-✒️ **Apellido y Nombre:** Argüeso, Matias Emanuel | **Legajo:** 166690-3 | **Usuario:** MatiasArgueso
+## Año de cursada: 2021
+
+## Numero de Equipo: 3
+
+## Integrantes:
+
+✒️ **Apellido y Nombre:** Argüeso, Matias Emanuel  **Legajo:** 166690-3 | **Usuario:** MatiasArgueso
 
 ✒️ **Apellido y Nombre:** Fiandrino, Maximiliano | **Legajo:** 152277-2 | **Usuario:** mfiandrino
 

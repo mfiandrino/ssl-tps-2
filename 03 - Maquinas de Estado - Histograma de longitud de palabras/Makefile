@@ -52,7 +52,7 @@ funcionesHistograma.o: funcionesHistograma.c histograma.h
 	$(CC) $(CFLAGS) -c funcionesHistograma.c -o funcionesHistograma.o
 
 clean:
-	$(RM) *.o *.exe
+	$(RM) *.o *.exe Main Test
 
 
 
