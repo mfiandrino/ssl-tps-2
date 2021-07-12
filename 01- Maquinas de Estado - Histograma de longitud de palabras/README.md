@@ -24,7 +24,7 @@ Utilizamos notación infija para ambos árboles de expresion.
 
 Tabla de transiciones
 
-![image](https://user-images.githubusercontent.com/82044738/125221656-f058e580-e29e-11eb-8eec-2aa13c2a54ca.png
+![image](https://user-images.githubusercontent.com/82044738/125221656-f058e580-e29e-11eb-8eec-2aa13c2a54ca.png)
 
   
 
