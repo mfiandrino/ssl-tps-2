@@ -24,9 +24,9 @@ Utilizamos notación infija para ambos árboles de expresion.
 
 Tabla de transiciones
 
-![image](https://user-images.githubusercontent.com/82044738/125221656-f058e580-e29e-11eb-8eec-2aa13c2a54ca.png)
+![image](https://user-images.githubusercontent.com/82044738/125221765-21391a80-e29f-11eb-8215-c5031120a52b.png)
 
-  
+
 
 ## 3. Implementaciones de Máquinas de Estado
 
