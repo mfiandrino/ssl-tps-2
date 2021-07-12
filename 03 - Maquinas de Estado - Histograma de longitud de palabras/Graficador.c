@@ -1,3 +1,9 @@
+/*
+Graficador
+Implementación del graficador del histograma. Recibiendo un array de contadores imprime la cantidad de palabras que hay con cada largo de palabra
+Grupo Nro 3 del curso K2051 Lunes TN
+20210712
+*/
 #include "Graficador.h"
 
 static unsigned int palabraMasLarga (unsigned int*, unsigned int);

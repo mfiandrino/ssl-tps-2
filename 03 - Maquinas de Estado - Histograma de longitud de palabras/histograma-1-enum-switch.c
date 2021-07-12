@@ -1,3 +1,9 @@
+/*
+Histograma enum-switch
+Implementación de un histograma utilizando enum para abstraernos del valor de IN y OUT y también la sentencia switch para evaluar cada caso
+Grupo Nro 3 del curso K2051 Lunes TN
+20210712
+*/
 #include "histograma.h"
 #include <string.h>
 #include <stdio.h>

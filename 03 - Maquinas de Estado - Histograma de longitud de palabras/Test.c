@@ -1,3 +1,9 @@
+/*
+Programa de pruebas
+Programa para probar que los histogramas funcionen correctamente, completando un array de contadores inicializados en cero
+Grupo Nro 3 del curso K2051 Lunes TN
+20210712
+*/
 #include <assert.h>
 #include <stdio.h>
 

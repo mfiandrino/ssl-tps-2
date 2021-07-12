@@ -1,3 +1,10 @@
+/*
+Programa Main
+El Main será de donde arranque el programa principal, de donde se coordinará qué histograma se va a usar y luego imprimirá su gráfico.
+Grupo Nro 3 del curso K2051 Lunes TN
+20210712
+*/
+
 #include "Graficador.h"
 #include "histograma.h"
 #include <stdio.h>

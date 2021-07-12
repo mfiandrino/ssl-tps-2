@@ -1,3 +1,9 @@
+/*
+Funciones auxiliares para el Main
+Funciones para validar si la implemetacion ingresada por consola es válida y para implemetar un histograma en específico
+Grupo Nro 3 del curso K2051 Lunes TN
+20210712
+*/
 #include "histograma.h"
 
 int *implementarHistograma(char *implementacion, unsigned int* contadores, unsigned int cantContadores)

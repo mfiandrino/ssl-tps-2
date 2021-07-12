@@ -1,4 +1,9 @@
-
+/*
+Histograma recursivo
+Implementación de un histograma utilizando funciones recursivas
+Grupo Nro 3 del curso K2051 Lunes TN
+20210712
+*/
 #include "histograma.h"
 #include <string.h>
 #include <stdio.h>
