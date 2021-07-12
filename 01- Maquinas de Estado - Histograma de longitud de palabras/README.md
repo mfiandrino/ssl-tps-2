@@ -10,13 +10,20 @@ Utilizamos notación infija para ambos árboles de expresion.
   a)  
 
   b) M = {Q, E, T, qo, F}
+  
  	Q = {OUT, IN}
+	
 	E = {c==('\n'||'\t'||' '), ++contadores[nc] nc=0, ++nc, c!=('\n'||'\t'||' ') }
+	
 	T = {OUT => c==('\n'||'\t'||' ') => OUT, OUT => ++nc => IN, IN => c!=('\n'||'\t'||' ') => IN, IN => ++contadores[nc] nc=0 => OUT }
+	
 	qo = OUT
+	
 	F = {OUT, IN}
+	
 
 Tabla de transiciones
+
 
 	![image](https://user-images.githubusercontent.com/82044738/125221656-f058e580-e29e-11eb-8eec-2aa13c2a54ca.png
 
