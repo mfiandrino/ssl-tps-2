@@ -8,7 +8,7 @@ typedef enum {
     IN /* dentro de una palabra*/
 }state;
 
-unsigned int *histograma1(unsigned int* contadores, unsigned int cantContadores)
+void histograma1(unsigned int* contadores, unsigned int cantContadores)
 {
     printf("\nHas entrado a la implementacion con enum y switch\n");
 
@@ -46,5 +46,4 @@ unsigned int *histograma1(unsigned int* contadores, unsigned int cantContadores)
                 }
        }
     }
-    return contadores;
 }

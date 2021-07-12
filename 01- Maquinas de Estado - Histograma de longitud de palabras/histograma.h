@@ -9,12 +9,12 @@
 int *implementarHistograma(char *,unsigned int*, unsigned int);
 int validarHistograma(char *);
 
-unsigned int *histograma1(unsigned int*, unsigned int); //Histograma con enum y switch
+void histograma1(unsigned int*, unsigned int); //Histograma con enum y switch
 
-unsigned int *histograma2(unsigned int*, unsigned int); //Histograma con goto
+void histograma2(unsigned int*, unsigned int); //Histograma con goto
 
-unsigned int *histograma3(); //Histograma con recursividad
+void histograma3(unsigned int*, unsigned int); //Histograma con recursividad
 
-unsigned int *histograma4(); //Histograma x
+void histograma4(); //Histograma x
 
 #endif

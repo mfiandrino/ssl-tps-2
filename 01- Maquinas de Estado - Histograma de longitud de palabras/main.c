@@ -8,7 +8,10 @@ int main (int argc , char *argv[])
     if(argc == 2)
     {
         if(validarHistograma(argv[1]))
-            graficarHistograma('/',implementarHistograma(argv[1],contadores,largoMaxPalabra+1),largoMaxPalabra+1); 
+        {
+            implementarHistograma(argv[1],contadores,largoMaxPalabra+1);
+            graficarHistograma('/',contadores,largoMaxPalabra+1);
+        }
     }
     else if(argc > 2)
         printf("\nHas ingresado mas parametros de lo esperado\n\n");
