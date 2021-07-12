@@ -24,8 +24,8 @@ Main.o: main.c Graficador.h histograma.h
 	$(CC) $(CFLAGS) -c main.c -o Main.o 
 
 #Creo el codigo objeto de Test
-Test.o: test.c Graficador.h histograma.h
-	$(CC) $(CFLAGS) -c test.c -o Test.o 
+Test.o: Test.c Graficador.h histograma.h
+	$(CC) $(CFLAGS) -c Test.c -o Test.o 
 
 #Creo el codigo objeto de las funciones de Graficador.c
 Graficador.o: Graficador.c Graficador.h
