@@ -7,9 +7,15 @@ Utilizamos notación infija para ambos árboles de expresion.
 
 ## 2. Máquina de Estado
 
-  a)  
+  a) Describir en lenguaje dot y dentro del archivo histograma.gv la máquina de estado que resuelve el problema planteado.  
+  Grafico resultante:  
+    
+  ![image](https://user-images.githubusercontent.com/82005945/125221973-7d03a380-e29f-11eb-846d-7194a35257c5.png)
 
-  b) M = {Q, E, T, qo, F}
+  
+  b) Formalizar la máquina de estados como una n-upla, basarse en el Capítulo #1 del Volumen #3 de [MUCH2012]  
+    
+  M = {Q, E, T, qo, F}
   
  	Q = {OUT, IN}
 	
