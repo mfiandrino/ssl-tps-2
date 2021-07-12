@@ -17,7 +17,7 @@
 	- d. i.
 
 5. Implementacion 3.
-	- a. iv.
+	- a. ii.
 		- ¿Es necesario que las funciones accedan a contadores? Si es así, ¿cómo hacerlo?
 			Es necesario en este caso que las funciones accedan a contadores, ya que utilizamos y modificamos sus valores dentro de las funciones recursivas. Para
 			que las funciones recursivas accedan a los contadores debemos declararlas y pasarlas por parametro. 
