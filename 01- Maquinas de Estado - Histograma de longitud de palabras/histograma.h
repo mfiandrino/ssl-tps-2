@@ -15,6 +15,6 @@ void histograma2(unsigned int*, unsigned int); //Histograma con goto
 
 void histograma3(unsigned int*, unsigned int); //Histograma con recursividad
 
-void histograma4(); //Histograma x
+void histograma4(unsigned int*, unsigned int); //Histograma x
 
 #endif

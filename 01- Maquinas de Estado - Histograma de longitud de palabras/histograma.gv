@@ -1,12 +1,12 @@
 digraph Histograma {
     //main [shape=box];
     //main -> OUT;
-    OUT [shape=box];
+    .OUT [shape=box];
     IN [shape=box];
     IN -> IN [label=" c!=('\\n'||'\\t'||' ')"];
-    OUT -> OUT [label=" c==('\\n'||'\\t'||' ')"];
-    OUT -> IN [label="  ++nc"];
-    IN -> OUT [label="  ++contadores[nc] \n nc = 0"];
+    .OUT -> .OUT [label=" c==('\\n'||'\\t'||' ')"];
+    .OUT -> IN [label="  ++nc"];
+    IN -> .OUT [label="  ++contadores[nc] \n nc = 0"];
     
 }
 
