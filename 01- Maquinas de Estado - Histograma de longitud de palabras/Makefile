@@ -2,20 +2,30 @@
 # Makefile para compilar histograma
 # Grupo Nro 3 del curso K2051 Lunes TN
 # 20210707
-
-BIN		= Main
+all : Main Test
+BIN 	= Main
+BIN2  =  Test
 OBJ		= Main.o Graficador.o histograma1.o histograma2.o histograma3.o histogramaX.o funcionesHistograma.o
+OBJ2  =  Test.o Graficador.o histograma1.o histograma2.o histograma3.o histogramaX.o funcionesHistograma.o
 CC		= gcc
-CFLAGS	= -std=c18
+CFLAGS	= -std=c11
 RM = rm -f
 
-# Creo el ejecutable
+# Creo el ejecutable del Main
 $(BIN): $(OBJ) 
 	$(CC) $(CFLAGS) $(OBJ) -o $(BIN)
+
+# Creo el ejecutable del Test
+$(BIN2): $(OBJ2) 
+	$(CC) $(CFLAGS) $(OBJ2) -o $(BIN2)
 
 #Creo el codigo objeto de Main
 Main.o: main.c Graficador.h histograma.h
 	$(CC) $(CFLAGS) -c main.c -o Main.o 
+
+#Creo el codigo objeto de Test
+Test.o: test.c Graficador.h histograma.h
+	$(CC) $(CFLAGS) -c test.c -o Test.o 
 
 #Creo el codigo objeto de las funciones de Graficador.c
 Graficador.o: Graficador.c Graficador.h
@@ -43,5 +53,6 @@ funcionesHistograma.o: funcionesHistograma.c histograma.h
 
 clean:
 	$(RM) *.o *.exe
+
 
 
