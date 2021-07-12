@@ -2,7 +2,6 @@
 # Makefile para compilar histograma
 # Grupo Nro 3 del curso K2051 Lunes TN
 # 20210707
-
 all : Main Test
 BIN 	= Main
 BIN2  =  Test
