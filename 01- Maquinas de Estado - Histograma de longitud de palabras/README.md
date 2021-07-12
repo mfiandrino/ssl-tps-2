@@ -2,7 +2,7 @@
 	- b.  
 				  ![image](https://user-images.githubusercontent.com/82005945/125212785-0dcd8580-e286-11eb-98e9-8f2d3f7706f2.png)
 	- c. 
-				  ![image](https://user-images.githubusercontent.com/82005945/125212800-2d64ae00-e286-11eb-99ab-6afb62bc17eb.png)
+				    ![image](https://user-images.githubusercontent.com/82005945/125212800-2d64ae00-e286-11eb-99ab-6afb62bc17eb.png)
 
 2. Máquina de Estado:
 3. Implementacion 2.
