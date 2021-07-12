@@ -5,8 +5,7 @@
 				![image](https://user-images.githubusercontent.com/82005945/125212800-2d64ae00-e286-11eb-99ab-6afb62bc17eb.png)
 
 2. Máquina de Estado:
- 
-Implementacion 2. 
+3. Implementacion 2.
 	- a. ii.
 
 	- b. iv.
@@ -17,9 +16,9 @@ Implementacion 2.
 	- c. ii.
 	- d. i.
 
-Implementacion 3.
-	-a.ii.
-		-  ¿Es necesario que las funciones accedan a contadores? Si es así, ¿cómo hacerlo?.
+5. Implementacion 3.
+	-a. ii.
+		- ¿Es necesario que las funciones accedan a contadores? Si es así, ¿cómo hacerlo?.
 			Es necesario en este caso que las funciones accedan a contadores, ya que utilizamos y modificamos sus valores dentro de las funciones recursivas. Para
 			que las funciones recursivas accedan a los contadores debemos declararlas y pasarlas por parametro.
-
+	
