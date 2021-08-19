@@ -1,3 +1,9 @@
+/*
+Modulo Stack
+Implementación de las funciones basicas para manejar pilas
+Grupo Nro 3 del curso K2051 Lunes TN
+20210819
+*/
 #include "stack.h"
 
 static int estaVacia(pila_t*, char);
@@ -32,7 +38,7 @@ char pop(pila_t *strPila)
 
 static int estaVacia(pila_t *strPila , char caracterBase)
 {
-    if(strPila->pila[strPila->indicePila] == caracterBase)
+    if(strPila->pila[strPila->indicePila] == caracterBase) //Se podria hacer poniendo como condicion que el indice sea mayor a 0
         return 1;
     return 0;
 }
