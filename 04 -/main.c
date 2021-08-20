@@ -2,8 +2,15 @@
 
 int main()
 {
-    if(balanceoDeBrackets())
+    if(balanceoDeBrackets() == 1)
         printf("\nLos brackets estan balanceados\n");
-    else
+    else if (balanceoDeBrackets() == 0)
         printf("\nLos brackets NO estan balanceados\n");
+    else
+        printf("\nLas comillas NO estan balanceadas\n");
+        
+    getchar();
+    getchar();
+    getchar();
+
 }

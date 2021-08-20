@@ -32,7 +32,9 @@ int balanceoDeBrackets()
 {
     pila_t *pila = crearPila('$');
     printf("\nHas entrado al balanceo de brackets\n");
-    char bracket,c;
+    char bracket;
+    int c;
+    int cAux;
 
     while ((c=getchar())!=EOF)
     {
@@ -40,7 +42,8 @@ int balanceoDeBrackets()
             goto APERTURA_BRACKET;
         else if (c == '}' || c == ']' || c == ')')
             goto CLAUSURA_BRACKET;
-        else
+        else if  (c ==  '\'' || c == '\"' )
+             goto CASO_ESPECIAL;
             continue;
 
         APERTURA_BRACKET:
@@ -52,6 +55,20 @@ int balanceoDeBrackets()
             continue;
         else 
             return 0;
+
+        CASO_ESPECIAL:
+        cAux = c;
+         while ((c=getchar())!=EOF){
+            if  ( c == cAux)
+                break;
+        }
+        if (c == EOF){
+            return 2;
+        }
+         
+
     }
+
+
     return 1;
 }
