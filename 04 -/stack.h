@@ -12,8 +12,8 @@ typedef struct
     int indicePila;
 }pila_t;
 
-char pop(pila_t*);
-void push(pila_t*, char);
+int pop(pila_t*,char*);
+int push(pila_t*, char);
 pila_t *crearPila(char);
 
 #endif

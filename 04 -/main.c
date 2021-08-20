@@ -2,5 +2,8 @@
 
 int main()
 {
-    balanceoDeBrackets();
+    if(balanceoDeBrackets())
+        printf("\nLos brackets estan balanceados\n");
+    else
+        printf("\nLos brackets NO estan balanceados\n");
 }

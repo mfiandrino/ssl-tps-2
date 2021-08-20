@@ -3,6 +3,6 @@
 
 #include "stack.h"
 
-void balanceoDeBrackets(void);
+int balanceoDeBrackets(void);
 
 #endif

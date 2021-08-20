@@ -10,7 +10,7 @@ static char bracketInvertido(char bracket)
 {
     switch(bracket)
     {
-        case '{':
+        case '{': 
             return '}';
         case '[':
             return ']';
@@ -19,11 +19,20 @@ static char bracketInvertido(char bracket)
     }
 }
 
-void balanceoDeBrackets()
+static int cierraBracketCorrecto(char c, char bracket)
+{
+    bracket = bracketInvertido(bracket);
+    if(bracket == c)
+        return 1;
+    return 0;
+}
+
+
+int balanceoDeBrackets()
 {
     pila_t *pila = crearPila('$');
     printf("\nHas entrado al balanceo de brackets\n");
-    char dato,c;
+    char bracket,c;
 
     while ((c=getchar())!=EOF)
     {
@@ -39,13 +48,10 @@ void balanceoDeBrackets()
         continue;
 
         CLAUSURA_BRACKET:
-        dato = bracketInvertido(pop(pila));
-        if(dato != c)
-        {
-            printf("\nLos bracket NO estan balanceados\n");
-            return;
-        }
-        continue;   
+        if(pop(pila,&bracket) && cierraBracketCorrecto(c,bracket))
+            continue;
+        else 
+            return 0;
     }
-    return;
+    return 1;
 }
