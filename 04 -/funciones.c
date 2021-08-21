@@ -44,6 +44,7 @@ int balanceoDeBrackets()
             goto CLAUSURA_BRACKET;
         else if  (c ==  '\'' || c == '\"' )
              goto CASO_ESPECIAL;
+        else
             continue;
 
         APERTURA_BRACKET:
@@ -59,6 +60,10 @@ int balanceoDeBrackets()
         CASO_ESPECIAL:
         cAux = c;
          while ((c=getchar())!=EOF){
+
+             if(c == '\\')
+                getchar();
+
             if  ( c == cAux)
                 break;
         }

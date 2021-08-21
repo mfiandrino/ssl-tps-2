@@ -2,9 +2,10 @@
 
 int main()
 {
-    if(balanceoDeBrackets() == 1)
+    int resultado = balanceoDeBrackets();
+    if(resultado == 1)
         printf("\nLos brackets estan balanceados\n");
-    else if (balanceoDeBrackets() == 0)
+    else if (resultado == 0)
         printf("\nLos brackets NO estan balanceados\n");
     else
         printf("\nLas comillas NO estan balanceadas\n");
