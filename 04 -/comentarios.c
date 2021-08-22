@@ -4,15 +4,14 @@ Grupo Nro 3 del curso K2051 Lunes TN
 20210712
 */
 
-
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
 
 typedef enum {
-    OUT /* fuera de una palabra*/, 
-    IN /* dentro de una palabra*/,
-    IN2,
+    OUT        /* fuera de un comentario*/, 
+    COMMENT1  /* dentro de un comentario con // */,
+    COMMENT2 /* dentro de un comentario con /* */,
 }state;
 
 int main(void){
@@ -21,62 +20,65 @@ int prevC, c;
 prevC = getchar ();
 while ((c=getchar())!=EOF){
     switch (s){
+
     case OUT:
         switch (prevC){
-        case '/':
+        case '/': //posible comentario
             switch (c){
-                case '/':
-                s= IN;
+                case '/': //comentario del tipo '//'
+                    s= COMMENT1;
+                    break;
+                case '*': //comentario del tipo '/*'
+                    s = COMMENT2;
                 break;
-                case '*':
-                s = IN2;
-                break;
-                default:
-                putchar(prevC);
-                prevC=c;
-                s=OUT;
+                default: //no es comentario
+                    putchar(prevC);
+                    prevC=c;
+                    s=OUT;
                 break;
             }
         break;
-        default: //(prevC /= '/')
-        putchar(prevC);
-        prevC= c;
-        s = OUT;
+        default: //no es comentario (prevC \= '/')
+            putchar(prevC);
+            prevC= c;
+            s = OUT;
         break;
         }
     break;
-    case IN:
+
+    case COMMENT1: //comentario del tipo '//'
         switch (prevC){
-        case '\n':
-        putchar(' ');
-        putchar(prevC);
-        prevC = c;
-        s=OUT;
+        case '\n': //concluye el comentario
+            putchar(' ');
+            putchar(prevC);
+            prevC = c;
+            s=OUT;
         break;
-        default: //(prevC /= '\n')
-        prevC=c;
-        s = IN;
+        default: //continua el comentario (prevC \= '\n')
+            prevC=c;
+            s = IN;
         break;
         }
     break;
-    default:
+
+    default: //comentario del tipo '/*'
         switch (prevC){
-        case '*':
+        case '*': //posible cierre de comentario
             switch (c){
-                case '/':
+                case '/': //concluye el comentario
                 putchar(' ');
                 prevC =' ';
                 s=OUT;
                 break;
-                default:
+                default: //continua el comentario (c \= '/')
                 prevC=c;
-                s = IN2;
+                s = COMMENT2;
                 break;
             }
         break;
-        default:
-        prevC=c;
-        s = IN2;
+        default: //continua el comentario (prevC \= '*')
+            prevC=c;
+            s = COMMENT2;
         break;
         }
     }
