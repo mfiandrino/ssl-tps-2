@@ -25,5 +25,9 @@ funcionesBalanceo.o: funcionesBalanceo.c funcionesBalanceo.h
 stack.o: stack.c stack.h
 	$(CC) $(CFLAGS) -c stack.c -o stack.o
 
+#Creo el codigo objeto del reemplazo de comentarios
+comentarios.o: comentarios.c
+	$(CC) $(CFLAGS) -c comentarios.c -o comentarios.o 
+
 clean:
 	$(RM) *.o *.exe Main Test
