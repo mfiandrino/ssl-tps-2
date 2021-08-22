@@ -1,25 +1,25 @@
 # Makefile
-# Makefile para compilar el TP4
+# Makefile para compilar la funcionalidad de balanceo de brackets
 # Grupo Nro 3 del curso K2051 Lunes TN
-# 20210819
-all : Main
-BIN 	= Main
-OBJ		= Main.o funciones.o stack.o
+# 20210822
+all : balanceoDeBrackets
+BIN 	= balanceoDeBrackets
+OBJ		= balanceoDeBrackets.o funcionesBalanceo.o stack.o
 CC		= gcc
 CFLAGS	= -std=c11
 RM = rm -f
 
-# Creo el ejecutable del Main
+# Creo el ejecutable
 $(BIN): $(OBJ) 
 	$(CC) $(CFLAGS) $(OBJ) -o $(BIN)
 
-#Creo el codigo objeto de Main
-Main.o: main.c funciones.h stack.h
-	$(CC) $(CFLAGS) -c main.c -o Main.o 
+#Creo el codigo objeto para el ejecutable
+balanceoDeBrackets.o: balanceoDeBrackets.c funcionesBalanceo.h stack.h
+	$(CC) $(CFLAGS) -c balanceoDeBrackets.c -o balanceoDeBrackets.o 
 
-#Creo el codigo objeto de las funciones de funciones.c
-funciones.o: funciones.c funciones.h
-	$(CC) $(CFLAGS) -c funciones.c -o funciones.o
+#Creo el codigo objeto de las funciones de funcionesBalanceo.c
+funcionesBalanceo.o: funcionesBalanceo.c funcionesBalanceo.h
+	$(CC) $(CFLAGS) -c funcionesBalanceo.c -o funcionesBalanceo.o
 
 #Creo el codigo objeto de las funciones de stack.c
 stack.o: stack.c stack.h
@@ -27,6 +27,3 @@ stack.o: stack.c stack.h
 
 clean:
 	$(RM) *.o *.exe Main Test
-
-
-
