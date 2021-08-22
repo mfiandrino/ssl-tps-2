@@ -56,7 +56,7 @@ while ((c=getchar())!=EOF){
         break;
         default: //continua el comentario (prevC \= '\n')
             prevC=c;
-            s = IN;
+            s = COMMENT1;
         break;
         }
     break;
