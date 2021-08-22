@@ -14,7 +14,7 @@ $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(BIN)
 
 #Creo el codigo objeto para el ejecutable
-balanceoDeBrackets.o: balanceoDeBrackets.c funcionesBalanceo.h ../stack.h
+balanceoDeBrackets.o: balanceoDeBrackets.c funcionesBalanceo.h ../moduloStack/stack.h
 	$(CC) $(CFLAGS) -c balanceoDeBrackets.c -o balanceoDeBrackets.o 
 
 #Creo el codigo objeto de las funciones de funcionesBalanceo.c
@@ -22,12 +22,8 @@ funcionesBalanceo.o: funcionesBalanceo.c funcionesBalanceo.h
 	$(CC) $(CFLAGS) -c funcionesBalanceo.c -o funcionesBalanceo.o
 
 #Creo el codigo objeto de las funciones de stack.c
-stack.o: ../stack.c ../stack.h
-	$(CC) $(CFLAGS) -c ../stack.c -o stack.o
-
-#Creo el codigo objeto del reemplazo de comentarios
-comentarios.o: comentarios.c
-	$(CC) $(CFLAGS) -c comentarios.c -o comentarios.o 
-
+stack.o: ../moduloStack/stack.c ../moduloStack/stack.h
+	$(CC) $(CFLAGS) -c ../moduloStack/stack.c -o stack.o
+	
 clean:
 	$(RM) *.o *.exe balanceoDeBrackets
