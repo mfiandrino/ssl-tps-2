@@ -22,3 +22,9 @@
 - Aplicar stacks eficientes, tomar ideas de K&R
 - Construir módulo Stack (Stack.h, Stack.c) no es necesario que sea tipo de dato.
 - La máquina de estado debe seguir la implementación X del trabajo anterior.
+
+### Tareas
+- Reemplazar comentarios por espacio.
+- Atender #defines y #undef
+- (Opcional) Atender #include
+- Verificar balanceo de brackets
