@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define maxPila 5
+#define maxPila 100
 
 typedef struct
 {
@@ -15,5 +15,6 @@ typedef struct
 int pop(pila_t*,char*);
 int push(pila_t*, char);
 pila_t *crearPila(char);
+char cima(pila_t *);
 
 #endif

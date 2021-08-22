@@ -51,6 +51,11 @@ static int estaLlena(pila_t *strPila)
     return 0;
 }
 
+char cima(pila_t *strPila)
+{
+    return strPila->pila[strPila->indicePila];
+}
+
 pila_t *crearPila(char caracterBase)
 {
     pila_t *strPila;

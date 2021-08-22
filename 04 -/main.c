@@ -2,7 +2,7 @@
 
 int main()
 {
-    int resultado = balanceoDeBrackets();
+    int resultado = balanceoDeBrackets2();
     if(resultado == 1)
         printf("\nLos brackets estan balanceados\n");
     else if (resultado == 0)
