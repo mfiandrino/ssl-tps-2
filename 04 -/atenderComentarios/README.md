@@ -4,7 +4,7 @@
  
  Grafico resultante: 	
  
- ![AtenderComentariosEnDot](https://user-images.githubusercontent.com/82005945/130395543-b8aaeed5-4323-4847-ae7c-8e1529a2a8fa.png)
+ ![atenderComentarios en dot](https://user-images.githubusercontent.com/82005945/130470691-b8ed82a5-8ed9-408c-97ba-54d84bb6d5db.png)
 
  
  b) Formalizacion máquina de estados como una n-upla
