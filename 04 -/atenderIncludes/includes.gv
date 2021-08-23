@@ -7,7 +7,7 @@ digraph includes {
     IN -> IN [label=" c=='<'\nc=='\"'\n c = getchar()"];
     OUT -> OUT [label="c!='#'\ninc!='include'\n c = getchar()"];
     OUT -> IN [label="c == '#'\ninc == 'include'\n c = getchar()"];
-    IN -> OUT [label="Otro caso \n  ++contadores[nc] \n c = getchar()"];
+    IN -> OUT [label="Otro caso \n c = getchar()"];
     
 }
 
