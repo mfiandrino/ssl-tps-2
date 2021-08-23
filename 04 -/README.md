@@ -39,6 +39,8 @@ M = {E, A, A', T, e0, p0, F}
 
 E = {CARACTER_COMUN, APERTURA_BRACKET, CLAUSURA_BRACKET, COMILLAS} 
 
+A = { {, [, (, }, ], ), ", ' }
+
 A' = { {, [, (, }, ], ), ", ' }
 
 e0 = {CARACTER_COMUN}
