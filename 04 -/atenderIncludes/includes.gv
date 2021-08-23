@@ -1,0 +1,19 @@
+digraph includes {
+    //main [shape=box];
+    //main -> OUT;
+    rankdir = LR
+    OUT [shape=box,label= "*OUT"];
+    IN [shape=box];
+    IN -> IN [label=" c=='<'\nc=='\"'\n c = getchar()"];
+    OUT -> OUT [label="c!='#'\ninc!='include'\n c = getchar()"];
+    OUT -> IN [label="c == '#'\ninc == 'include'\n c = getchar()"];
+    IN -> OUT [label="Otro caso \n  ++contadores[nc] \n c = getchar()"];
+    
+}
+
+/* Para descargar el Graphviz y sumarlo al PATH https://graphviz.org/download/
+    Esta Linux, Windows, MAC 
+    En VSC ir a extenciones y agregar el Graphviz (dot)
+    Para correr por consola -> dot -Tpng histograma.gv -o histograma.png 
+    Despues del -T se pueden agregar otros formatos soportados por Graphviz
+*/
