@@ -89,7 +89,8 @@ int atenderInclude (){
                     }
                     fclose(arch);   
                 }
-            } 
+            }
+            else continue;
             s = OUT;
             break;
         default:
