@@ -3,20 +3,23 @@
  a) Descripcion maquina de estados en lenguaje DOT
  
  
- b) Formalizar la máquina de estados como una n-upla, basarse en el Capítulo #1 del Volumen #3 de [MUCH2012]  
+ b) Formalizacion máquina de estados como una n-upla
     
   M = {Q, E, T, qo, F}
   
- 	Q = {OUT, IN}
+ 	Q = {OUT,COMMENT1, COMMENT2}
 	
-	E = {c==('\n'||'\t'||' '), ++contadores[nc] nc=0, ++nc, c!=('\n'||'\t'||' ') }
+	E = {putchar(prevC) | prevC = c, prevc = '\n' |putchar(' ')| putchar(prevC),prevC = '*' | c = '/' | putchar(' '),prevC = '/' | c = '/', prevC = '/' | c = '*', prevC = c, 	  prevC = c }
 	
-	T = {OUT => c==('\n'||'\t'||' ') => OUT, OUT => ++nc => IN, IN => c!=('\n'||'\t'||' ') => IN, IN => ++contadores[nc] nc=0 => OUT }
+	T = {OUT => putchar(prevC) | prevC = c => OUT, OUT => prevC = '/' | c = '/' => COMMENT1,OUT =>  prevC = '/' | c = '*' => COMMENT2, COMMENT1 => prevC = c => COMMENT1, 		COMMENT1 => prevc = '\n' | putchar(' ')| putchar(prevC) => OUT, COMMENT2 => prevC = c => COMMENT2, COMMENT2 => prevC = '*' | c = '/' | putchar(' ') => OUT  }
 	
 	qo = OUT
 	
-	F = {OUT, IN}
+	F = {OUT,COMMENT1, COMMENT2}
 	
 
 Tabla de transiciones
+
+
+
 
