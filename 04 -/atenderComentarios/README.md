@@ -1,11 +1,15 @@
 
  # Maquina de Estados
- a) Descripcion maquina de estados en lenguaje DOT
+ a) Descripcion maquina de estados en lenguaje DOT	
  
+ Grafico resultante: 	
+ 
+ ![AtenderComentariosEnDot](https://user-images.githubusercontent.com/82005945/130395543-b8aaeed5-4323-4847-ae7c-8e1529a2a8fa.png)
+
  
  b) Formalizacion máquina de estados como una n-upla
     
-  M = {Q, E, T, qo, F}
+  	M = {Q, E, T, qo, F}
   
  	Q = {OUT,COMMENT1, COMMENT2}
 	
