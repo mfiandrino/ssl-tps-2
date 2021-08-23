@@ -44,3 +44,5 @@ A' = { {, [, (, }, ], ), ", ' }
 e0 = {CARACTER_COMUN}
 
 P0 = $
+
+F = {CARACTER_COMUN, APERTURA_BRACKET, CLAUSURA_BRACKET, COMILLAS}
