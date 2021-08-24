@@ -1,0 +1,32 @@
+digraph BalanceoDeBrackets 
+{
+    CARACTER_COMUN [shape=box,label= "-CARACTER_COMUN"];
+    APERTURA_BRACKET [shape=box];
+    CLAUSURA_BRACKET [shape=box];
+    COMILLAS [shape=box];
+    
+    CARACTER_COMUN -> CARACTER_COMUN [label = "E.O.C."];
+    CARACTER_COMUN -> APERTURA_BRACKET [label = "case '{': case '[': case '(':\natenderAperturaBracket(pila,c,&s);\nbreak;"];
+    CARACTER_COMUN -> CLAUSURA_BRACKET [label = "case '}': case ']': case ')':\nif(atenderClausuraBracket(pila,c,&s))\nbreak;\nelse\nreturn -1;"]
+    CARACTER_COMUN -> COMILLAS [label = "case '\'': case '\"':\nif(atenderComillas(c,&s))\nbreak;\nelse\nreturn -2;"]
+
+    APERTURA_BRACKET -> CARACTER_COMUN [label = "E.O.C."];
+    APERTURA_BRACKET -> APERTURA_BRACKET [label = "case '{': case '[': case '(':\natenderAperturaBracket(pila,c,&s);\nbreak;"];
+    APERTURA_BRACKET -> CLAUSURA_BRACKET [label = "case '}': case ']': case ')':\nif(atenderClausuraBracket(pila,c,&s))\nbreak;\nelse\nreturn -1;"]
+    APERTURA_BRACKET -> COMILLAS [label = "case '\'': case '\"':\nif(atenderComillas(c,&s))\nbreak;\nelse\nreturn -2;"]
+
+    CLAUSURA_BRACKET -> CARACTER_COMUN [label = "E.O.C."];
+    CLAUSURA_BRACKET -> APERTURA_BRACKET [label = "case '{': case '[': case '(':\natenderAperturaBracket(pila,c,&s);\nbreak;"];
+    CLAUSURA_BRACKET -> CLAUSURA_BRACKET [label = "case '}': case ']': case ')':\nif(atenderClausuraBracket(pila,c,&s))\nbreak;\nelse\nreturn -1;"]
+    CLAUSURA_BRACKET -> COMILLAS [label = "case '\'': case '\"':\nif(atenderComillas(c,&s))\nbreak;\nelse\nreturn -2;"]
+
+    COMILLAS -> CARACTER_COMUN [label = "E.O.C."];
+    COMILLAS -> APERTURA_BRACKET [label = "case '{': case '[': case '(':\natenderAperturaBracket(pila,c,&s);\nbreak;"];
+    COMILLAS -> CLAUSURA_BRACKET [label = "case '}': case ']': case ')':\nif(atenderClausuraBracket(pila,c,&s))\nbreak;\nelse\nreturn -1;"]
+    COMILLAS -> COMILLAS [label = "case '\'': case '\"':\nif(atenderComillas(c,&s))\nbreak;\nelse\nreturn -2;"]    
+}
+
+/*  
+    Para correr por consola -> dot -Tpng balanceoDeBrackets.gv -o balanceoDeBrackets.png
+    Despues del -T se pueden agregar otros formatos soportados por Graphviz
+*/
