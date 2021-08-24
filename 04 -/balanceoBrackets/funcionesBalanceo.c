@@ -2,7 +2,7 @@
 Balanceo de brackets
 Modulo con las funciones para el balanceo de brackets para el TP4.
 Grupo Nro 3 del curso K2051 Lunes TN
-20210822
+20210824
 */
 #include "funcionesBalanceo.h"
 
@@ -12,6 +12,126 @@ typedef enum {
     CLAUSURA_BRACKET,
     COMILLAS,
 }state;
+
+static char bracketInvertido(char);
+static int cierraBracketCorrecto(char, char);
+static void atenderAperturaBracket(pila_t*, int, state*);
+static int atenderClausuraBracket(pila_t*, int, state*);
+static int atenderComillas(int,state *); 
+//Ir a la funcion atenderComillas cada vez que entra un caracter en la maquina de estado y apilar la primer comilla?
+
+int balanceoDeBrackets()
+{
+    pila_t *pila = crearPila('$');
+    int c;
+
+    state s = CARACTER_COMUN;
+
+    while ((c=getchar( ))!= EOF) 
+    {
+        switch (s)
+        {
+            case APERTURA_BRACKET:
+                switch (c)
+                {
+                    case '{': case '[': case '(':
+                        atenderAperturaBracket(pila,c,&s);
+                    break;
+
+                    case '}': case ']': case ')':
+                        if(atenderClausuraBracket(pila,c,&s))
+                            break;
+                        else 
+                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
+
+                    case '\'': case '\"':
+                        if(atenderComillas(c,&s))
+                            break;
+                        else
+                            return -2; // Error porque llega a EOF sin cerrar comillas
+
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+
+            case CLAUSURA_BRACKET:
+                switch (c)
+                {
+                    case '{': case '[': case '(':
+                        atenderAperturaBracket(pila,c,&s);
+                    break;
+
+                    case '}': case ']': case ')':
+                        if(atenderClausuraBracket(pila,c,&s))
+                            break;
+                        else 
+                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
+
+                    case '\'': case '\"':
+                        if(atenderComillas(c,&s))
+                            break;
+                        else
+                            return -2; // Error porque llega a EOF sin cerrar comillas
+
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+
+            case COMILLAS:
+                switch (c)
+                {
+                    case '{': case '[': case '(':
+                        atenderAperturaBracket(pila,c,&s);
+                    break;
+
+                    case '}': case ']': case ')':
+                        if(atenderClausuraBracket(pila,c,&s))
+                            break;
+                        else 
+                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
+
+                    case '\'': case '\"':
+                        if(atenderComillas(c,&s))
+                            break;
+                        else
+                            return -2; // Error porque llega a EOF sin cerrar comillas
+
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+
+            default: //Estado CARACTER_COMUN
+            case CARACTER_COMUN:
+                switch (c)
+                {
+                    case '{': case '[': case '(':
+                        atenderAperturaBracket(pila,c,&s);
+                    break;
+
+                    case '}': case ']': case ')':
+                        if(atenderClausuraBracket(pila,c,&s))
+                            break;
+                        else 
+                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
+
+                    case '\'': case '\"':
+                        if(atenderComillas(c,&s))
+                            break;
+                        else
+                            return -2; // Error porque llega a EOF sin cerrar comillas
+
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+       }
+    }
+    return 1;
+}
+
 
 static char bracketInvertido(char bracket)
 {
@@ -34,211 +154,34 @@ static int cierraBracketCorrecto(char c, char bracket)
     return 0;
 }
 
-
-int balanceoDeBrackets2()
+static void atenderAperturaBracket(pila_t *pila, int caracter, state *estado)
 {
-    pila_t *pila = crearPila('$');
-    printf("\nHas entrado al balanceo de brackets2\n");
-    char bracket;
-    int c;
-    int cAux;
-
-    state s = CARACTER_COMUN;
-
-    while ((c=getchar( ))!= EOF) 
-    {
-        switch (s)
-        {
-            case CARACTER_COMUN:
-                switch (c)
-                {
-                    case '{': case '[': case '(':
-                        s = APERTURA_BRACKET;
-                        push(pila,c);
-                    break;
-
-                    case '}': case ']': case ')':
-                        s = CLAUSURA_BRACKET;
-                        if(pop(pila,&bracket) && cierraBracketCorrecto(c,bracket))
-                            break;
-                        else 
-                            return 0;
-
-                    case '\'': case '\"':
-                        printf("\nEntro al caso comillas");
-                        s = COMILLAS;
-                        cAux = c;
-                        while ((c=getchar())!=EOF)
-                        {
-                            if(c == '\\')
-                                getchar();
-                            if(c == cAux)
-                                break;
-                        }
-                        if (c == EOF)
-                            return 2;
-                    break;
-
-                    default: //CARACTER_COMUN
-                        s = CARACTER_COMUN;
-                    break;
-                }
-            break;
-
-            case APERTURA_BRACKET:
-                switch (c)
-                {
-                    case '{': case '[': case '(':
-                        s = APERTURA_BRACKET;
-                        push(pila,c);
-                    break;
-
-                    case '}': case ']': case ')':
-                        s = CLAUSURA_BRACKET;
-                        if(pop(pila,&bracket) && cierraBracketCorrecto(c,bracket))
-                            break;
-                        else 
-                            return 0;
-
-                    case '\'': case '\"':
-                        s = COMILLAS;
-                        cAux = c;
-                        while ((c=getchar())!=EOF)
-                        {
-                            if(c == '\\')
-                                getchar();
-                            if(c == cAux)
-                                break;
-                        }
-                        if (c == EOF)
-                            return 2;
-                    break;
-
-                    default: //CARACTER_COMUN
-                        s = CARACTER_COMUN;
-                    break;
-                }
-            break;
-
-            case CLAUSURA_BRACKET:
-                switch (c)
-                {
-                    case '{': case '[': case '(':
-                        s = APERTURA_BRACKET;
-                        push(pila,c);
-                    break;
-
-                    case '}': case ']': case ')':
-                        s = CLAUSURA_BRACKET;
-                        if(pop(pila,&bracket) && cierraBracketCorrecto(c,bracket))
-                            break;
-                        else 
-                            return 0;
-
-                    case '\'': case '\"':
-                        s = COMILLAS;
-                        cAux = c;
-                        while ((c=getchar())!=EOF)
-                        {
-                            if(c == '\\')
-                                getchar();
-                            if(c == cAux)
-                                break;
-                        }
-                        if (c == EOF)
-                            return 2;
-                    break;
-
-                    default: //CARACTER_COMUN
-                        s = CARACTER_COMUN;
-                    break;
-                }
-            break;
-
-            case COMILLAS:
-                switch (c)
-                {
-                    case '{': case '[': case '(':
-                        s = APERTURA_BRACKET;
-                        push(pila,c);
-                    break;
-
-                    case '}': case ']': case ')':
-                        s = CLAUSURA_BRACKET;
-                        if(pop(pila,&bracket) && cierraBracketCorrecto(c,bracket))
-                            break;
-                        else 
-                            return 0;
-
-                    case '\'': case '\"':
-                        s = COMILLAS;
-                        cAux = c;
-                        while ((c=getchar())!=EOF)
-                        {
-                            if(c == '\\')
-                                getchar();
-                            if(c == cAux)
-                                break;
-                        }
-                        if (c == EOF)
-                            return 2;
-                    break;
-
-                    default: //CARACTER_COMUN
-                        s = CARACTER_COMUN;
-                    break;
-                }
-            break;
-       }
-    }
-    return 1;
+    *estado = APERTURA_BRACKET;
+    push(pila,caracter);
 }
 
-
-
-
-int balanceoDeBrackets()
+static int atenderClausuraBracket(pila_t *pila, int caracter, state *estado)
 {
-    pila_t *pila = crearPila('$');
-    printf("\nHas entrado al balanceo de brackets\n");
     char bracket;
-    int c;
-    int cAux;
+    *estado = CLAUSURA_BRACKET;
+    if(pop(pila,&bracket) && cierraBracketCorrecto(caracter,bracket))
+        return 1;
+    else 
+        return 0;
+}
 
-    while ((c=getchar())!=EOF)
+static int atenderComillas(int caracter,state *estado)
+{
+    int caracterAux;
+    *estado = COMILLAS;
+    caracterAux = caracter;
+    while ((caracter=getchar())!=EOF)
     {
-        if (c == '{' || c == '[' || c == '(')
-            goto APERTURA_BRACKET;
-        else if (c == '}' || c == ']' || c == ')')
-            goto CLAUSURA_BRACKET;
-        else if  (c ==  '\'' || c == '\"' )
-             goto CASO_ESPECIAL;
-        else
-            continue;
-
-        APERTURA_BRACKET:
-        push(pila,c);
-        continue;
-
-        CLAUSURA_BRACKET:
-        if(pop(pila,&bracket) && cierraBracketCorrecto(c,bracket))
-            continue;
-        else 
-            return 0;
-
-        CASO_ESPECIAL:
-        cAux = c;
-         while ((c=getchar())!=EOF){
-
-             if(c == '\\')
-                getchar();
-
-            if  ( c == cAux)
-                break;
-        }
-        if (c == EOF){
-            return 2;
-        }
+        if(caracter == '\\') //En caso de que el codigo haga referencia a la comilla simple o doble \' \"
+            getchar(); // Ignoro el siguiente caracter
+        if(caracter == caracterAux) //Si cierran las comillas
+            return 1;
     }
-    return 1;
+    if (caracter == EOF) //Si no encontre la comilla que cierra y llegue a EOF
+        return 0;
 }
