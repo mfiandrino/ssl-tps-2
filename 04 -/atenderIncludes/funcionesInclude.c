@@ -10,7 +10,6 @@ typedef enum {
     IN /* dentro de include*/
 }state;
 
-#define RUTA "C:\\MinGW\\include\\"
 
 
 int esInclude (char * inc){
@@ -37,7 +36,6 @@ int atenderInclude (){
     char palabraInclude[100];
     char reemplazo[30];
     char posibleInclude[8];
-    char ruta[]= RUTA;
     FILE * arch;
     state s = OUT;
     c = nc = 0;
@@ -61,8 +59,6 @@ int atenderInclude (){
             break;
         case IN:
             if(esBibliotecaEstandar(c, palabraInclude)){
-                //escribirIncludeFallido(posibleInclude);
-                //putchar(c);
             }
             else if (esBibliotecaLocal(c, palabraInclude)){ 
                 arch = fopen (palabraInclude, "r");
@@ -93,14 +89,12 @@ static int esBibliotecaEstandar(int c, char * nombreBiblioteca){
     if(c == '<'){
         escribirIncludeFallido(inc);
         putchar (c);
-        //escribirIncludeFallido(inc);
         for (i=0;((c=getchar())!='>' && (c!=EOF));i++)
         {
             nombreBiblioteca[i] = c;
             putchar (c);
         }
         nombreBiblioteca[i]='\0';
-        //c = getchar();
         putchar (c);
         if (c == EOF){
             return 0;
