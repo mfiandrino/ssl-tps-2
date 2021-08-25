@@ -61,21 +61,8 @@ int atenderInclude (){
             break;
         case IN:
             if(esBibliotecaEstandar(c, palabraInclude)){
-                strcat(ruta, palabraInclude);
-                arch = fopen (ruta, "r");
-                if (arch == NULL){
-                    return -1;
-                }
-                else{
-                    while ((nc = fgetc(arch))!= EOF)
-                    {
-                        putchar(nc);
-                    }
-                    fclose(arch);
-                }
-                memset(ruta, '\0', strlen(ruta));
-                strcpy (ruta, RUTA);
-                ruta[strlen(RUTA)+1]='\0';
+                //escribirIncludeFallido(posibleInclude);
+                //putchar(c);
             }
             else if (esBibliotecaLocal(c, palabraInclude)){ 
                 arch = fopen (palabraInclude, "r");
@@ -102,12 +89,19 @@ int atenderInclude (){
 
 static int esBibliotecaEstandar(int c, char * nombreBiblioteca){
     int i;
+    char inc[] = "include";
     if(c == '<'){
+        escribirIncludeFallido(inc);
+        putchar (c);
+        //escribirIncludeFallido(inc);
         for (i=0;((c=getchar())!='>' && (c!=EOF));i++)
         {
             nombreBiblioteca[i] = c;
+            putchar (c);
         }
         nombreBiblioteca[i]='\0';
+        //c = getchar();
+        putchar (c);
         if (c == EOF){
             return 0;
         }
