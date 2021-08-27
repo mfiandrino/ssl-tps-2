@@ -17,7 +17,7 @@ static char bracketInvertido(char);
 static int cierraBracketCorrecto(char, char);
 static void atenderAperturaBracket(pila_t*, int, state*);
 static int atenderClausuraBracket(pila_t*, int, state*);
-static int atenderComillas(int,state *); 
+static int atenderComillas(int,state *);
 //Ir a la funcion atenderComillas cada vez que entra un caracter en la maquina de estado y apilar la primer comilla?
 
 int balanceoDeBrackets()
@@ -27,7 +27,7 @@ int balanceoDeBrackets()
 
     state s = CARACTER_COMUN;
 
-    while ((c=getchar( ))!= EOF) 
+    while ((c=getchar())!= EOF) 
     {
         switch (s)
         {
