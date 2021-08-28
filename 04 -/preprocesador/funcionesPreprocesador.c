@@ -6,7 +6,10 @@ typedef enum {
     COMILLAS,
     CARACTER_COMUN,  
     COMENTARIO1, 
-    COMENTARIO2
+    COMENTARIO2,
+    DEFINE,
+    INCLUDE, 
+    UNDEF
 }estado;
 
 static int atenderComillas(int,estado*);
@@ -42,8 +45,35 @@ int preprocesador()
     }
 }
 
-static void atenderNumeral(int c)
+esUndef(int i){
+    char palabra[] = "undef";
+}
+
+esDefine(int i){
+    char palabra[] = "define";
+}
+
+esInclude(int i){
+    char palabra[] = "include";
+}
+
+
+
+static void atenderNumeral(int c, estado *s)
 {
+    *s = BUSCAR_DEFINE_INCLUDE;
+    int c;
+    char inc[7];
+        for (int i = 0; i < 7; i++ ){
+            c = getchar();
+            inc[i] = c;
+
+           esUndef(i);
+           esDefine(i);
+           esInclude(i);
+
+        }
+
     putchar(c);
     return;
 }
