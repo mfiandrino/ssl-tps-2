@@ -4,26 +4,22 @@ typedef enum {
     BUSCAR_COMENTARIO,
     BUSCAR_DEFINE_INCLUDE, 
     COMILLAS,
-    CARACTER_COMUN
-}state;
+    CARACTER_COMUN,  
+    COMENTARIO1, 
+    COMENTARIO2
+}estado;
 
-typedef enum {
-    OUT,
-    COMMENT1, 
-    COMMENT2
-}estadoComentarios;
-
-static int atenderComillas(int,state*);
+static int atenderComillas(int,estado*);
 static void atenderNumeral();
-static void atenderComentarioMultiLinea(int*,int, estadoComentarios*, state*);
-static void atenderComentarioDeLinea(int*, int, estadoComentarios*, state*);
-static void analizarPosibleComentario(int*,int, estadoComentarios*, state*);
-static void atenderPosibleComentario(int, state*);
+static void atenderComentarioMultiLinea(int*,int, estado*);
+static void atenderComentarioDeLinea(int*, int, estado*);
+static void analizarPosibleComentario(int*,int, estado*);
+static void atenderPosibleComentario(int, estado*);
 
 int preprocesador()
 {
     int c;
-    state s = CARACTER_COMUN;
+    estado s = CARACTER_COMUN;
 
     while ((c=getchar())!= EOF) 
     {
@@ -52,32 +48,32 @@ static void atenderNumeral(int c)
     return;
 }
 
-static void atenderComentarioMultiLinea(int *prevC,int c, estadoComentarios *s, state *estado)
+
+static void atenderComentarioMultiLinea(int *prevC,int c, estado *s)
 {
-    switch (*prevC)
+    switch (*prevC) 
     {
         case '*': //posible cierre de comentario
             switch (c)
             {
                 case '/': //concluye el comentario
                     putchar(' ');
-                    *prevC =' ';
-                    //*s=OUT;
-                    *estado = CARACTER_COMUN;
+                    *prevC =' ';                    
+                    *s = CARACTER_COMUN;
                     break;
                 default: //continua el comentario (c \= '/')
                     *prevC=c;
-                    *s = COMMENT2;
+                    *s = COMENTARIO2;
             }
         break;
         default: //continua el comentario (prevC \= '*')
             *prevC=c;
-            *s = COMMENT2;
+            *s = COMENTARIO2;
     }
 }
 
 
-static void atenderComentarioDeLinea(int *prevC, int c, estadoComentarios *s, state *estado)
+static void atenderComentarioDeLinea(int *prevC, int c, estado *s)
 {
     switch (*prevC)
     {
@@ -86,61 +82,59 @@ static void atenderComentarioDeLinea(int *prevC, int c, estadoComentarios *s, st
             putchar(*prevC);
             *prevC = c;
             //*s=OUT;
-            *estado = CARACTER_COMUN;
+            *s = CARACTER_COMUN;
             break;
         default: //continua el comentario (prevC \= '\n')
             *prevC=c;
-            *s = COMMENT1;
+            *s = COMENTARIO1;
     }
 }
 
-static void analizarPosibleComentario(int *prevC,int c, estadoComentarios *s, state *estado)
+static void analizarPosibleComentario(int *prevC,int c, estado *s)
 {
     switch (c)
     {
         case '/': //comentario del tipo '//'
-            *s= COMMENT1;
+            *s= COMENTARIO1;
             break;
         case '*': //comentario del tipo '/*'
-            *s = COMMENT2;
+            *s = COMENTARIO2;
             break;
 
         default: //no es comentario
             putchar(*prevC);
             *prevC=c;
-            *estado = CARACTER_COMUN;
-            //*s=OUT;
+            *s = CARACTER_COMUN;            
             break;
     }
 }
                 
     
 
-static void atenderPosibleComentario(int prevC, state *estado)
+static void atenderPosibleComentario(int prevC, estado *s)
 {
-    *estado = BUSCAR_COMENTARIO;
-
-    estadoComentarios s = OUT;
+    *s = BUSCAR_COMENTARIO;
+    
     int c;
-    while ((c=getchar())!=EOF && *estado == BUSCAR_COMENTARIO)
+    while ((c=getchar())!=EOF && (*s != CARACTER_COMUN))
     {
-        switch (s)
+        switch (*s)
         {
-            case OUT:
-                analizarPosibleComentario(&prevC,c,&s,estado);
+            case BUSCAR_COMENTARIO:
+                analizarPosibleComentario(&prevC,c,&s);
                 break;
 
-            case COMMENT1: //comentario del tipo '//'
-                atenderComentarioDeLinea(&prevC,c,&s,estado);
+            case COMENTARIO1: //comentario del tipo '//'
+                atenderComentarioDeLinea(&prevC,c,&s);
                 break;
 
             default: //comentario del tipo '/*'
-                atenderComentarioMultiLinea(&prevC,c,&s,estado);
+                atenderComentarioMultiLinea(&prevC,c,&s);
         }
     }
 }
 
-static int atenderComillas(int caracter,state *estado)
+static int atenderComillas(int caracter,estado *estado)
 {
     putchar(caracter);
     int caracterAux;
