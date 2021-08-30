@@ -13,7 +13,7 @@ typedef enum {
 }estado;
 
 static int atenderComillas(int,estado*);
-static void atenderNumeral();
+static void atenderNumeral(int, estado*);
 static void atenderComentarioMultiLinea(int*,int, estado*);
 static void atenderComentarioDeLinea(int*, int, estado*);
 static void analizarPosibleComentario(int*,int, estado*);
@@ -30,7 +30,7 @@ int preprocesador()
         {
             case CARACTER_COMUN:
                 if(c == '#')
-                    atenderNumeral(c);
+                    atenderNumeral(c, &s);
                 else if(c == '/')
                     atenderPosibleComentario(c,&s);
                 else if(c == '\"' || c == '\'')
@@ -45,35 +45,35 @@ int preprocesador()
     }
 }
 
-esUndef(int i){
+void esUndef(int i)
+{
     char palabra[] = "undef";
 }
 
-esDefine(int i){
+void esDefine(int i)
+{
     char palabra[] = "define";
 }
 
-esInclude(int i){
+void esInclude(int i)
+{
     char palabra[] = "include";
 }
-
 
 
 static void atenderNumeral(int c, estado *s)
 {
     *s = BUSCAR_DEFINE_INCLUDE;
-    int c;
-    char inc[7];
-        for (int i = 0; i < 7; i++ ){
+    int inc[7];
+        for (int i = 0; i < 7; i++ )
+        {
             c = getchar();
             inc[i] = c;
 
            esUndef(i);
            esDefine(i);
            esInclude(i);
-
         }
-
     putchar(c);
     return;
 }
@@ -151,15 +151,15 @@ static void atenderPosibleComentario(int prevC, estado *s)
         switch (*s)
         {
             case BUSCAR_COMENTARIO:
-                analizarPosibleComentario(&prevC,c,&s);
+                analizarPosibleComentario(&prevC,c,s);
                 break;
 
             case COMENTARIO1: //comentario del tipo '//'
-                atenderComentarioDeLinea(&prevC,c,&s);
+                atenderComentarioDeLinea(&prevC,c,s);
                 break;
 
             default: //comentario del tipo '/*'
-                atenderComentarioMultiLinea(&prevC,c,&s);
+                atenderComentarioMultiLinea(&prevC,c,s);
         }
     }
 }
