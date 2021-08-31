@@ -56,24 +56,27 @@ GRAFICO GENERAL:
 		UNDEF -> ATENDER_UNDEF [label = "c = '/n \n ????"];		
 		INCLUDE -> ATENDER_INCLUDE [label = "c = '/n \n ????"];		
 	
-		POSIBLE_INCLUDE_DEFINE_UNDEF -> "*COMIENZO_DE_LINEA" [label = "c = '/n'"];		
-		POSIBLE_INCLUDE_DEFINE_UNDEF -> CARACTER_COMUN [label="EOC"];		
-	
 		POSIBLE_COMENTARIO -> COMENTARIOS;		
 		POSIBLE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = "c = '/n'"];		
 		POSIBLE_COMENTARIO -> CARACTER_COMUN [label = "EOC"];		
-		COMENTARIOS -> "*COMIENZO_DE_LINEA" [label = "c = '/n'"];		
-		COMENTARIOS -> CARACTER_COMUN [label = "EOC"];		
+		COMENTARIOS -> FIN_DE_COMENTARIO;
+		FIN_DE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = " c = '/n'"];
+		FIN_DE_COMENTARIO -> CARACTER_COMUN [label = "EOC"];
+	
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> "*COMIENZO_DE_LINEA" [label = "c = '/n'"];		
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> CARACTER_COMUN [label="EOC"];		
 	
 	
-	}
+	}	
+
+
+![general](https://user-images.githubusercontent.com/82005945/131566055-6da5baa2-ecb1-454f-9122-5a1650264b1b.png)
+
 
 DEFINE:		
 
 	digraph DEFINE {	
-    	rankdir = LR;	
-    	//concentrate=true;	    
-	
+  
 		subgraph cluster_0 {	
     		style=filled;	
 		    	color=lightgrey;	
@@ -120,7 +123,10 @@ DEFINE:
 		"#define_identificador_texto" -> ATENDER_DEFINE [label = "c = '/n' \n ????"]; 		
 
 	}	
-
+		
+![DEFINE](https://user-images.githubusercontent.com/82005945/131562228-b512a26c-828c-438e-a88d-4c3bd76d4214.png)
+		
+	
 UNDEF:	
 	
 	digraph UNDEF {		
@@ -171,6 +177,8 @@ UNDEF:
 	
 	}		
 	
+![UNDEF](https://user-images.githubusercontent.com/82005945/131562327-78630dd0-02ad-4ab2-8eb9-8b8c58bd3378.png)
+	
 	
 INCLUDE:			  
 	
@@ -193,7 +201,7 @@ INCLUDE:
     	}		
 	
 	
-		POSIBLE_INCLUDE_DEFINE_UNDEF -> "#i" [label = " c = 'u'"];		
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> "#i" [label = " c = 'i'"];		
 	
 		"#i" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
     	"#in" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
@@ -219,3 +227,43 @@ INCLUDE:
 	
 	}		
 		
+![INCLUDE](https://user-images.githubusercontent.com/82005945/131562351-b6ed93ad-a95b-4bd9-b72c-aa8a5d2cffc6.png)	
+		
+COMENTARIOS:	
+	
+	digraph COMENTARIOS {
+		rankdir = LR;
+    	
+	
+		subgraph cluster_0 {
+			style=filled;
+    		color=lightgrey;
+	    		node [style=filled,color=white];
+    		COMENTARIO_MULTILINEA -> POSIBLE_FIN_DE_COMENTARIO [label = " c = '*'"];
+    		COMENTARIO_FIN_DE_LINEA;
+    		label = "COMENTARIOS";
+  		}
+		
+  		POSIBLE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = " c = '/n'"];
+  		POSIBLE_COMENTARIO -> CARACTER_COMUN [label = "EOC"];
+  		POSIBLE_COMENTARIO -> COMENTARIO_MULTILINEA [label = " c = '*'"];
+  		POSIBLE_COMENTARIO -> COMENTARIO_FIN_DE_LINEA [label = " c = '/'"];
+  		COMENTARIO_FIN_DE_LINEA -> FIN_DE_COMENTARIO [label = " c = '/n' \n putchar(' '); \n putchar(c);"];
+  		POSIBLE_FIN_DE_COMENTARIO -> FIN_DE_COMENTARIO [label = " c = '/' \n putchar(' ');"];
+  		POSIBLE_FIN_DE_COMENTARIO -> COMENTARIO_MULTILINEA [label = " EOC "];
+		
+  		FIN_DE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = " c = '/n'"];
+  		FIN_DE_COMENTARIO -> POSIBLE_COMENTARIO [label = " c = '/'"];
+  		FIN_DE_COMENTARIO -> CARACTER_COMUN [label = "EOC"];
+  		
+  		
+  		COMENTARIO_MULTILINEA -> COMENTARIO_MULTILINEA [style = "invis"];
+  		COMENTARIO_MULTILINEA -> COMENTARIO_MULTILINEA [label = "EOC"];
+  		COMENTARIO_FIN_DE_LINEA -> COMENTARIO_FIN_DE_LINEA [style = "invis"];
+  		COMENTARIO_FIN_DE_LINEA -> COMENTARIO_FIN_DE_LINEA [label = "EOC"];
+  	  
+	}
+	
+![COMENTARIOS](https://user-images.githubusercontent.com/82005945/131565367-96812e50-d0c2-42f1-a90c-13f0713c2d66.png)
+	
+	
