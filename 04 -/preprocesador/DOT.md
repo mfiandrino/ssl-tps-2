@@ -1,0 +1,221 @@
+Estamos utilizando un gráfico general y 3 separados para mostrar los estados de DEFINE, UNDEF e INCLUDE		
+
+GRAFICO GENERAL:	
+
+	digraph G {	
+
+		"*COMIENZO_DE_LINEA" [shape=box];	
+		rankdir = LR;	
+	
+		subgraph cluster_0 {	
+			style=filled;	
+			color=lightgrey;	
+			DEFINE;	
+		}	
+		
+	  	subgraph cluster_1 {	
+			style=filled;	
+			color=lightgrey;	
+			UNDEF;	
+  		}	
+		
+	    	subgraph cluster_2 {	
+    			style=filled;	
+			color=lightgrey;	
+    			INCLUDE;	
+		}	
+		
+	    	subgraph cluster_3 {	
+    			style=filled;	
+			color=lightgrey;	
+    			COMENTARIOS;	
+		}	
+		
+		
+		"*COMIENZO_DE_LINEA" -> POSIBLE_INCLUDE_DEFINE_UNDEF [label = " c = '#'"];	
+		"*COMIENZO_DE_LINEA" -> POSIBLE_COMENTARIO [label = " c = '/'"];	
+		"*COMIENZO_DE_LINEA" -> CARACTER_COMUN [label = "EOC"];	
+		"*COMIENZO_DE_LINEA" -> "*COMIENZO_DE_LINEA" [style = "invis"];	 
+		"*COMIENZO_DE_LINEA" -> "*COMIENZO_DE_LINEA" [style = "invis"]; 	
+		"*COMIENZO_DE_LINEA" -> "*COMIENZO_DE_LINEA" [label = " c = '/n'"]; 	
+		CARACTER_COMUN -> CARACTER_COMUN [style ="invis"];		
+		CARACTER_COMUN -> CARACTER_COMUN [label = "EOC"];		
+		CARACTER_COMUN -> POSIBLE_COMENTARIO [label = " c = '/'"];		
+		CARACTER_COMUN -> "*COMIENZO_DE_LINEA" [label = " c = '/n'"];		
+	
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> DEFINE;		
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> UNDEF;		
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> INCLUDE;		
+		DEFINE -> "*COMIENZO_DE_LINEA" [label= "c = '/n' "];		
+		UNDEF -> "*COMIENZO_DE_LINEA" [label= "c = '/n' "];		
+		INCLUDE -> "*COMIENZO_DE_LINEA" [label= "c = '/n' "];		
+		DEFINE -> CARACTER_COMUN [label= "EOC"];		
+		UNDEF -> CARACTER_COMUN [label= "EOC"];		
+		INCLUDE -> CARACTER_COMUN [label= "EOC"];		
+		DEFINE -> ATENDER_DEFINE [label = "c = '/n \n ????"];		
+		UNDEF -> ATENDER_UNDEF [label = "c = '/n \n ????"];		
+		INCLUDE -> ATENDER_INCLUDE [label = "c = '/n \n ????"];		
+	
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> "*COMIENZO_DE_LINEA" [label = "c = '/n'"];		
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> CARACTER_COMUN [label="EOC"];		
+	
+		POSIBLE_COMENTARIO -> COMENTARIOS;		
+		POSIBLE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = "c = '/n'"];		
+		POSIBLE_COMENTARIO -> CARACTER_COMUN [label = "EOC"];		
+		COMENTARIOS -> "*COMIENZO_DE_LINEA" [label = "c = '/n'"];		
+		COMENTARIOS -> CARACTER_COMUN [label = "EOC"];		
+	
+	
+	}
+
+DEFINE:		
+
+	digraph DEFINE {	
+    	rankdir = LR;	
+    	//concentrate=true;	    
+	
+		subgraph cluster_0 {	
+    		style=filled;	
+		    	color=lightgrey;	
+    		node [style=filled,color=white];	
+    		"#d" -> "#de" [label= "c = 'e' "];	
+		    	"#de"-> "#def"  [label= "c = 'f'"];
+			"#def" -> "#defi" [label= "c = 'i'"];	
+		    	"#defi" -> "#defin" [label= "c = 'n'"];	
+			"#defin" -> "#define" [label= "c = 'e'"];	
+		    	"#define" -> "#define_" [label= "c = ' '"];	
+			"#define_" -> "#define_identificador" [label= "c = '???'"];		
+			"#define_identificador" -> "#define_identificador_" [label= "c = ' '"];		
+			"#define_identificador_"-> "#define_identificador_texto" [label= "c = '???'"];		
+    		label = "DEFINE";		
+		}		
+
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> "#d" [label = " c = 'd'"];		
+	
+		"#d" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#de" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#def" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#defi" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#defin" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#define" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#define_" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#define_identificador" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#define_identificador_" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#define_identificador_texto" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		// {"#d","#de","#def","#defi","#defin","#define","#define_","#define_identificador","#define_identificador_","#define_identificador_texto"} -> "*COMIENZO_DE_LINEA" [label= "c = '/n' "];		
+
+		"#d" -> CARACTER_COMUN [label= " EOC"];		
+		"#de" -> CARACTER_COMUN [label= " EOC"];		
+		"#def" -> CARACTER_COMUN [label= " EOC"];		
+		"#defi" -> CARACTER_COMUN [label= " EOC"];		
+		"#defin" -> CARACTER_COMUN [label= " EOC"];		
+		"#define" -> CARACTER_COMUN [label= " EOC"];		
+		"#define_" -> CARACTER_COMUN [label= " EOC"];		
+		"#define_identificador" -> CARACTER_COMUN [label= " EOC"];		
+		"#define_identificador_" -> CARACTER_COMUN [label= " EOC"];		
+		"#define_identificador_texto" -> CARACTER_COMUN [label= " EOC"];		
+
+		//{"#d","#de","#def","#defi","#defin","#define","#define_","#define_identificador","#define_identificador_","#define_identificador_texto"} -> CARACTER_COMUN [label= " EOC"];		
+
+		"#define_identificador_texto" -> ATENDER_DEFINE [label = "c = '/n' \n ????"]; 		
+
+	}	
+
+UNDEF:	
+	
+	digraph UNDEF {		
+		rankdir = LR;		
+		//concentrate=true;		
+	
+		subgraph cluster_0 {		
+		    	style=filled;		
+	    		color=lightgrey;		
+    		node [style=filled,color=white];		
+  			"#u" -> "#un" [label= "c = 'n'"];		
+			"#un"-> "#und"  [label= "c = 'd'"];		
+    		"#und" -> "#unde" [label= "c = 'e'"];		
+			"#unde" -> "#undef" [label= "c = 'f'"];		
+    		"#undef" -> "#undef_" [label= "c = ' '"];		
+			"#undef_" -> "#undef_identificador" [label= "c = '???'"];		
+    		"#undef_identificador" -> "#undef_identificador_" [label= "c = ' '"];		
+			"#undef_identificador_" -> "#undef_identificador_?" [label= "c = '???'"];		
+    		label = "UNDEF";		
+  		}		
+		
+		
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> "#u" [label = " c = 'u'"];		
+		
+		"#u" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#un" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#und" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#unde" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#undef" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];	
+		"#undef_" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#undef_identificador" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#undef_identificador_" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#undef_identificador_?" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		//{"#u","#un","#und","#unde","#undef","#undef_","#undef_identificador","#undef_identificador_","#undefine_identificador_?"} -> "*COMIENZO_DE_LINEA" [label= "c = '/n' "];		
+		
+		"#u" -> CARACTER_COMUN [label= " EOC"];		
+		"#un" -> CARACTER_COMUN [label= " EOC"];		
+		"#und" -> CARACTER_COMUN [label= " EOC"];		
+		"#unde" -> CARACTER_COMUN [label= " EOC"];		
+		"#undef" -> CARACTER_COMUN [label= " EOC"];		
+		"#undef_" -> CARACTER_COMUN [label= " EOC"];		
+		"#undef_identificador" -> CARACTER_COMUN [label= " EOC"];		
+		"#undef_identificador_" -> CARACTER_COMUN [label= " EOC"];		
+		"#undef_identificador_?" -> CARACTER_COMUN [label= " EOC"];		
+		//{"#u","#un","#und","#unde","#undef","#undef_","#undef_identificador","#undef_identificador_","#undefine_identificador_?"} -> CARACTER_COMUN [label= " EOC"];			
+	
+		"#undef_identificador_?" -> ATENDER_UNDEF [label = "c = '/n' \n ????"]; 	
+	
+	}		
+	
+	
+INCLUDE:			  
+	
+	digraph INCLUDE {		
+		rankdir = LR;		
+		//concentrate=true;		
+	
+		subgraph cluster_0 {		
+    		style=filled;		
+        		color=lightgrey;		
+	        	node [style=filled,color=white];		
+	    		"#i" -> "#in" [label= " c = 'n'"];		
+		        "#in"-> "#inc"  [label= " c = 'c'"];		
+			"#inc" -> "#incl" [label= " c = 'l'"];		
+	        	"#incl" -> "#inclu" [label= " c = 'u'"];		
+		        "#inclu" -> "#includ" [label= " c = 'd'"];			
+			"#includ" -> "#include" [label= " c = 'e'"];		
+        		"#include" -> "#include_" [label= " c = ' '"];		
+    		label = "INCLUDE";		
+    	}		
+	
+	
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> "#i" [label = " c = 'u'"];		
+	
+		"#i" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+    	"#in" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#inc" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#incl" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+	    	"#inclu" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#includ" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+    	"#include" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+		"#include_" -> "*COMIENZO_DE_LINEA" [label="c = '/n'"];		
+    	//  {"#i","#in","#inc","#incl","#inclu","#includ","#include","#include_"} -> "*COMIENZO_DE_LINEA" [label= "c = '/n' "];		
+	
+		"#i" -> CARACTER_COMUN [label= " EOC"];		
+	    	"#in" -> CARACTER_COMUN [label= " EOC"];		
+		"#inc" -> CARACTER_COMUN [label= " EOC"];		
+	    	"#incl" -> CARACTER_COMUN [label= " EOC"];		
+		"#inclu" -> CARACTER_COMUN [label= " EOC"];		
+	    	"#includ" -> CARACTER_COMUN [label= " EOC"];		
+		"#include" -> CARACTER_COMUN [label= " EOC"];		
+	    	"#include_" -> CARACTER_COMUN [label= " EOC"];		
+   		// {"#i","#in","#inc","#incl","#inclu","#includ","#include","#include_"} -> CARACTER_COMUN [label= " EOC"];		
+	
+		"#include_" -> ATENDER_INCLUDE [label = "c = '/n' \n ????"]; 		
+	
+	}		
+		
