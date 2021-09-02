@@ -2,7 +2,7 @@
 Balanceo de brackets
 Modulo con las funciones para el balanceo de brackets para el TP4.
 Grupo Nro 3 del curso K2051 Lunes TN
-20210824
+20210902
 */
 #include "funcionesBalanceo.h"
 
@@ -19,20 +19,18 @@ typedef enum {
     ERROR_MAS_DE_UN_CARACTER_EN_COMILLAS_SIMPLES,
     ERROR_COMILLAS_DENTRO_DE_COMILLAS_SIMPLES,
     CARACTER_CONTRABARRA_COMILLA_SIMPLE,
-    CARACTER_CONTRABARRA_COMILLA_DOBLE
+    CARACTER_CONTRABARRA_COMILLA_DOBLE,
+    BRACKETS_NO_BALANCEADOS
 }state;
 
 static char bracketInvertido(char);
 static int cierraBracketCorrecto(char, char);
-static void atenderAperturaBracket(pila_t*, int, state*);
-static int atenderClausuraBracket(pila_t*, int, state*);
-static int atenderComillas(int,state *);
-//Ir a la funcion atenderComillas cada vez que entra un caracter en la maquina de estado y apilar la primer comilla?
+static int atenderClausuraBracket(pila_t*, int);
 
 int balanceoDeBrackets()
 {
     int c;
-    pila_t *pila = crearPila('$');
+    pila_t *pila = crearPila('$'); //Aca no extrae el parentesis que cierra
     state s = CARACTER_COMUN;
 
     while ((c=getchar())!= EOF) 
@@ -44,18 +42,16 @@ int balanceoDeBrackets()
             switch (c)
                 {
                     case '{': case '[': case '(':
-                        s = APERTURA_BRACKET;                       
+                        s = APERTURA_BRACKET; 
+                        push(pila,c);                      
                     break;
 
                     case '}': case ']': case ')':
-                        s = CLAUSURA_BRACKET;
-                        break;
-                    /*
-                        if(atenderClausuraBracket(pila,c,&s))
-                            break;
+                        if(atenderClausuraBracket(pila,c))
+                            s = CLAUSURA_BRACKET;
                         else 
-                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
-                        */
+                            s = BRACKETS_NO_BALANCEADOS;
+                        break;
 
                     case '\'':                     
                         s = APERTURA_COMILLAS_SIMPLES;
@@ -63,12 +59,7 @@ int balanceoDeBrackets()
                     case '\"':
                         s = APERTURA_COMILLAS_DOBLES;
                         break;
-                    /*
-                        if(atenderComillas(c,&s))
-                            break;
-                        else
-                            return -2; // Error porque llega a EOF sin cerrar comillas
-                    */
+
                     default: //EOC
                         s = CARACTER_COMUN;                        
                 }
@@ -80,34 +71,24 @@ int balanceoDeBrackets()
                 {
                     case '{': case '[': case '(':
                         s = APERTURA_BRACKET;
-                        //atenderAperturaBracket(pila,c,&s);
+                        push(pila,c);
                     break;
 
                     case '}': case ']': case ')':
-
-                        s = CLAUSURA_BRACKET;
-                        break;
-
-                        /*
-                        if(atenderClausuraBracket(pila,c,&s))
-                            break;
+                        if(atenderClausuraBracket(pila,c))
+                            s = CLAUSURA_BRACKET;
                         else 
-                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
-                        */
+                            s = BRACKETS_NO_BALANCEADOS;
+                        break;
+                       
                     case '\'': 
-
-                          s = APERTURA_COMILLAS_SIMPLES;
-                          break;
+                        s = APERTURA_COMILLAS_SIMPLES;
+                        break;
                     
                     case '\"':
-                         s = APERTURA_COMILLAS_DOBLES;
-                         break;
-                    /*
-                        if(atenderComillas(c,&s))
-                            break;
-                        else
-                            return -2; // Error porque llega a EOF sin cerrar comillas
-                        */      
+                        s = APERTURA_COMILLAS_DOBLES;
+                        break;
+     
                     default: //EOC
                         s = CARACTER_COMUN;
                 }
@@ -118,20 +99,16 @@ int balanceoDeBrackets()
                 {
                     case '{': case '[': case '(':
                         s = APERTURA_BRACKET;
-                        //atenderAperturaBracket(pila,c,&s);
+                        push(pila,c);
                     break;
 
                     case '}': case ']': case ')':
-
-                        s = CLAUSURA_BRACKET;
+                        if(atenderClausuraBracket(pila,c))
+                            s = CLAUSURA_BRACKET;
+                        else 
+                            s = BRACKETS_NO_BALANCEADOS;
                         break;
 
-                        /*
-                        if(atenderClausuraBracket(pila,c,&s))
-                            break;
-                        else 
-                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
-                        */
                     case '\'': 
 
                           s = APERTURA_COMILLAS_SIMPLES;
@@ -140,12 +117,7 @@ int balanceoDeBrackets()
                     case '\"':
                          s = APERTURA_COMILLAS_DOBLES;
                          break;
-                    /*
-                        if(atenderComillas(c,&s))
-                            break;
-                        else
-                            return -2; // Error porque llega a EOF sin cerrar comillas
-                        */      
+      
                     default: //EOC
                         s = CARACTER_COMUN;
                 }
@@ -160,231 +132,127 @@ int balanceoDeBrackets()
 
                     case '\'': case '\"':
                         s = ERROR_COMILLAS_DENTRO_DE_COMILLAS_SIMPLES;
+
                     default:
-                        s =   CARACTER_COMILLAS_SIMPLES; 
+                        s = CARACTER_COMILLAS_SIMPLES; 
                 }               
             break;
 
         case CARACTER_COMILLAS_SIMPLES:
             switch (c)
-                {
-                    case '\'':
-                        s = CLAUSURA_COMILLAS_SIMPLES;
-                    break;
+            {
+                case '\'':
+                    s = CLAUSURA_COMILLAS_SIMPLES;
+                break;
 
-                    default: //EOC
-                        s = ERROR_MAS_DE_UN_CARACTER_EN_COMILLAS_SIMPLES;
-                }
+                default: //EOC
+                    s = ERROR_MAS_DE_UN_CARACTER_EN_COMILLAS_SIMPLES;
+            }
             break;
 
         case CLAUSURA_COMILLAS_SIMPLES:
             switch (c)
-                {
-                    case '\"':
-                        s = APERTURA_COMILLAS_DOBLES;
-                    break;
+            {
+                case '\"':
+                    s = APERTURA_COMILLAS_DOBLES;
+                break;
 
-                    case '\'':
-                        s = APERTURA_COMILLAS_SIMPLES;
-                    break;
+                case '\'':
+                    s = APERTURA_COMILLAS_SIMPLES;
+                break;
 
-                    case '{': case '[': case '(':
-                        s = APERTURA_BRACKET;
-                    break;
+                case '{': case '[': case '(':
+                    s = APERTURA_BRACKET;
+                    push(pila,c);
+                break;
 
-                    case '}': case ']': case ')':
+                case '}': case ']': case ')':
+                    if(atenderClausuraBracket(pila,c))
                         s = CLAUSURA_BRACKET;
+                    else 
+                        s = BRACKETS_NO_BALANCEADOS;
                     break;
 
-                    default: //EOC
-                        s = CARACTER_COMUN;
-                }
+                default: //EOC
+                    s = CARACTER_COMUN;
+            }
             break;
 
         case APERTURA_COMILLAS_DOBLES:
             switch (c)
-                {
-                    case '\\':
-                        s = CARACTER_CONTRABARRA_COMILLA_DOBLE;
-                    break;
+            {
+                case '\\':
+                    s = CARACTER_CONTRABARRA_COMILLA_DOBLE;
+                break;
 
-                    case '\"':
-                        s = CLAUSURA_COMILLAS_DOBLES;
-                    break;
+                case '\"':
+                    s = CLAUSURA_COMILLAS_DOBLES;
+                break;
 
-                    default: //EOC
-                        s = CARACTER_COMILLAS_DOBLES;
-                }
+                default: //EOC
+                    s = CARACTER_COMILLAS_DOBLES;
+            }
             break;
 
         case CARACTER_COMILLAS_DOBLES:
             switch (c)
-                {
-                    case '\\':
-                        s = CARACTER_CONTRABARRA_COMILLA_DOBLE;
-                    break;
+            {
+                case '\\':
+                    s = CARACTER_CONTRABARRA_COMILLA_DOBLE;
+                break;
 
-                    case '\"':
-                        s = CLAUSURA_COMILLAS_DOBLES;
-                    break;
+                case '\"':
+                    s = CLAUSURA_COMILLAS_DOBLES;
+                break;
 
-                    default: //EOC
-                        s = CARACTER_COMILLAS_DOBLES;
-                }
+                default: //EOC
+                    s = CARACTER_COMILLAS_DOBLES;
+            }
             break;
 
         case CLAUSURA_COMILLAS_DOBLES:
             switch (c)
-                {
-                    case '\"':
-                        s = APERTURA_COMILLAS_DOBLES;
-                    break;
+            {
+                case '\"':
+                    s = APERTURA_COMILLAS_DOBLES;
+                break;
 
-                    case '\'':
-                        s = APERTURA_COMILLAS_SIMPLES;
-                    break;
+                case '\'':
+                    s = APERTURA_COMILLAS_SIMPLES;
+                break;
 
-                    case '{': case '[': case '(':
-                        s = APERTURA_BRACKET;
-                    break;
+                case '{': case '[': case '(':
+                    s = APERTURA_BRACKET;
+                    push(pila,c);
+                break;
 
-                    case '}': case ']': case ')':
+                case '}': case ']': case ')':
+                    if(atenderClausuraBracket(pila,c))
                         s = CLAUSURA_BRACKET;
+                    else 
+                        s = BRACKETS_NO_BALANCEADOS;
                     break;
 
-                    default: //EOC
-                        s = CARACTER_COMUN;
-                }
+                default: //EOC
+                    s = CARACTER_COMUN;
+            }
             break;
 
         case CARACTER_CONTRABARRA_COMILLA_SIMPLE:
-
             s = CARACTER_COMILLAS_SIMPLES;
             break;
 
-         case CARACTER_CONTRABARRA_COMILLA_DOBLE:
-
+        case CARACTER_CONTRABARRA_COMILLA_DOBLE:
             s = CARACTER_COMILLAS_DOBLES; 
-            
             break;
 
+        case BRACKETS_NO_BALANCEADOS:
+            return 0; // Error por pila vacia o porque no cierra el bracket correcto
         }
     }
-
-}
-/*
-int balanceoDeBrackets2()
-{
-    pila_t *pila = crearPila('$');
-    int c;
-
-    state s = CARACTER_COMUN;
-
-    while ((c=getchar())!= EOF) 
-    {
-        switch (s)
-        {
-            case APERTURA_BRACKET:
-                switch (c)
-                {
-                    case '{': case '[': case '(':
-                        atenderAperturaBracket(pila,c,&s);
-                    break;
-
-                    case '}': case ']': case ')':
-                        if(atenderClausuraBracket(pila,c,&s))
-                            break;
-                        else 
-                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
-
-                    case '\'': case '\"':
-                        if(atenderComillas(c,&s))
-                            break;
-                        else
-                            return -2; // Error porque llega a EOF sin cerrar comillas
-
-                    default: //EOC
-                        s = CARACTER_COMUN;
-                }
-            break;
-
-            case CLAUSURA_BRACKET:
-                switch (c)
-                {
-                    case '{': case '[': case '(':
-                        atenderAperturaBracket(pila,c,&s);
-                    break;
-
-                    case '}': case ']': case ')':
-                        if(atenderClausuraBracket(pila,c,&s))
-                            break;
-                        else 
-                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
-
-                    case '\'': case '\"':
-                        if(atenderComillas(c,&s))
-                            break;
-                        else
-                            return -2; // Error porque llega a EOF sin cerrar comillas
-
-                    default: //EOC
-                        s = CARACTER_COMUN;
-                }
-            break;
-
-            case COMILLAS:
-                switch (c)
-                {
-                    case '{': case '[': case '(':
-                        atenderAperturaBracket(pila,c,&s);
-                    break;
-
-                    case '}': case ']': case ')':
-                        if(atenderClausuraBracket(pila,c,&s))
-                            break;
-                        else 
-                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
-
-                    case '\'': case '\"':
-                        if(atenderComillas(c,&s))
-                            break;
-                        else
-                            return -2; // Error porque llega a EOF sin cerrar comillas
-
-                    default: //EOC
-                        s = CARACTER_COMUN;
-                }
-            break;
-
-            default: //Estado CARACTER_COMUN
-            case CARACTER_COMUN:
-                switch (c)
-                {
-                    case '{': case '[': case '(':
-                        atenderAperturaBracket(pila,c,&s);
-                    break;
-
-                    case '}': case ']': case ')':
-                        if(atenderClausuraBracket(pila,c,&s))
-                            break;
-                        else 
-                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
-
-                    case '\'': case '\"':
-                        if(atenderComillas(c,&s))
-                            break;
-                        else
-                            return -2; // Error porque llega a EOF sin cerrar comillas
-
-                    default: //EOC
-                        s = CARACTER_COMUN;
-                }
-            break;
-       }
-    }
     return 1;
+
 }
-*/
 
 static char bracketInvertido(char bracket)
 {
@@ -407,16 +275,9 @@ static int cierraBracketCorrecto(char c, char bracket)
     return 0;
 }
 
-static void atenderAperturaBracket(pila_t *pila, int caracter, state *estado)
-{
-    *estado = APERTURA_BRACKET;
-    push(pila,caracter);
-}
-
-static int atenderClausuraBracket(pila_t *pila, int caracter, state *estado)
+static int atenderClausuraBracket(pila_t *pila, int caracter)
 {
     char bracket;
-    *estado = CLAUSURA_BRACKET;
     if(pop(pila,&bracket) && cierraBracketCorrecto(caracter,bracket))
         return 1;
     else 
