@@ -147,89 +147,109 @@ int balanceoDeBrackets()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        case CARACTER_COMILLAS_SIMPLES:
+            switch (c)
+                {
+                    case '\'':
+                        s = CLAUSURA_COMILLAS_SIMPLES;
+                    break;
+
+                    default: //EOC
+                        s = ERROR_MAS_DE_UN_CARACTER_EN_COMILLAS_SIMPLES;
+                }
+            break;
+
+        case CLAUSURA_COMILLAS_SIMPLES:
+            switch (c)
+                {
+                    case '\"':
+                        s = APERTURA_COMILLAS_DOBLES;
+                    break;
+
+                    case '\'':
+                        s = APERTURA_COMILLAS_SIMPLES;
+                    break;
+
+                    case '{': case '[': case '(':
+                        s = APERTURA_BRACKET;
+                    break;
+
+                    case '}': case ']': case ')':
+                        s = CLAUSURA_BRACKET;
+                    break;
+
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+
+        case APERTURA_COMILLAS_DOBLES:
+            switch (c)
+                {
+                    case '\\':
+                        s = CARACTER_CONTRABARRA;
+                    break;
+
+                    case '\"':
+                        s = CLAUSURA_COMILLAS_DOBLES;
+                    break;
+
+                    default: //EOC
+                        s = CARACTER_COMILLAS_DOBLES;
+                }
+            break;
+
+        case CARACTER_COMILLAS_DOBLES:
+            switch (c)
+                {
+                    case '\\':
+                        s = CARACTER_CONTRABARRA;
+                    break;
+
+                    case '\"':
+                        s = CLAUSURA_COMILLAS_DOBLES;
+                    break;
+
+                    default: //EOC
+                        s = CARACTER_COMILLAS_DOBLES;
+                }
+            break;
+
+        case CLAUSURA_COMILLAS_DOBLES:
+            switch (c)
+                {
+                    case '\"':
+                        s = APERTURA_COMILLAS_DOBLES;
+                    break;
+
+                    case '\'':
+                        s = APERTURA_COMILLAS_SIMPLES;
+                    break;
+
+                    case '{': case '[': case '(':
+                        s = APERTURA_BRACKET;
+                    break;
+
+                    case '}': case ']': case ')':
+                        s = CLAUSURA_BRACKET;
+                    break;
+
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+
+        case CARACTER_CONTRABARRA:
+            switch (c)
+                {
+                    case '\"':
+                        s = APERTURA_COMILLAS_DOBLES;
+                    break;
+
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
         }
     }
 
