@@ -6,15 +6,12 @@
 
 #define maxPila 100
 
-typedef struct
-{
-    char pila[maxPila];
-    int indicePila;
-}pila_t;
+char pila[maxPila];
+int indicePila;
 
-int pop(pila_t*,char*);
-int push(pila_t*, char);
-pila_t *crearPila(char);
-char cima(pila_t *);
+int pop(char*,char*);
+int push(char*, char);
+char cima(char*);
+void inicializarPila();
 
 #endif

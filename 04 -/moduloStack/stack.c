@@ -2,19 +2,26 @@
 Modulo Stack
 Implementación de las funciones basicas para manejar pilas
 Grupo Nro 3 del curso K2051 Lunes TN
-20210819
+20210902
 */
 #include "stack.h"
 
-static int estaVacia(pila_t*, char);
-static int estaLlena(pila_t*);
+static int estaVacia(char*);
+static int estaLlena(char*);
 
-int push(pila_t *strPila , char dato)
+
+void inicializarPila()
 {
-    if(!estaLlena(strPila))
+    indicePila = 0;
+    push(pila,'$');
+}
+
+int push(char *pila , char dato)
+{
+    if(!estaLlena(pila))
     {
-        (strPila->indicePila)++;
-        strPila->pila[strPila->indicePila] = dato;
+        ++indicePila;
+        pila[indicePila] = dato;
         //printf("\nEl dato \"%c\" fue agregado correctamente a la pila\n",dato);
         return 1;
     }
@@ -22,12 +29,12 @@ int push(pila_t *strPila , char dato)
     return 0;
 }
 
-int pop(pila_t *strPila,char *dato)
+int pop(char *pila,char *dato)
 {
-    if(!estaVacia(strPila,'$'))
+    if(!estaVacia(pila))
     {
-        *dato = strPila->pila[strPila->indicePila];
-        (strPila->indicePila)--;
+        *dato = pila[indicePila];
+        --indicePila;
         //printf("\nEl dato \"%c\" fue extraido correctamente de la pila\n",*dato);
         return 1;
     }
@@ -36,31 +43,22 @@ int pop(pila_t *strPila,char *dato)
     return 0;
 }
 
-static int estaVacia(pila_t *strPila , char caracterBase)
+static int estaVacia(char *pila)
 {
-    //printf("\nEl indice de la pila es: %d\n",strPila->indicePila);
-    if(strPila->pila[strPila->indicePila] == caracterBase) //Se podria hacer poniendo como condicion que el indice sea mayor a 0
+    printf("\nEl indice de la pila es: %d\n",indicePila);
+    if(pila[indicePila] == '$') //Se podria hacer poniendo como condicion que el indice sea mayor a 0
         return 1;
     return 0;
 }
 
-static int estaLlena(pila_t *strPila)
+static int estaLlena(char *pila)
 {
-    if(strPila->indicePila == maxPila)
+    if(indicePila == maxPila)
         return 1;
     return 0;
 }
 
-char cima(pila_t *strPila)
+char cima(char *pila)
 {
-    return strPila->pila[strPila->indicePila];
-}
-
-pila_t *crearPila(char caracterBase)
-{
-    pila_t *strPila;
-    strPila = malloc(sizeof(pila_t));
-    strPila->indicePila = 0;
-    strPila->pila[strPila->indicePila] = caracterBase;
-    return strPila;
+    return pila[indicePila];
 }
