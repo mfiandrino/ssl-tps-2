@@ -38,8 +38,70 @@ int balanceoDeBrackets()
     {
         switch (s)
         {
-            case APERTURA_BRACKET:
+            case CARACTER_COMUN:
+
+            switch (c)
+                {
+                    case '{': case '[': case '(':
+                        s = APERTURA_BRACKET;                       
+                    break;
+
+                    case '}': case ']': case ')':
+                        s = CLAUSURA_BRACKET;
+                    /*
+                        if(atenderClausuraBracket(pila,c,&s))
+                            break;
+                        else 
+                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
+                        */
+
+                    case '\'':                     
+                        s = APERTURA_COMILLAS_SIMPLES;
+                    
+                    case '\"':
+                        s = APERTURA_COMILLAS_SIMPLES;
+                    /*
+                        if(atenderComillas(c,&s))
+                            break;
+                        else
+                            return -2; // Error porque llega a EOF sin cerrar comillas
+                    */
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+
             break;
+
+            case APERTURA_BRACKET:
+                switch (c)
+                {
+                    case '{': case '[': case '(':
+                        s = APERTURA_BRACKET;
+                        //atenderAperturaBracket(pila,c,&s);
+                    break;
+
+                    case '}': case ']': case ')':
+
+                        s = CLAUSURA_BRACKET;
+                        /*
+                        if(atenderClausuraBracket(pila,c,&s))
+                            break;
+                        else 
+                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
+                        */
+                    case '\'': case '\"':
+                        if(atenderComillas(c,&s))
+                            break;
+                        else
+                            return -2; // Error porque llega a EOF sin cerrar comillas
+
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+
+
+
 
 
 
