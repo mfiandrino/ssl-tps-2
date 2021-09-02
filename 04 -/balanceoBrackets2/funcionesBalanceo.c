@@ -18,7 +18,8 @@ typedef enum {
     CLAUSURA_COMILLAS_DOBLES,
     ERROR_MAS_DE_UN_CARACTER_EN_COMILLAS_SIMPLES,
     ERROR_COMILLAS_DENTRO_DE_COMILLAS_SIMPLES,
-    CARACTER_CONTRABARRA,
+    CARACTER_CONTRABARRA_COMILLA_SIMPLE,
+    CARACTER_CONTRABARRA_COMILLA_DOBLE
 }state;
 
 static char bracketInvertido(char);
@@ -48,6 +49,7 @@ int balanceoDeBrackets()
 
                     case '}': case ']': case ')':
                         s = CLAUSURA_BRACKET;
+                        break;
                     /*
                         if(atenderClausuraBracket(pila,c,&s))
                             break;
@@ -57,9 +59,10 @@ int balanceoDeBrackets()
 
                     case '\'':                     
                         s = APERTURA_COMILLAS_SIMPLES;
-                    
+                        break;      
                     case '\"':
-                        s = APERTURA_COMILLAS_SIMPLES;
+                        s = APERTURA_COMILLAS_DOBLES;
+                        break;
                     /*
                         if(atenderComillas(c,&s))
                             break;
@@ -67,7 +70,7 @@ int balanceoDeBrackets()
                             return -2; // Error porque llega a EOF sin cerrar comillas
                     */
                     default: //EOC
-                        s = CARACTER_COMUN;
+                        s = CARACTER_COMUN;                        
                 }
 
             break;
@@ -83,220 +86,193 @@ int balanceoDeBrackets()
                     case '}': case ']': case ')':
 
                         s = CLAUSURA_BRACKET;
+                        break;
+
                         /*
                         if(atenderClausuraBracket(pila,c,&s))
                             break;
                         else 
                             return -1; // Error por pila vacia o porque no cierra el bracket correcto
                         */
-                    case '\'': case '\"':
+                    case '\'': 
+
+                          s = APERTURA_COMILLAS_SIMPLES;
+                          break;
+                    
+                    case '\"':
+                         s = APERTURA_COMILLAS_DOBLES;
+                         break;
+                    /*
                         if(atenderComillas(c,&s))
                             break;
                         else
                             return -2; // Error porque llega a EOF sin cerrar comillas
+                        */      
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+
+            case CLAUSURA_BRACKET:
+                switch (c)
+                {
+                    case '{': case '[': case '(':
+                        s = APERTURA_BRACKET;
+                        //atenderAperturaBracket(pila,c,&s);
+                    break;
+
+                    case '}': case ']': case ')':
+
+                        s = CLAUSURA_BRACKET;
+                        break;
+
+                        /*
+                        if(atenderClausuraBracket(pila,c,&s))
+                            break;
+                        else 
+                            return -1; // Error por pila vacia o porque no cierra el bracket correcto
+                        */
+                    case '\'': 
+
+                          s = APERTURA_COMILLAS_SIMPLES;
+                          break;
+                    
+                    case '\"':
+                         s = APERTURA_COMILLAS_DOBLES;
+                         break;
+                    /*
+                        if(atenderComillas(c,&s))
+                            break;
+                        else
+                            return -2; // Error porque llega a EOF sin cerrar comillas
+                        */      
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+
+            case APERTURA_COMILLAS_SIMPLES:
+                switch (c)
+                {
+                    case '\\':
+                        s = CARACTER_CONTRABARRA_COMILLA_SIMPLE;
+                        break;
+
+                    case '\'': case '\"':
+                        s = ERROR_COMILLAS_DENTRO_DE_COMILLAS_SIMPLES;
+                    default:
+                        s =   CARACTER_COMILLAS_SIMPLES; 
+                }               
+            break;
+
+        case CARACTER_COMILLAS_SIMPLES:
+            switch (c)
+                {
+                    case '\'':
+                        s = CLAUSURA_COMILLAS_SIMPLES;
+                    break;
+
+                    default: //EOC
+                        s = ERROR_MAS_DE_UN_CARACTER_EN_COMILLAS_SIMPLES;
+                }
+            break;
+
+        case CLAUSURA_COMILLAS_SIMPLES:
+            switch (c)
+                {
+                    case '\"':
+                        s = APERTURA_COMILLAS_DOBLES;
+                    break;
+
+                    case '\'':
+                        s = APERTURA_COMILLAS_SIMPLES;
+                    break;
+
+                    case '{': case '[': case '(':
+                        s = APERTURA_BRACKET;
+                    break;
+
+                    case '}': case ']': case ')':
+                        s = CLAUSURA_BRACKET;
+                    break;
 
                     default: //EOC
                         s = CARACTER_COMUN;
                 }
             break;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        case APERTURA_COMILLAS_DOBLES:
+            switch (c)
+                {
+                    case '\\':
+                        s = CARACTER_CONTRABARRA_COMILLA_DOBLE;
+                    break;
+
+                    case '\"':
+                        s = CLAUSURA_COMILLAS_DOBLES;
+                    break;
+
+                    default: //EOC
+                        s = CARACTER_COMILLAS_DOBLES;
+                }
+            break;
+
+        case CARACTER_COMILLAS_DOBLES:
+            switch (c)
+                {
+                    case '\\':
+                        s = CARACTER_CONTRABARRA_COMILLA_DOBLE;
+                    break;
+
+                    case '\"':
+                        s = CLAUSURA_COMILLAS_DOBLES;
+                    break;
+
+                    default: //EOC
+                        s = CARACTER_COMILLAS_DOBLES;
+                }
+            break;
+
+        case CLAUSURA_COMILLAS_DOBLES:
+            switch (c)
+                {
+                    case '\"':
+                        s = APERTURA_COMILLAS_DOBLES;
+                    break;
+
+                    case '\'':
+                        s = APERTURA_COMILLAS_SIMPLES;
+                    break;
+
+                    case '{': case '[': case '(':
+                        s = APERTURA_BRACKET;
+                    break;
+
+                    case '}': case ']': case ')':
+                        s = CLAUSURA_BRACKET;
+                    break;
+
+                    default: //EOC
+                        s = CARACTER_COMUN;
+                }
+            break;
+
+        case CARACTER_CONTRABARRA_COMILLA_SIMPLE:
+
+            s = CARACTER_COMILLAS_SIMPLES;
+            break;
+
+         case CARACTER_CONTRABARRA_COMILLA_DOBLE:
+
+            s = CARACTER_COMILLAS_DOBLES; 
+            
+            break;
 
         }
     }
 
 }
-
+/*
 int balanceoDeBrackets2()
 {
     pila_t *pila = crearPila('$');
@@ -408,7 +384,7 @@ int balanceoDeBrackets2()
     }
     return 1;
 }
-
+*/
 
 static char bracketInvertido(char bracket)
 {
@@ -444,21 +420,5 @@ static int atenderClausuraBracket(pila_t *pila, int caracter, state *estado)
     if(pop(pila,&bracket) && cierraBracketCorrecto(caracter,bracket))
         return 1;
     else 
-        return 0;
-}
-
-static int atenderComillas(int caracter,state *estado)
-{
-    int caracterAux;
-    *estado = COMILLAS;
-    caracterAux = caracter;
-    while ((caracter=getchar())!=EOF)
-    {
-        if(caracter == '\\') //En caso de que el codigo haga referencia a la comilla simple o doble \' \"
-            getchar(); // Ignoro el siguiente caracter
-        if(caracter == caracterAux) //Si cierran las comillas
-            return 1;
-    }
-    if (caracter == EOF) //Si no encontre la comilla que cierra y llegue a EOF
         return 0;
 }
