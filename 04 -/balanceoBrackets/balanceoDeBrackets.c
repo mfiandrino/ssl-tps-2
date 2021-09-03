@@ -16,6 +16,6 @@ int main()
     else if(resultado == -2)
         printf("\nError: hay mas de un caracter en unas comillas simples\n");
     else if(resultado == -3)
-        printf("\nError: hay comillas dentro de comillas simples sin usar la contrabarra\n");  
+        printf("\nError: hay comillas dentro de comillas simples sin usar la contrabarra\n");
     
 }

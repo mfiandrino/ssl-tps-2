@@ -51,8 +51,6 @@ digraph BalanceoDeBrackets
     CLAUSURA_COMILLAS_SIMPLES -> CLAUSURA_BRACKET [label = "c == '}' || c == ']' || c == ')'"];
     CLAUSURA_COMILLAS_SIMPLES -> CARACTER_COMUN [label = "EOC"];
 
-
-
     APERTURA_COMILLAS_DOBLES -> CARACTER_CONTRABARRA_COMILLA_DOBLE [label = "c == '\\'"];
     APERTURA_COMILLAS_DOBLES -> CLAUSURA_COMILLAS_DOBLES [label = "c == '\"'"];
     APERTURA_COMILLAS_DOBLES -> CARACTER_COMILLAS_DOBLES [label = "EOC"];

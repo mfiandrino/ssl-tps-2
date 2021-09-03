@@ -41,8 +41,8 @@ int balanceoDeBrackets()
                 switch (c)
                 {
                     case '{': case '[': case '(':
-                        s = APERTURA_BRACKET; 
-                        push(pila,c);                      
+                        s = APERTURA_BRACKET;
+                        push(pila,c);
                         break;
 
                     case '}': case ']': case ')':

@@ -4,6 +4,5 @@
 #include "../moduloStack/stack.h"
 
 int balanceoDeBrackets(void);
-int balanceoDeBrackets2(void);
 
 #endif
