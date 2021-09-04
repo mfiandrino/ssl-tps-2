@@ -4,58 +4,93 @@ Implementación de un histograma utilizando enum para abstraernos del valor de I
 Grupo Nro 3 del curso K2051 Lunes TN
 20210712
 */
-#include "histograma.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
 
-void out(int c)
+void (*fun_ptr)(unsigned int*,int,int*,unsigned int*);
+void in(unsigned int*,int,int*,unsigned int *);
+void out(unsigned int*,int,int*,unsigned int *);
+
+static unsigned int palabraMasLarga (unsigned int*, unsigned int);
+
+void graficarHistograma(char simbolo, unsigned int *contadores , unsigned int cantidadContadores)
 {
-    int nc=0;
+
+    cantidadContadores = palabraMasLarga(contadores,cantidadContadores);
+
+    printf("\nHISTOGRAMA\n");
+    if(cantidadContadores == 0)
+        printf("\nNo se ha ingresado ninguna palabra");
+    else
+    {
+        for(int i=1 ; i<=cantidadContadores ; i++)
+        {
+            printf("\n%4d- ",i);
+            for (int j=0 ; j<contadores[i] ; j++)
+            {
+                printf("%c",simbolo);
+            }
+        }
+    }
+    printf("\n\n");
+}
+
+static unsigned int palabraMasLarga (unsigned int *contadores , unsigned int cantidadContadores)
+{
+    for(--cantidadContadores ; cantidadContadores != 0 && contadores[cantidadContadores] == 0; cantidadContadores--);
+    return cantidadContadores;
+}
+
+void out(unsigned int* contadores, int c, int *nc, unsigned int *cantContadores)
+{
     switch (c)
     {
         case ' ': case '\t': case '\n':
-            void (*fun_ptr)(int) = &out;
+            fun_ptr = &out;
         break;
         default:
-            ++nc;
-             void (*fun_ptr)(int) = &in;
+            ++(*nc);
+            fun_ptr = &in;
     }
 }
      
 
-void in(int c)
+void in(unsigned int* contadores,int c,int *nc, unsigned int *cantContadores)
 {
-    int nc, cantContadores =0;
-    int contadores[100];
     switch (c)
     {
         case ' ': case '\t': case '\n':
-           void (*fun_ptr)(int) = &out;
-            if(nc >= cantContadores)
-            {
-                nc = --cantContadores;
-                ++contadores[nc];                       
-                nc = 0;
-            }
-        break;
-        default:
-            ++nc;
-            void (*fun_ptr)(int) = &in;
+            fun_ptr = &out;
+            if(*nc >= *cantContadores)            
+                *nc = --(*cantContadores);
+            ++contadores[*nc];                       
+            *nc = 0;
+            break;
 
+        default:
+            ++(*nc);
+            fun_ptr = &in;
     }
 }
 
 void histograma1(unsigned int* contadores, unsigned int cantContadores)
 {
-    printf("\nHas entrado a la implementacion con enum y switch\n");
-
-    void (*fun_ptr)(int) = &out;
+    printf("\nHas entrado a la implementacion X\n");
+    fun_ptr = &out;
     int c, nc=0;
     while ((c=getchar( ))!= EOF) 
     {
-        (*fun_ptr)(c);
-
+        (*fun_ptr)(contadores,c,&nc,&cantContadores);
     }
+}
+
+#define largoMaxPalabra 100
+
+int main()
+{
+    unsigned int contadores[largoMaxPalabra+1] = {0};
+    histograma1(contadores,largoMaxPalabra+1);
+    graficarHistograma('/',contadores,largoMaxPalabra+1);
 }
 
