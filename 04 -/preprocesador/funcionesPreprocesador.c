@@ -10,6 +10,11 @@ static void comienzoDeLinea(int);
 static void aperturaComillasSimples(int);
 static void entreComillasSimples(int);
 static void cierreComillasSimples(int);
+static void aperturaComillasDobles(int);
+static void cierreComillasDobles(int);
+static void entreComillasDobles(int);
+
+
 
 int preprocesador()
 {
@@ -21,7 +26,7 @@ int preprocesador()
     }
 }
 
-static void comentarioFinDeLinea(int c)
+static void comentarioFinDeLinea(int c) //Dentro de un comentario de linea
 {
     switch (c)
     {
@@ -36,7 +41,7 @@ static void comentarioFinDeLinea(int c)
     }
 }
 
-static void comentarioMultilinea(int c)
+static void comentarioMultilinea(int c) //Dentro de comentario multilinea
 {
     switch (c)
     {
@@ -49,7 +54,7 @@ static void comentarioMultilinea(int c)
     }
 }
 
-static void posibleFinDeComentarioMultilinea(int c)
+static void posibleFinDeComentarioMultilinea(int c) //Dentro de comentario multilinea, posible fin del mismo
 {
     switch (c)
     {
@@ -67,7 +72,7 @@ static void posibleFinDeComentarioMultilinea(int c)
     }
 }
 
-static void FinDeComentarioMultilinea(int c)
+static void FinDeComentarioMultilinea(int c) //Fin de comentario multilinea, siguiente caracter
 {
     switch (c)
     {
@@ -80,6 +85,11 @@ static void FinDeComentarioMultilinea(int c)
             fun_ptr = &aperturaComillasSimples;
             break;
 
+        case '\"':
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
         case '\n':
             putchar(c);
             fun_ptr = &comienzoDeLinea;
@@ -90,7 +100,7 @@ static void FinDeComentarioMultilinea(int c)
     }
 }
 
-static void posibleComentario(int c)
+static void posibleComentario(int c) //Llego una / vemos siguiente caracter
 {
     switch (c)
     {
@@ -109,6 +119,11 @@ static void posibleComentario(int c)
             fun_ptr = &aperturaComillasSimples;
             break;
 
+        case '\"':
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
         case '*':
             fun_ptr = &comentarioMultilinea;
             break;
@@ -120,7 +135,7 @@ static void posibleComentario(int c)
     }
 }
 
-static void caracterComun(int c)
+static void caracterComun(int c) //Caracter comun
 {
     switch (c)
     {
@@ -132,6 +147,11 @@ static void caracterComun(int c)
         case '\'':
             putchar(c);
             fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\"':
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
             break;
 
         case '/':
@@ -144,7 +164,7 @@ static void caracterComun(int c)
     }
 }
 
-static void comienzoDeLinea(int c)
+static void comienzoDeLinea(int c) //Despues de un \n o al principio del archivo
 {
     switch (c)
     {
@@ -162,13 +182,18 @@ static void comienzoDeLinea(int c)
             fun_ptr = &aperturaComillasSimples;
             break;
 
+        case '\"':
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
         default: //EOC
             putchar(c);
             fun_ptr = &caracterComun;
     }
 }
 
-static void aperturaComillasSimples(int c)
+static void aperturaComillasSimples(int c) //Apertura comillas simples
 {
     switch (c)
     {
@@ -183,7 +208,7 @@ static void aperturaComillasSimples(int c)
     }
 }
 
-static void entreComillasSimples(int c)
+static void entreComillasSimples(int c) //Dentro de comillas simples
 {
     switch (c)
     {
@@ -198,13 +223,18 @@ static void entreComillasSimples(int c)
     }
 }
 
-static void cierreComillasSimples(int c)
+static void cierreComillasSimples(int c) //Cierre de comillas simples
 {
     switch (c)
     {
         case '\'':
             putchar(c);
             fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\"':
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
             break;
 
         case '\n':
@@ -222,5 +252,62 @@ static void cierreComillasSimples(int c)
     }
 }
 
+static void aperturaComillasDobles(int c)
+{
+    switch (c)
+    {
+        case '\"':
+            putchar(c);
+            fun_ptr = &cierreComillasDobles;
+            break;
 
+        default: //EOC
+            putchar(c);
+            fun_ptr = &entreComillasDobles;
+    }
+}
 
+static void cierreComillasDobles(int c)
+{
+    switch (c)
+    {
+        case '\'':
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\"':
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
+        case '\n':
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '/':
+            fun_ptr = &posibleComentario;
+            break;
+
+        default: //EOC
+            putchar(c);
+            fun_ptr = &caracterComun;
+    }
+
+}
+
+static void entreComillasDobles(int c)
+{
+    switch (c)
+    {
+        case '\"':
+            putchar(c);
+            fun_ptr = &cierreComillasDobles;
+            break;
+
+        default: //EOC
+            putchar(c);
+            fun_ptr = &entreComillasDobles;
+    }
+}
