@@ -60,7 +60,7 @@ void in(unsigned int* contadores,int c,int *nc, unsigned int *cantContadores)
 {
     switch (c)
     {
-        case ' ': case '\t': case '\n':
+        case ' ': case '\t': case '\n': 
             fun_ptr = &out;
             if(*nc >= *cantContadores)            
                 *nc = --(*cantContadores);
