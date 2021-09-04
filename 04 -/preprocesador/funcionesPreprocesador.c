@@ -252,7 +252,7 @@ static void cierreComillasSimples(int c) //Cierre de comillas simples
     }
 }
 
-static void aperturaComillasDobles(int c)
+static void aperturaComillasDobles(int c) //Entramos a las comillas dobles caracteres adentro
 {
     switch (c)
     {
@@ -267,7 +267,7 @@ static void aperturaComillasDobles(int c)
     }
 }
 
-static void cierreComillasDobles(int c)
+static void cierreComillasDobles(int c) //Cierre de comillas dobles, se busca el siguiente caracter
 {
     switch (c)
     {
@@ -297,7 +297,7 @@ static void cierreComillasDobles(int c)
 
 }
 
-static void entreComillasDobles(int c)
+static void entreComillasDobles(int c) //Entre comillas dobles, se buscan los caracteres adentro de las
 {
     switch (c)
     {
