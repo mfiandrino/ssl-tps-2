@@ -1,192 +1,226 @@
 #include "funcionesPreprocesador.h"
 
-typedef enum {
-    BUSCAR_COMENTARIO,
-    BUSCAR_DEFINE_INCLUDE, 
-    COMILLAS,
-    CARACTER_COMUN,  
-    COMENTARIO1, 
-    COMENTARIO2,
-    DEFINE,
-    INCLUDE, 
-    UNDEF
-}estado;
-
-static int atenderComillas(int,estado*);
-static void atenderNumeral(int, estado*);
-static void atenderComentarioMultiLinea(int*,int, estado*);
-static void atenderComentarioDeLinea(int*, int, estado*);
-static void analizarPosibleComentario(int*,int, estado*);
-static void atenderPosibleComentario(int, estado*);
+static void comentarioFinDeLinea(int);
+static void comentarioMultilinea(int);
+static void posibleFinDeComentarioMultilinea(int);
+static void FinDeComentarioMultilinea(int);
+static void posibleComentario(int);
+static void caracterComun(int);
+static void comienzoDeLinea(int);
+static void aperturaComillasSimples(int);
+static void entreComillasSimples(int);
+static void cierreComillasSimples(int);
 
 int preprocesador()
 {
     int c;
-    estado s = CARACTER_COMUN;
-
-    while ((c=getchar())!= EOF) 
+    fun_ptr = &comienzoDeLinea;
+    while ((c=getchar( ))!= EOF) 
     {
-        switch (s)
-        {
-            case CARACTER_COMUN:
-                if(c == '#')
-                    atenderNumeral(c, &s);
-                else if(c == '/')
-                    atenderPosibleComentario(c,&s);
-                else if(c == '\"' || c == '\'')
-                    if(atenderComillas(c,&s))
-                        break;
-                    else
-                        return -2; // Error porque llega a EOF sin cerrar comillas
-                else
-                    putchar(c);
-                break;  
-        }
+        (*fun_ptr)(c);
     }
 }
 
-void esUndef(int i)
-{
-    char palabra[] = "undef";
-}
-
-void esDefine(int i)
-{
-    char palabra[] = "define";
-}
-
-void esInclude(int i)
-{
-    char palabra[] = "include";
-}
-
-
-static void atenderNumeral(int c, estado *s)
-{
-    *s = BUSCAR_DEFINE_INCLUDE;
-    int inc[7];
-        for (int i = 0; i < 7; i++ )
-        {
-            c = getchar();
-            inc[i] = c;
-
-           esUndef(i);
-           esDefine(i);
-           esInclude(i);
-        }
-    putchar(c);
-    return;
-}
-
-
-static void atenderComentarioMultiLinea(int *prevC,int c, estado *s)
-{
-    switch (*prevC) 
-    {
-        case '*': //posible cierre de comentario
-            switch (c)
-            {
-                case '/': //concluye el comentario
-                    putchar(' ');
-                    *prevC =' ';                    
-                    *s = CARACTER_COMUN;
-                    break;
-                default: //continua el comentario (c \= '/')
-                    *prevC=c;
-                    *s = COMENTARIO2;
-            }
-        break;
-        default: //continua el comentario (prevC \= '*')
-            *prevC=c;
-            *s = COMENTARIO2;
-    }
-}
-
-
-static void atenderComentarioDeLinea(int *prevC, int c, estado *s)
-{
-    switch (*prevC)
-    {
-        case '\n': //concluye el comentario
-            putchar(' ');
-            putchar(*prevC);
-            *prevC = c;
-            //*s=OUT;
-            *s = CARACTER_COMUN;
-            break;
-        default: //continua el comentario (prevC \= '\n')
-            *prevC=c;
-            *s = COMENTARIO1;
-    }
-}
-
-static void analizarPosibleComentario(int *prevC,int c, estado *s)
+static void comentarioFinDeLinea(int c)
 {
     switch (c)
     {
-        case '/': //comentario del tipo '//'
-            *s= COMENTARIO1;
-            break;
-        case '*': //comentario del tipo '/*'
-            *s = COMENTARIO2;
+        case '\n':
+            putchar(' ');
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
             break;
 
-        default: //no es comentario
-            putchar(*prevC);
-            *prevC=c;
-            *s = CARACTER_COMUN;            
-            break;
+        default: //EOC
+            fun_ptr = &comentarioFinDeLinea;
     }
 }
-                
-    
 
-static void atenderPosibleComentario(int prevC, estado *s)
+static void comentarioMultilinea(int c)
 {
-    *s = BUSCAR_COMENTARIO;
-    
-    int c;
-    while ((c=getchar())!=EOF && (*s != CARACTER_COMUN))
+    switch (c)
     {
-        switch (*s)
-        {
-            case BUSCAR_COMENTARIO:
-                analizarPosibleComentario(&prevC,c,s);
-                break;
+        case '*':
+            fun_ptr = &posibleFinDeComentarioMultilinea;
+            break;
 
-            case COMENTARIO1: //comentario del tipo '//'
-                atenderComentarioDeLinea(&prevC,c,s);
-                break;
-
-            default: //comentario del tipo '/*'
-                atenderComentarioMultiLinea(&prevC,c,s);
-        }
+        default: //EOC
+            fun_ptr = &comentarioMultilinea;
     }
 }
 
-static int atenderComillas(int caracter,estado *estado)
+static void posibleFinDeComentarioMultilinea(int c)
 {
-    putchar(caracter);
-    int caracterAux;
-    *estado = COMILLAS;
-    caracterAux = caracter;
-    while ((caracter=getchar())!=EOF)
+    switch (c)
     {
-        putchar(caracter);
-        if(caracter == '\\') //En caso de que el codigo haga referencia a la comilla simple o doble \' \"
-        {
-            getchar(); // Ignoro el siguiente caracter
-            putchar(caracter);
-        }
+        case '*':
+            fun_ptr = &posibleFinDeComentarioMultilinea;
+            break;
 
-        if(caracter == caracterAux) //Si cierran las comillas
-        {
-            *estado = CARACTER_COMUN;
-            return 1;
-        }
-            
+        case '/':
+            putchar(' ');
+            fun_ptr = &FinDeComentarioMultilinea;
+            break;
+
+        default: //EOC
+            fun_ptr = &comentarioMultilinea;
     }
-    if (caracter == EOF) //Si no encontre la comilla que cierra y llegue a EOF
-        return 0;
 }
+
+static void FinDeComentarioMultilinea(int c)
+{
+    switch (c)
+    {
+        case '/':
+            fun_ptr = &posibleComentario;
+            break;
+
+        case '\'':
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\n':
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        default: //EOC
+            fun_ptr = &caracterComun;
+    }
+}
+
+static void posibleComentario(int c)
+{
+    switch (c)
+    {
+        case '\n':
+            putchar('/');
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '/':
+            fun_ptr = &comentarioFinDeLinea;
+            break;
+
+        case '\'':
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '*':
+            fun_ptr = &comentarioMultilinea;
+            break;
+
+        default: //EOC
+            putchar('/');
+            putchar(c);
+            fun_ptr = &caracterComun;
+    }
+}
+
+static void caracterComun(int c)
+{
+    switch (c)
+    {
+        case '\n':
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '\'':
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '/':
+            fun_ptr = &posibleComentario;
+            break;
+
+        default: //EOC
+        putchar(c);
+            fun_ptr = &caracterComun;
+    }
+}
+
+static void comienzoDeLinea(int c)
+{
+    switch (c)
+    {
+        case '\n':
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '/':
+            fun_ptr = &posibleComentario;
+            break;
+
+        case '\'':
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        default: //EOC
+            putchar(c);
+            fun_ptr = &caracterComun;
+    }
+}
+
+static void aperturaComillasSimples(int c)
+{
+    switch (c)
+    {
+        case '\'':
+            putchar(c);
+            fun_ptr = &cierreComillasSimples;
+            break;
+
+        default: //EOC
+            putchar(c);
+            fun_ptr = &entreComillasSimples;
+    }
+}
+
+static void entreComillasSimples(int c)
+{
+    switch (c)
+    {
+        case '\'':
+            putchar(c);
+            fun_ptr = &cierreComillasSimples;
+            break;
+
+        default: //EOC
+            putchar(c);
+            fun_ptr = &entreComillasSimples;
+    }
+}
+
+static void cierreComillasSimples(int c)
+{
+    switch (c)
+    {
+        case '\'':
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\n':
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '/':
+            fun_ptr = &posibleComentario;
+            break;
+
+        default: //EOC
+            putchar(c);
+            fun_ptr = &caracterComun;
+    }
+}
+
+
 
