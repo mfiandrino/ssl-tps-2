@@ -16,14 +16,10 @@ unsigned hash(char *s)
 struct nlist *lookup(char *s)
 {
     struct nlist *np;
-    //printf("\npalabra dentro de lookup: %s\n",s);
-    //printf("Error1");
     for (np = hashtab[hash(s)]; np != NULL; np = np->siguiente)
     {
-        //printf("Error2");
         if (strcmp(s, np->identificador) == 0)
         {
-            //printf("Error3");
             return np; /* se encontró */
         }
     }

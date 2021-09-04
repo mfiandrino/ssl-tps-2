@@ -200,7 +200,6 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
     {
         case '\n':
             //Comparar con tabla de define y fijarse de reemplazar o imprimir la palabra
-            printf("\nPalabra: %s.\n",palabra);
             if(elemento = lookup(palabra))
                 printf("%s",elemento->define);
             else
@@ -212,7 +211,6 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
 
         case '\'':
             //Comparar con tabla de define y fijarse de reemplazar o imprimir la palabra
-            printf("\nPalabra: %s.\n",palabra);
             if(elemento = lookup(palabra))
                 printf("%s",elemento->define);
             else
@@ -224,7 +222,6 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
 
         case '\"':
             //Comparar con tabla de define y fijarse de reemplazar o imprimir la palabra
-            printf("\nPalabra: %s.\n",palabra);
             if(elemento = lookup(palabra))
                 printf("%s",elemento->define);
             else
@@ -236,7 +233,6 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
 
         case '/':
             //Comparar con tabla de define y fijarse de reemplazar o imprimir la palabra
-            printf("\nPalabra: %s.\n",palabra);
             if(elemento = lookup(palabra))
                 printf("%s",elemento->define);
             else
@@ -247,7 +243,6 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
 
         case ' ': case '\t':
             //Comparar con tabla de define y fijarse de reemplazar o imprimir la palabra
-            printf("\nPalabra: %s.\n",palabra);
             if(elemento = lookup(palabra))
                 printf("%s",elemento->define);          
             else
@@ -263,9 +258,6 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
             break;
 
         default: //EOC
-            printf("\nSegmentationFault123\n");
-            printf("\nPalabra: %s.\n",palabra);
-            printf("\nSegmentationFault2\n");
             if(elemento = lookup(palabra))
                 printf("%s",elemento->define);          
             else
