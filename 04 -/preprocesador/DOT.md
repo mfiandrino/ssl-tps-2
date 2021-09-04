@@ -273,12 +273,12 @@ COMENTARIOS:
 			style=filled;
     		color=lightgrey;
 	    		node [style=filled,color=white];
-    		COMENTARIO_MULTILINEA -> POSIBLE_FIN_DE_COMENTARIO [label = " c == '*'"];
+    		COMENTARIO_MULTILINEA -> POSIBLE_FIN_DE_COMENTARIO_MULTILINEA [label = " c == '*'"];
     		COMENTARIO_FIN_DE_LINEA;
-    		POSIBLE_FIN_DE_COMENTARIO -> FIN_DE_COMENTARIO [label = " c == '/' \n putchar(' ');"];
-  		    	POSIBLE_FIN_DE_COMENTARIO -> COMENTARIO_MULTILINEA [label = " EOC "];
-  		    	POSIBLE_FIN_DE_COMENTARIO -> POSIBLE_FIN_DE_COMENTARIO [style = "invis"];
-  		    	POSIBLE_FIN_DE_COMENTARIO -> POSIBLE_FIN_DE_COMENTARIO [label = " c == '*' "];
+    		POSIBLE_FIN_DE_COMENTARIO_MULTILINEA -> FIN_DE_COMENTARIO_MULTILINEA [label = " c == '/' \n putchar(' ');"];
+  		    	POSIBLE_FIN_DE_COMENTARIO_MULTILINEA -> COMENTARIO_MULTILINEA [label = " EOC "];
+  		    	POSIBLE_FIN_DE_COMENTARIO_MULTILINEA -> POSIBLE_FIN_DE_COMENTARIO_MULTILINEA [style = "invis"];
+  		    	POSIBLE_FIN_DE_COMENTARIO_MULTILINEA -> POSIBLE_FIN_DE_COMENTARIO_MULTILINEA [label = " c == '*' "];
     		label = "COMENTARIOS";
   		}
 		
@@ -286,12 +286,14 @@ COMENTARIOS:
   		POSIBLE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
   		POSIBLE_COMENTARIO -> COMENTARIO_MULTILINEA [label = " c == '*'"];
   		POSIBLE_COMENTARIO -> COMENTARIO_FIN_DE_LINEA [label = " c == '/'"];
+		POSIBLE_COMENTARIO -> APERTURA_COMILLAS_SIMPLES [label = " c == '\'' " ];
   		COMENTARIO_FIN_DE_LINEA -> "*COMIENZO_DE_LINEA" [label = " c == '\\n' \n putchar(' '); \n putchar(c);"];
   		
 		
-  		FIN_DE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
-  		FIN_DE_COMENTARIO -> POSIBLE_COMENTARIO [label = " c == '/'"];
-  		FIN_DE_COMENTARIO -> CARACTER_COMUN [label = "EOC"];
+  		FIN_DE_COMENTARIO_MULTILINEA -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
+  		FIN_DE_COMENTARIO_MULTILINEA -> POSIBLE_COMENTARIO [label = " c == '/'"];
+		FIN_DE_COMENTARIO_MULTILINEA -> APERTURA_COMILLA_SIMPLE [label = " c == '\'' "]; 
+  		FIN_DE_COMENTARIO_MULTILINEA -> CARACTER_COMUN [label = "EOC"];
   		
   		
   		COMENTARIO_MULTILINEA -> COMENTARIO_MULTILINEA [style = "invis"];
