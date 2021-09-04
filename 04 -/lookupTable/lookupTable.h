@@ -1,3 +1,6 @@
+#ifndef LOOKUPTABLE_H_INCLUDED
+#define LOOKUPTABLE_H_INCLUDED
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -16,3 +19,5 @@ static struct nlist *hashtab[HASHSIZE]; /* tabla de apuntadores*/
 struct nlist *install(char*, char*);
 struct nlist *lookup(char*);
 struct nlist *undef(char*);
+
+#endif

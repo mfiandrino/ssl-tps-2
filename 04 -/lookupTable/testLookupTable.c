@@ -12,7 +12,15 @@ void imprimirElemento(char *id)
 
 int main()
 {
-    install("MAXIMO","155");
+    char texto[30];
+    memset(texto,'\0',sizeof(char) * 30);
+    texto[0] = 'M';
+    texto[1] = 'A';
+    texto[2] = 'X';
+    texto[3] = 'I';
+    texto[4] = 'M';
+    texto[5] = 'O';
+    install(texto,"155");
     install("UNO","1");
     install("DOS","2");
     install("TRES","3");
@@ -22,10 +30,10 @@ int main()
     install("SIETE","7");
     install("OCHO","8");
     install("NUEVE","9");
-    imprimirElemento("MAXIMO");
+    imprimirElemento(texto);
     imprimirElemento("MINIMO");
-    undef("MAXIMO");
-    imprimirElemento("MAXIMO");
+    undef(texto);
+    imprimirElemento(texto);
 
     imprimirElemento("UNO");
     imprimirElemento("DOS");
