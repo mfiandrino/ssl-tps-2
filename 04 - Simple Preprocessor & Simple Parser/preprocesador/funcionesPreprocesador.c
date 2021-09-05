@@ -13,6 +13,7 @@ char textoDefine[largoMaxTextoDefine];
 int contPalabra;
 char palabra[largoMaxPalabra];
 
+
 struct nlist *elemento;
 
 static void comentarioFinDeLinea(int);
@@ -42,6 +43,14 @@ static void identificadorInvalido(int);
 static void defineIdentificadorEspacio(int);
 static void textoDefineInvalido(int);
 static void defineTexto(int);
+static void u(int);
+static void un(int);
+static void und(int);
+static void unde(int);
+static void esUndef(int);
+static void undefEspacio(int);
+static void undefIdentificador(int);
+static void textoUndefInvalido(int);
 static void caracterEspecial(int);
 
 
@@ -539,12 +548,16 @@ static void entreComillasDobles(int c) //Entre comillas dobles, se buscan los ca
     }
 }
 
-static void posibleIncludeDefineUndef(int c)
+static void posibleIncludeDefineUndef(int c) //Tengo un # Busco una 'd' 'i' 'u'
 {
     switch (c)
     {
         case 'd':
             fun_ptr = &d;
+            break;
+
+        case 'u':
+            fun_ptr = &u;
             break;
 
         case '\'':
@@ -576,7 +589,7 @@ static void posibleIncludeDefineUndef(int c)
             fun_ptr = &espacio;
             break;
 
-        case '_': case 'A'...'Z': case 'a'...'c': case 'e'...'z': 
+        case '_': case 'A'...'Z': case 'a'...'c': case 'e'...'t': case 'v'...'z':
             putchar('#');
             contPalabra = 0;
             memset(palabra,'\0',sizeof(char) * largoMaxPalabra);
@@ -591,7 +604,7 @@ static void posibleIncludeDefineUndef(int c)
     }
 }
 
-static void d(int c)
+static void d(int c) // Encuentro una 'd' buscamos completar el define
 {
     switch (c)
     {
@@ -643,7 +656,7 @@ static void d(int c)
     }
 }
 
-static void de(int c)
+static void de(int c) // Encuentro una 'de' buscamos completar el define
 {
     switch (c)
     {
@@ -695,7 +708,7 @@ static void de(int c)
     }
 }
 
-static void def(int c)
+static void def(int c) // Encuentro una 'def' buscamos completar el define
 {
     switch (c)
     {
@@ -747,7 +760,7 @@ static void def(int c)
     }
 }
 
-static void defi(int c)
+static void defi(int c) // Encuentro una 'defi' buscamos completar el define
 {
     switch (c)
     {
@@ -799,7 +812,7 @@ static void defi(int c)
     }
 }
 
-static void defin(int c)
+static void defin(int c) // Encuentro una 'defin' buscamos completar el define
 {
     switch (c)
     {
@@ -851,7 +864,7 @@ static void defin(int c)
     }
 }
 
-static void define(int c)
+static void define(int c) // Encuentro una 'define' buscamos espacio para el identificador
 {
     switch (c)
     {
@@ -897,8 +910,7 @@ static void define(int c)
     }
 }
 
-
-static void defineEspacio(int c)
+static void defineEspacio(int c) // Espacio en el define, llenamos la palabra del identificador
 {
     switch (c)
     {
@@ -918,7 +930,7 @@ static void defineEspacio(int c)
     }
 }
 
-static void defineIdentificador(int c)
+static void defineIdentificador(int c) // Identificador completo del define
 {
     switch (c)
     {
@@ -937,13 +949,13 @@ static void defineIdentificador(int c)
     }
 }
 
-static void identificadorInvalido(int c)
+static void identificadorInvalido(int c) //Identificador invalido
 {
     printf("\nIdentificador Invalido");
     exit(0);
 }
 
-static void defineIdentificadorEspacio(int c)
+static void defineIdentificadorEspacio(int c) //Buscamos el texto a reemplazar del idenficador
 {
     switch (c)
     {
@@ -963,13 +975,13 @@ static void defineIdentificadorEspacio(int c)
     }
 }
 
-static void textoDefineInvalido(int c)
+static void textoDefineInvalido(int c) //Texto invalido
 {
     printf("\nTexto define Invalido");
     exit(0);
 }
 
-static void defineTexto(int c)
+static void defineTexto(int c) //Texto correspondiente al identificador
 {
     switch (c)
     {
@@ -984,6 +996,314 @@ static void defineTexto(int c)
             fun_ptr = &defineTexto;
     }
 }
+
+static void u(int c) // Encuentro una 'u' buscamos completar el undef
+{
+    switch (c)
+    {
+        case 'n':
+            fun_ptr = &un;
+            break;
+
+        case '\'':
+            printf("%s","#u");
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\"':
+            printf("%s","#u");
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
+        case '\n':
+            printf("%s","#u");
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '/':
+            printf("%s","#u");
+            fun_ptr = &posibleComentario;
+            break;
+
+        case ' ': case '\t':
+            printf("%s","#u");
+            putchar(c);
+            fun_ptr = &espacio;
+            break;
+
+        case '_': case 'A'...'Z': case 'a'...'m': case 'o'...'z':
+            printf("%s","#u");
+            contPalabra = 0;
+            memset(palabra,'\0',sizeof(char) * largoMaxPalabra);
+            palabra[contPalabra] = c;
+            fun_ptr = &enPalabra;
+            break;
+
+        default: //EOC
+            printf("%s","#u");
+            putchar(c);
+            fun_ptr = &caracterEspecial;
+    }
+}
+
+static void un(int c)  // Encuentro una 'un' buscamos completar el undef
+{
+    switch (c)
+    {
+        case 'd':
+            fun_ptr = &und;
+            break;
+
+        case '\'':
+            printf("%s","#un");
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\"':
+            printf("%s","#un");
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
+        case '\n':
+            printf("%s","#un");
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '/':
+            printf("%s","#un");
+            fun_ptr = &posibleComentario;
+            break;
+
+        case ' ': case '\t':
+            printf("%s","#un");
+            putchar(c);
+            fun_ptr = &espacio;
+            break;
+
+        case '_': case 'A'...'Z': case 'a'...'c': case 'e'...'z':
+            printf("%s","#un");
+            contPalabra = 0;
+            memset(palabra,'\0',sizeof(char) * largoMaxPalabra);
+            palabra[contPalabra] = c;
+            fun_ptr = &enPalabra;
+            break;
+
+        default: //EOC
+            printf("%s","#un");
+            putchar(c);
+            fun_ptr = &caracterEspecial;
+    }
+
+}
+
+static void und(int c)  // Encuentro una 'und' buscamos completar el undef
+{
+    switch (c)
+    {
+        case 'e':
+            fun_ptr = &unde;
+            break;
+
+        case '\'':
+            printf("%s","#und");
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\"':
+            printf("%s","#und");
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
+        case '\n':
+            printf("%s","#und");
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '/':
+            printf("%s","#und");
+            fun_ptr = &posibleComentario;
+            break;
+
+        case ' ': case '\t':
+            printf("%s","#und");
+            putchar(c);
+            fun_ptr = &espacio;
+            break;
+
+        case '_': case 'A'...'Z': case 'a'...'d': case 'f'...'z':
+            printf("%s","#und");
+            contPalabra = 0;
+            memset(palabra,'\0',sizeof(char) * largoMaxPalabra);
+            palabra[contPalabra] = c;
+            fun_ptr = &enPalabra;
+            break;
+
+        default: //EOC
+            printf("%s","#und");
+            putchar(c);
+            fun_ptr = &caracterEspecial;
+    }
+
+}
+
+static void unde(int c)  // Encuentro una 'unde' buscamos completar el undef
+{
+    switch (c)
+    {
+        case 'f':
+            fun_ptr = &esUndef;
+            break;
+
+        case '\'':
+            printf("%s","#unde");
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\"':
+            printf("%s","#unde");
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
+        case '\n':
+            printf("%s","#unde");
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '/':
+            printf("%s","#unde");
+            fun_ptr = &posibleComentario;
+            break;
+
+        case ' ': case '\t':
+            printf("%s","#unde");
+            putchar(c);
+            fun_ptr = &espacio;
+            break;
+
+        case '_': case 'A'...'Z': case 'a'...'e': case 'g'...'z':
+            printf("%s","#unde");
+            contPalabra = 0;
+            memset(palabra,'\0',sizeof(char) * largoMaxPalabra);
+            palabra[contPalabra] = c;
+            fun_ptr = &enPalabra;
+            break;
+
+        default: //EOC
+            printf("%s","#unde");
+            putchar(c);
+            fun_ptr = &caracterEspecial;
+    }
+}
+
+static void esUndef(int c)  // Encuentro un 'undef'
+{
+    switch (c)
+    {
+        case ' ': case '\t':
+            fun_ptr = &undefEspacio;
+            break;
+
+        case '\'':
+            printf("%s","#undef");
+            putchar(c);
+            fun_ptr = &aperturaComillasSimples;
+            break;
+
+        case '\"':
+            printf("%s","#undef");
+            putchar(c);
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
+        case '\n':
+            printf("%s","#undef");
+            putchar(c);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        case '/':
+            printf("%s","#undef");
+            fun_ptr = &posibleComentario;
+            break;
+
+        case '_': case 'A'...'Z': case 'a'...'z':
+            printf("%s","#undef");
+            contPalabra = 0;
+            memset(palabra,'\0',sizeof(char) * largoMaxPalabra);
+            palabra[contPalabra] = c;
+            fun_ptr = &enPalabra;
+            break;
+
+        default: //EOC
+            printf("%s","#undef");
+            putchar(c);
+            fun_ptr = &caracterEspecial;
+    }
+}
+
+static void undefEspacio(int c) //Espacio despues del undef, busco el identificador asociado
+{
+    switch (c)
+    {
+        case '_': case 'A'...'Z': case 'a'...'z':
+            contIdentificador = 0;
+            memset(identificador,'\0',sizeof(char) * largoMaxIdentificador);
+            identificador[contIdentificador] = c;
+            fun_ptr = &undefIdentificador;
+            break;
+
+        case ' ': case '\t':
+            fun_ptr = &undefEspacio;
+            break;
+
+        default: //EOC
+            fun_ptr = &identificadorInvalido;
+    }
+
+}
+
+static void undefIdentificador(int c) //Identificador asociado al undef, se deja de asociar para el cambio
+{
+    switch (c)
+    {
+        case '_': case 'A'...'Z': case 'a'...'z': case '0'...'9':
+            contIdentificador++;
+            identificador[contIdentificador] = c;
+            fun_ptr = &undefIdentificador;
+            break;
+
+        case '\n' :case ' ':
+            undef(identificador);
+            fun_ptr = &comienzoDeLinea;
+            break;
+
+        default: //EOC
+            contTextoDefine++;
+            textoDefine[contTextoDefine] = c;
+            fun_ptr = &undefIdentificador;
+
+
+    }   
+}
+
+static void textoUndefInvalido(int c)
+{
+    printf("\nTexto undef Invalido");
+    exit(0);
+}
+
 
 
 

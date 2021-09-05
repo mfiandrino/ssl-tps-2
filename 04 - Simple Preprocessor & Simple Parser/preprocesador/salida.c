@@ -3,6 +3,7 @@
 #define TRES "CUATRO"
 #define CINCO "SEIS"
 
+
 /*
 #include algo.h
 */
@@ -13,5 +14,15 @@ int main(TRES)
     /*
     hola
     */
+    UNO
+#undef       UNO
+#undef TRES
+#undef CINCO
+#undef OCHO
+    TRES
+    UNO
+    TRES
+    UNO
     return UNO;
+    CINCO
 }
