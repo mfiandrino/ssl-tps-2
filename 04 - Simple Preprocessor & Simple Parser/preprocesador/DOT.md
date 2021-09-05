@@ -45,55 +45,55 @@ GRAFICO GENERAL:
 		
 		"*COMIENZO_DE_LINEA" -> POSIBLE_INCLUDE_DEFINE_UNDEF [label = " c == '#'"];
 		POSIBLE_INCLUDE_DEFINE_UNDEF -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
-	    	POSIBLE_INCLUDE_DEFINE_UNDEF -> CARACTER_COMUN [label = " EOC "];
-	    	CARACTER_COMUN -> POSIBLE_COMENTARIO [label = " c == '/'"];
-	    	CARACTER_COMUN -> CARACTER_COMUN [style = "invis"];
-	    	CARACTER_COMUN -> CARACTER_COMUN [label = " EOC "];
-	    	CARACTER_COMUN -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
-	    	"*COMIENZO_DE_LINEA" -> CARACTER_COMUN [label = " EOC "];
-	    	"*COMIENZO_DE_LINEA" -> "*COMIENZO_DE_LINEA" [style = "invis"];
-	    	"*COMIENZO_DE_LINEA" -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
+	    POSIBLE_INCLUDE_DEFINE_UNDEF -> CARACTER_COMUN [label = " EOC "];
+	    CARACTER_COMUN -> POSIBLE_COMENTARIO [label = " c == '/'"];
+	    CARACTER_COMUN -> CARACTER_COMUN [style = "invis"];
+	    CARACTER_COMUN -> CARACTER_COMUN [label = " EOC "];
+	    CARACTER_COMUN -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
+	    "*COMIENZO_DE_LINEA" -> CARACTER_COMUN [label = " EOC "];
+	    "*COMIENZO_DE_LINEA" -> "*COMIENZO_DE_LINEA" [style = "invis"];
+	    "*COMIENZO_DE_LINEA" -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
 	    
 		//DEFINE
-	    	POSIBLE_INCLUDE_DEFINE_UNDEF -> DEFINE [label = " c == 'd' "];
+	    POSIBLE_INCLUDE_DEFINE_UNDEF -> DEFINE [label = " c == 'd' "];
 		DEFINE -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
-	    	DEFINE -> CARACTER_COMUN;
+	    DEFINE -> CARACTER_COMUN;
 		
-	    	//UNDEF
-	    	POSIBLE_INCLUDE_DEFINE_UNDEF -> UNDEF [label = " c == 'u' "];
+	    //UNDEF
+	    POSIBLE_INCLUDE_DEFINE_UNDEF -> UNDEF [label = " c == 'u' "];
 		UNDEF -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
-	    	UNDEF -> CARACTER_COMUN;
+	    UNDEF -> CARACTER_COMUN;
 	    
-	    	//INCLUDE
-	    	POSIBLE_INCLUDE_DEFINE_UNDEF -> INCLUDE [label = " c == 'i' "];
-	    	INCLUDE -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
-	    	INCLUDE -> CARACTER_COMUN;
-	    	INCLUDE -> COMILLAS_SIMPLES [label = "c == '"];
-	    	INCLUDE -> COMILLAS_DOBLES [label = " c == \" "];
+		//INCLUDE
+		POSIBLE_INCLUDE_DEFINE_UNDEF -> INCLUDE [label = " c == 'i' "];
+		INCLUDE -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
+		INCLUDE -> CARACTER_COMUN;
+		INCLUDE -> COMILLAS_SIMPLES [label = "c == '"];
+		INCLUDE -> COMILLAS_DOBLES [label = " c == \" "];
 	    
-	    	//COMENTARIOS
-	    	"*COMIENZO_DE_LINEA" -> POSIBLE_COMENTARIO [label = " c == '/'"];
-	    	POSIBLE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
-	    	POSIBLE_COMENTARIO -> CARACTER_COMUN [label = " EOC "];
-	    	POSIBLE_COMENTARIO -> COMENTARIOS [label = " c == '/' or c == '*'"];
-	    	COMENTARIOS -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
-	    	COMENTARIOS -> CARACTER_COMUN [label = " EOC "];
-	    	COMENTARIOS -> POSIBLE_COMENTARIO [label = " c == '/' "];
-	    	COMENTARIOS -> COMILLAS [label = " c == \" or c == ' "];
+		//COMENTARIOS
+		"*COMIENZO_DE_LINEA" -> POSIBLE_COMENTARIO [label = " c == '/'"];
+		POSIBLE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
+		POSIBLE_COMENTARIO -> CARACTER_ESPECIAL [label = " EOC "];
+		POSIBLE_COMENTARIO -> COMENTARIOS [label = " c == '/' or c == '*'"];
+		COMENTARIOS -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
+		COMENTARIOS -> CARACTER_COMUN [label = " EOC "];
+		COMENTARIOS -> POSIBLE_COMENTARIO [label = " c == '/' "];
+		COMENTARIOS -> COMILLAS [label = " c == \" or c == ' "];
 	    
 	    
-	    	//COMILLAS_SIMPLES
-		"*COMIENZO_DE_LINEA" -> COMILLAS_SIMPLES [label = "c == '"];
-	    	CARACTER_COMUN -> COMILLAS_SIMPLES [label = "  c == '"];
-	    	COMILLAS_SIMPLES -> "*COMIENZO_DE_LINEA" [label = " c == '\\n' "];
-	    	COMILLAS_SIMPLES -> CARACTER_COMUN [label = " EOC "];
-	    	COMILLAS_SIMPLES -> COMILLAS_SIMPLES [label = " c == ' "];
-	    	COMILLAS_SIMPLES -> COMILLAS_DOBLES [label = " c == \" "];
-	    	COMILLAS_SIMPLES -> POSIBLE_COMENTARIO [label = " c == '/' "];
+		//COMILLAS_SIMPLES
+	   "*COMIENZO_DE_LINEA" -> COMILLAS_SIMPLES [label = "c == '"];
+		CARACTER_COMUN -> COMILLAS_SIMPLES [label = "  c == '"];
+		COMILLAS_SIMPLES -> "*COMIENZO_DE_LINEA" [label = " c == '\\n' "];
+		COMILLAS_SIMPLES -> CARACTER_COMUN [label = " EOC "];
+		COMILLAS_SIMPLES -> COMILLAS_SIMPLES [label = " c == ' "];
+		COMILLAS_SIMPLES -> COMILLAS_DOBLES [label = " c == \" "];
+		COMILLAS_SIMPLES -> POSIBLE_COMENTARIO [label = " c == '/' "];
 	    
-	    	//COMILLAS_DOBLES
-		"*COMIENZO_DE_LINEA" -> COMILLAS_DOBLES [label = " c == \" "];
-	    	CARACTER_COMUN -> COMILLAS_DOBLES [label = " c == \" "];
+	      //COMILLAS_DOBLES
+		  "*COMIENZO_DE_LINEA" -> COMILLAS_DOBLES [label = " c == \" "];
+	      CARACTER_COMUN -> COMILLAS_DOBLES [label = " c == \" "];
 	    	COMILLAS_DOBLES -> "*COMIENZO_DE_LINEA" [label = " c == '\\n' "];
 	    	COMILLAS_DOBLES -> CARACTER_COMUN [label = " EOC "];
 	    	COMILLAS_DOBLES -> COMILLAS_DOBLES [label = " c == \" "];
@@ -153,6 +153,11 @@ DEFINE:
     	"#define_identificador_" -> TEXTO_DEFINE_INVÁLIDO [label= " c == '\\n' "];
     
     	"#define_identificador_texto" -> "*COMIENZO_DE_LINEA" [label="c == '\\n' \n ATENDER DEFINE"];
+
+		d -> de  [label= " c == 'e' "];
+		d -> de  [label= " c == 'e' "];
+
+
 
 	}	
 
@@ -282,18 +287,24 @@ COMENTARIOS:
     		label = "COMENTARIOS";
   		}
 		
-		POSIBLE_COMENTARIO -> CARACTER_COMUN [label = "EOC"];
+		POSIBLE_COMENTARIO -> CARACTER_ESPECIAL [label = "EOC"];
   		POSIBLE_COMENTARIO -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
   		POSIBLE_COMENTARIO -> COMENTARIO_MULTILINEA [label = " c == '*'"];
   		POSIBLE_COMENTARIO -> COMENTARIO_FIN_DE_LINEA [label = " c == '/'"];
 		POSIBLE_COMENTARIO -> APERTURA_COMILLAS_SIMPLES [label = " c == '\'' " ];
+		POSIBLE_COMENTARIO -> APERTURA_COMILLAS_DOBLES [label = " c == '\"' " ];
+		POSIBLE_COMENTARIO -> ESPACIO [label = " c == ' ' or  c == '\t' " ];
+		POSIBLE_COMENTARIO -> EN_PALABRA [label = " c == '_' or  c == 'A'...'Z' or  c == 'a'...'z' " ];
   		COMENTARIO_FIN_DE_LINEA -> "*COMIENZO_DE_LINEA" [label = " c == '\\n' \n putchar(' '); \n putchar(c);"];
   		
 		
   		FIN_DE_COMENTARIO_MULTILINEA -> "*COMIENZO_DE_LINEA" [label = " c == '\\n'"];
   		FIN_DE_COMENTARIO_MULTILINEA -> POSIBLE_COMENTARIO [label = " c == '/'"];
 		FIN_DE_COMENTARIO_MULTILINEA -> APERTURA_COMILLA_SIMPLE [label = " c == '\'' "]; 
-  		FIN_DE_COMENTARIO_MULTILINEA -> CARACTER_COMUN [label = "EOC"];
+		FIN_DE_COMENTARIO_MULTILINEA -> APERTURA_COMILLAS_DOBLES [label = " c == '\"' "]; 
+		FIN_DE_COMENTARIO_MULTILINEA -> ESPACIO [label = " c == ' ' or c == '\t' "]; 
+		FIN_DE_COMENTARIO_MULTILINEA -> EN_PALABRA [label = " c == '_' or c == 'A' ... 'Z' or c == 'a' ... 'z' "];
+  		FIN_DE_COMENTARIO_MULTILINEA -> CARACTER_ESPECIAL [label = "EOC"];
   		
   		
   		COMENTARIO_MULTILINEA -> COMENTARIO_MULTILINEA [style = "invis"];
