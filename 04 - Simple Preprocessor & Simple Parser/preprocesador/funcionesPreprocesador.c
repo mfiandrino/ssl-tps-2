@@ -52,6 +52,7 @@ static void undefEspacio(int);
 static void undefIdentificador(int);
 static void textoUndefInvalido(int);
 static void caracterEspecial(int);
+static void nuevaPalabra(int);
 
 
 
@@ -252,7 +253,7 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
             break;
 
         case '_': case 'A'...'Z': case 'a'...'z': case '0'...'9':
-            nuevoCaracterEnPalabra(int c);
+            nuevoCaracterEnPalabra(c);
             fun_ptr = &enPalabra;
             break;
 
@@ -951,7 +952,7 @@ static void defineIdentificadorEspacio(int c) //Buscamos el texto a reemplazar d
             break;
 
         default: //EOC
-           nuevoTextoDefine(int c);
+           nuevoTextoDefine(c);
             fun_ptr = &defineTexto;
     }
 }
