@@ -107,13 +107,13 @@ GRAFICO GENERAL:
 		CARACTER_ESPECIAL -> CARACTER_ESPECIAL [label = " EOC "];
 
 
-		EN_PALABRA -> *COMIENZO_DE_LINEA [label = " c == '\n'  , \n putchar(c);"];
+		EN_PALABRA -> *COMIENZO_DE_LINEA [label = " c == '\n'  , \n verificarEnTabla() ,  \n putchar(c);"];
 		EN_PALABRA -> APERTURA_COMILLAS_SIMPLES [label = " c == '\' , \n putchar(c);"];
 		EN_PALABRA -> APERTURA_COMILLAS_DOBLES [label = " c == '\"' , \n putchar(c);"];
-		EN_PALABRA -> POSIBLE_COMENTARIO [label = " c == '/'"];
-		EN_PALABRA -> ESPACIO [label = " c == ' ' or  c == '\\t' , \n putchar(c);"];
+		EN_PALABRA -> POSIBLE_COMENTARIO [label = " c == '/', \n verificarEnTabla()"];
+		EN_PALABRA -> ESPACIO [label = " c == ' ' or  c == '\\t' , \n verificarEnTabla(), \n putchar(c);"];
 	    EN_PALABRA -> EN_PALABRA [label = " c == '_' or  c == 'A'...'Z' or  c == 'a'...'z' " or  c == '0'...'9' "];
-		EN_PALABRA -> CARACTER_ESPECIAL [label = " EOC ,  \n putchar(c);"];
+		EN_PALABRA -> CARACTER_ESPECIAL [label = " EOC , \n verificarEnTabla() ,  \n putchar(c);"];
 	    
 		//COMILLAS_SIMPLES
 	   "*COMIENZO_DE_LINEA" -> COMILLAS_SIMPLES [label = "c == '"];

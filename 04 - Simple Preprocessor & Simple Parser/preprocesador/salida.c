@@ -10,13 +10,13 @@
 int main(TRES)
 {
     'hola/*chau*/qeut//hoal'
-    int resultado CINCO = preprocesador(); //asd
+    int resultado CINCO = preprocesador(); //asd    
     /*
     hola
     */
     UNO
 #undef       UNO
-#undef TRES
+#undef  TRES
 #undef CINCO
 #undef OCHO
     TRES
