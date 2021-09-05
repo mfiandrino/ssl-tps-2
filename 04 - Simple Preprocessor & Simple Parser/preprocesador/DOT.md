@@ -89,7 +89,31 @@ GRAFICO GENERAL:
 		POSIBLE_COMENTARIO -> ESPACIO [label = " c == ' ' or  c == '\\t' " ];
 		POSIBLE_COMENTARIO -> EN_PALABRA [label = " c == '_' or  c == 'A'...'Z' or  c == 'a'...'z' " ];
 
-	    
+
+		ESPACIO -> *COMIENZO_DE_LINEA [label = " c == '\n' , \n putchar(c);"];
+		ESPACIO -> APERTURA_COMILLAS_SIMPLES [label = " c == ' ' ' , \n putchar(c);"];
+		ESPACIO -> APERTURA_COMILLAS_DOBLES [label = " c == ' " ' , \n putchar(c);"];
+		ESPACIO -> POSIBLE_COMENTARIO [label = " c == '/'"];
+		ESPACIO -> ESPACIO [label = " c == ' ' or  c == '\\t' , \n putchar(c);"];
+		ESPACIO -> EN_PALABRA [label = " c == '_' or  c == 'A'...'Z' or  c == 'a'...'z' " ];
+		ESPACIO -> CARACTER_ESPECIAL [label = " EOC , \n putchar(c);"];
+	
+		CARACTER_ESPECIAL -> *COMIENZO_DE_LINEA [label = " c == '\n"];
+		CARACTER_ESPECIAL -> APERTURA_COMILLAS_SIMPLES [label = " c == ' ' ' "];
+		CARACTER_ESPECIAL -> APERTURA_COMILLAS_DOBLES [label = " c == ' " ' "];
+		CARACTER_ESPECIAL -> POSIBLE_COMENTARIO [label = " c == '/'"];
+		CARACTER_ESPECIAL -> ESPACIO [label = " c == ' ' or  c == '\\t' " ];
+		CARACTER_ESPECIAL -> EN_PALABRA [label = " c == '_' or  c == 'A'...'Z' or  c == 'a'...'z' " ];
+		CARACTER_ESPECIAL -> CARACTER_ESPECIAL [label = " EOC "];
+
+
+		EN_PALABRA -> *COMIENZO_DE_LINEA [label = " c == '\n'  , \n putchar(c);"];
+		EN_PALABRA -> APERTURA_COMILLAS_SIMPLES [label = " c == '\' , \n putchar(c);"];
+		EN_PALABRA -> APERTURA_COMILLAS_DOBLES [label = " c == '\"' , \n putchar(c);"];
+		EN_PALABRA -> POSIBLE_COMENTARIO [label = " c == '/'"];
+		EN_PALABRA -> ESPACIO [label = " c == ' ' or  c == '\\t' , \n putchar(c);"];
+	    EN_PALABRA -> EN_PALABRA [label = " c == '_' or  c == 'A'...'Z' or  c == 'a'...'z' " or  c == '0'...'9' "];
+		EN_PALABRA -> CARACTER_ESPECIAL [label = " EOC ,  \n putchar(c);"];
 	    
 		//COMILLAS_SIMPLES
 	   "*COMIENZO_DE_LINEA" -> COMILLAS_SIMPLES [label = "c == '"];
