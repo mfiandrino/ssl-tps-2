@@ -2,7 +2,7 @@
 Balanceo de brackets
 Modulo con las funciones para el balanceo de brackets para el TP4.
 Grupo Nro 3 del curso K2051 Lunes TN
-20210902
+20210905
 */
 #include "funcionesBalanceo.h"
 
@@ -30,215 +30,215 @@ static int bracketsNoBalanceados();
 
 int caracterComun(int c){
     switch (c)
-                    {
-                        case '{': case '[': case '(':
-                            push(c);
-                            fun_ptr = &aperturaBracket;                            
-                            break;
+    {
+        case '{': case '[': case '(':
+            push(c);
+            fun_ptr = &aperturaBracket;                            
+            break;
 
-                        case '}': case ']': case ')':
-                            if(atenderClausuraBracket(c))
-                                fun_ptr = &clausuraBracket;
-                            else 
-                                fun_ptr = &bracketsNoBalanceados;                                
-                            break;
+        case '}': case ']': case ')':
+            if(atenderClausuraBracket(c))
+                fun_ptr = &clausuraBracket;
+            else 
+                fun_ptr = &bracketsNoBalanceados;                                
+            break;
 
-                        case '\'': 
-                            fun_ptr = &aperturaComillasSimples;
-                            break;      
+        case '\'': 
+            fun_ptr = &aperturaComillasSimples;
+            break;      
 
-                        case '\"':
-                            fun_ptr = &aperturaComillasDobles;                            
-                            break;
+        case '\"':
+            fun_ptr = &aperturaComillasDobles;                            
+            break;
 
-                        default: //EOC
-                            fun_ptr = &caracterComun;                                                 
-                    }
-                    return 1;                    
+        default: //EOC
+            fun_ptr = &caracterComun;                                                 
+    }
+    return 1;                    
 }
 
 
 static int aperturaBracket(int c){
     switch (c)
-                {
-                    case '{': case '[': case '(':
-                        push(c);
-                        fun_ptr =  &aperturaBracket;                        
-                        break;
+    {
+        case '{': case '[': case '(':
+            push(c);
+            fun_ptr =  &aperturaBracket;                        
+            break;
 
-                    case '}': case ']': case ')':
-                        if(atenderClausuraBracket(c))
-                            fun_ptr = &clausuraBracket;                           
-                        else 
-                            fun_ptr = &bracketsNoBalanceados;                            
-                        break;
-                       
-                    case '\'': 
-                        fun_ptr = &aperturaComillasSimples;                       
-                        break;
-                    
-                    case '\"':
-                        fun_ptr = &aperturaComillasDobles;                       
-                        break;
-     
-                    default: //EOC
-                        fun_ptr = &caracterComun;                        
-                }    
-                return 1;            
+        case '}': case ']': case ')':
+            if(atenderClausuraBracket(c))
+                fun_ptr = &clausuraBracket;                           
+            else 
+                fun_ptr = &bracketsNoBalanceados;                            
+            break;
+            
+        case '\'': 
+            fun_ptr = &aperturaComillasSimples;                       
+            break;
+        
+        case '\"':
+            fun_ptr = &aperturaComillasDobles;                       
+            break;
+
+        default: //EOC
+            fun_ptr = &caracterComun;                        
+    }    
+    return 1;            
 }
 
 
 static int clausuraBracket(int c){
-     switch (c)
-                {
-                    case '{': case '[': case '(':
-                        push(c);
-                        fun_ptr = &aperturaBracket;
-                        break;
+    switch (c)
+    {
+        case '{': case '[': case '(':
+            push(c);
+            fun_ptr = &aperturaBracket;
+            break;
 
-                    case '}': case ']': case ')':
-                        if(atenderClausuraBracket(c))
-                            fun_ptr = &clausuraBracket;                           
-                        else                             
-                            fun_ptr = &bracketsNoBalanceados;
-                        break;
+        case '}': case ']': case ')':
+            if(atenderClausuraBracket(c))
+                fun_ptr = &clausuraBracket;                           
+            else                             
+                fun_ptr = &bracketsNoBalanceados;
+            break;
 
-                    case '\'':                         
-                        fun_ptr = &aperturaComillasSimples;
-                        break;
-                    
-                    case '\"':                        
-                        fun_ptr = &aperturaComillasDobles;
-                        break;
-      
-                    default: //EOC                        
-                        fun_ptr = &caracterComun;
-                }  
-                return 1;              
+        case '\'':                         
+            fun_ptr = &aperturaComillasSimples;
+            break;
+        
+        case '\"':                        
+            fun_ptr = &aperturaComillasDobles;
+            break;
+
+        default: //EOC                        
+            fun_ptr = &caracterComun;
+    }  
+    return 1;              
 }
 
 
 static int aperturaComillasSimples(int c){
     switch (c)
-                {
-                    case '\\':                        
-                        fun_ptr = &caracterContrabarraComillaSimple;
-                        break;
+    {
+        case '\\':                        
+            fun_ptr = &caracterContrabarraComillaSimple;
+            break;
 
-                    case '\'': case '\"':                        
-                        fun_ptr = &errorComillasDentroDeComillasSimples;
-                        break;
+        case '\'': case '\"':                        
+            fun_ptr = &errorComillasDentroDeComillasSimples;
+            break;
 
-                    default:                        
-                        fun_ptr = &caracterComillasSimples;
-                }    
-                return 1;           
+        default:                        
+            fun_ptr = &caracterComillasSimples;
+    }    
+    return 1;           
 }
 
 
 static int caracterComillasSimples(int c){
-     switch (c)
-            {
-                case '\'':                   
-                    fun_ptr = &clausuraComillasSimples;
-                    break;
+    switch (c)
+    {
+        case '\'':                   
+            fun_ptr = &clausuraComillasSimples;
+            break;
 
-                default: //EOC                    
-                    fun_ptr = &errorMasDeUnCaracterEnComillasSimples;
-            }
-            return 1;
+        default: //EOC                    
+            fun_ptr = &errorMasDeUnCaracterEnComillasSimples;
+    }
+    return 1;
 }
 
 static int clausuraComillasSimples(int c){
-     switch (c)
-            {
-                case '\"':                    
-                    fun_ptr = &aperturaComillasDobles;
-                    break;
+    switch (c)
+    {
+        case '\"':                    
+            fun_ptr = &aperturaComillasDobles;
+            break;
 
-                case '\'':                    
-                    fun_ptr = &aperturaComillasSimples;
-                    break;
+        case '\'':                    
+            fun_ptr = &aperturaComillasSimples;
+            break;
 
-                case '{': case '[': case '(':                   
-                    push(c);
-                    fun_ptr = &aperturaBracket;
-                    break;
+        case '{': case '[': case '(':                   
+            push(c);
+            fun_ptr = &aperturaBracket;
+            break;
 
-                case '}': case ']': case ')':
-                    if(atenderClausuraBracket(c))                       
-                        fun_ptr = &clausuraBracket;
-                    else                        
-                        fun_ptr = &bracketsNoBalanceados;
-                    break;
+        case '}': case ']': case ')':
+            if(atenderClausuraBracket(c))                       
+                fun_ptr = &clausuraBracket;
+            else                        
+                fun_ptr = &bracketsNoBalanceados;
+            break;
 
-                default: //EOC                    
-                    fun_ptr = &caracterComun;
-            }
-            return 1;
+        default: //EOC                    
+            fun_ptr = &caracterComun;
+    }
+    return 1;
 }
 
 static int aperturaComillasDobles(int c){
     switch (c)
-            {
-                case '\\':                    
-                    fun_ptr = &caracterContrabarraComillaDoble;
-                    break;
+    {
+        case '\\':                    
+            fun_ptr = &caracterContrabarraComillaDoble;
+            break;
 
-                case '\"':                                   
-                    fun_ptr = &clausuraComillasDobles;
-                    break;
+        case '\"':                                   
+            fun_ptr = &clausuraComillasDobles;
+            break;
 
-                default: //EOC                   
-                    fun_ptr = &caracterComillasDobles;
-            }
-            return 1;
+        default: //EOC                   
+            fun_ptr = &caracterComillasDobles;
+    }
+    return 1;
 }
 
 static int caracterComillasDobles(int c){
- switch (c)
-            {
-                case '\\':                    
-                    fun_ptr = &caracterContrabarraComillaDoble;
-                    break;
+    switch (c)
+    {
+        case '\\':                    
+            fun_ptr = &caracterContrabarraComillaDoble;
+            break;
 
-                case '\"':                   
-                    fun_ptr = &clausuraComillasDobles;
-                    break;
+        case '\"':                   
+            fun_ptr = &clausuraComillasDobles;
+            break;
 
-                default: //EOC                    
-                    fun_ptr = &caracterComillasDobles;
-            }
-            return 1;
+        default: //EOC                    
+            fun_ptr = &caracterComillasDobles;
+    }
+    return 1;
 }
 
 static int clausuraComillasDobles(int c){
- switch (c)
-            {
-                case '\"':                    
-                    fun_ptr = &aperturaComillasDobles;
-                    break;
+    switch (c)
+    {
+        case '\"':                    
+            fun_ptr = &aperturaComillasDobles;
+            break;
 
-                case '\'':                    
-                    fun_ptr = &aperturaComillasSimples;
-                    break;
+        case '\'':                    
+            fun_ptr = &aperturaComillasSimples;
+            break;
 
-                case '{': case '[': case '(':                   
-                    push(c);
-                    fun_ptr = &aperturaBracket;
-                    break;
+        case '{': case '[': case '(':                   
+            push(c);
+            fun_ptr = &aperturaBracket;
+            break;
 
-                case '}': case ']': case ')':
-                    if(atenderClausuraBracket(c))                        
-                        fun_ptr = &clausuraBracket;
-                    else                         
-                        fun_ptr = &bracketsNoBalanceados;
-                    break;
+        case '}': case ']': case ')':
+            if(atenderClausuraBracket(c))                        
+                fun_ptr = &clausuraBracket;
+            else                         
+                fun_ptr = &bracketsNoBalanceados;
+            break;
 
-                default: //EOC                   
-                    fun_ptr = &caracterComun;
-            }
-            return 1;
+        default: //EOC                   
+            fun_ptr = &caracterComun;
+    }
+    return 1;
 }
 
 static int caracterContrabarraComillaSimple(int c){
@@ -295,3 +295,4 @@ static int atenderClausuraBracket(int caracter)
     else 
         return 0;
 }
+

@@ -1,3 +1,9 @@
+/*
+Funciones Preprocesador
+Archivo con la implementacion de las funciones como estados
+Grupo Nro 3 del curso K2051 Lunes TN
+20210905
+*/
 #include "funcionesPreprocesador.h"
 #include "../symbolTable/symbolTable.h"
 
@@ -13,63 +19,53 @@ char textoDefine[largoMaxTextoDefine];
 int contPalabra;
 char palabra[largoMaxPalabra];
 
-
 const char *elemento;
 
-static void comentarioFinDeLinea(int);
-static void comentarioMultilinea(int);
-static void posibleFinDeComentarioMultilinea(int);
-static void FinDeComentarioMultilinea(int);
-static void posibleComentario(int);
-static void enPalabra(int);
-static void espacio(int);
-static void comienzoDeLinea(int);
-static void aperturaComillasSimples(int);
-static void entreComillasSimples(int);
-static void cierreComillasSimples(int);
-static void aperturaComillasDobles(int);
-static void cierreComillasDobles(int);
-static void entreComillasDobles(int);
-static void posibleIncludeDefineUndef(int);
-static void d(int);
-static void de(int);
-static void def(int);
-static void defi(int);
-static void defin(int);
-static void define(int);
-static void defineEspacio(int);
-static void defineIdentificador(int);
-static void identificadorInvalido(int);
-static void defineIdentificadorEspacio(int);
-static void textoDefineInvalido(int);
-static void defineTexto(int);
-static void u(int);
-static void un(int);
-static void und(int);
-static void unde(int);
-static void esUndef(int);
-static void undefEspacio(int);
-static void undefIdentificador(int);
-static void caracterEspecial(int);
+static int comentarioFinDeLinea(int);
+static int comentarioMultilinea(int);
+static int posibleFinDeComentarioMultilinea(int);
+static int FinDeComentarioMultilinea(int);
+static int posibleComentario(int);
+static int enPalabra(int);
+static int espacio(int);
+
+static int aperturaComillasSimples(int);
+static int entreComillasSimples(int);
+static int cierreComillasSimples(int);
+static int aperturaComillasDobles(int);
+static int cierreComillasDobles(int);
+static int entreComillasDobles(int);
+static int posibleIncludeDefineUndef(int);
+static int d(int);
+static int de(int);
+static int def(int);
+static int defi(int);
+static int defin(int);
+static int define(int);
+static int defineEspacio(int);
+static int defineIdentificador(int);
+static int identificadorInvalido(int);
+static int defineIdentificadorEspacio(int);
+static int textoDefineInvalido(int);
+static int defineTexto(int);
+static int u(int);
+static int un(int);
+static int und(int);
+static int unde(int);
+static int esUndef(int);
+static int undefEspacio(int);
+static int undefIdentificador(int);
+static int caracterEspecial(int);
 static void nuevaPalabra(int);
 static void nuevoCaracterEnPalabra(int);
-static void nuevoIdentificador(int);
+static void nueintentificador(int);
 static void nuevoCaracterIdentificador(int);
 static void nuevoTextoDefine(int);
 static void nuevoCaracterTextoDefine(int);
 static void verificarEnTabla();
 
-int preprocesador()
-{
-    int c;
-    fun_ptr = &comienzoDeLinea;
-    while ((c=getchar( ))!= EOF) 
-    {
-        (*fun_ptr)(c);
-    }
-}
 
-static void comentarioFinDeLinea(int c) //Dentro de un comentario de linea
+static int comentarioFinDeLinea(int c) //Dentro de un comentario de linea
 {
     switch (c)
     {
@@ -82,9 +78,10 @@ static void comentarioFinDeLinea(int c) //Dentro de un comentario de linea
         default: //EOC
             fun_ptr = &comentarioFinDeLinea;
     }
+    return 1;
 }
 
-static void comentarioMultilinea(int c) //Dentro de comentario multilinea
+static int comentarioMultilinea(int c) //Dentro de comentario multilinea
 {
     switch (c)
     {
@@ -95,9 +92,10 @@ static void comentarioMultilinea(int c) //Dentro de comentario multilinea
         default: //EOC
             fun_ptr = &comentarioMultilinea;
     }
+    return 1;
 }
 
-static void posibleFinDeComentarioMultilinea(int c) //Dentro de comentario multilinea, posible fin del mismo
+static int posibleFinDeComentarioMultilinea(int c) //Dentro de comentario multilinea, posible fin del mismo
 {
     switch (c)
     {
@@ -113,9 +111,10 @@ static void posibleFinDeComentarioMultilinea(int c) //Dentro de comentario multi
         default: //EOC
             fun_ptr = &comentarioMultilinea;
     }
+    return 1;
 }
 
-static void FinDeComentarioMultilinea(int c) //Fin de comentario multilinea, siguiente caracter
+static int FinDeComentarioMultilinea(int c) //Fin de comentario multilinea, siguiente caracter
 {
     switch (c)
     {
@@ -152,9 +151,10 @@ static void FinDeComentarioMultilinea(int c) //Fin de comentario multilinea, sig
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void posibleComentario(int c) //Llego una / vemos siguiente caracter
+static int posibleComentario(int c) //Llego una / vemos siguiente caracter
 {
     switch (c)
     {
@@ -201,6 +201,7 @@ static void posibleComentario(int c) //Llego una / vemos siguiente caracter
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
 static void verificarEnTabla( ){ 
@@ -216,7 +217,7 @@ static void nuevoCaracterEnPalabra(int c){
 }
 
 
-static void enPalabra(int c) //Caracteres aptos para un identificador
+static int enPalabra(int c) //Caracteres aptos para un identificador
 {
     switch (c)
     {
@@ -266,9 +267,10 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
             fun_ptr = &caracterEspecial;
             break;
     }
+    return 1;
 }
 
-static void espacio(int c) //Caracter comun
+static int espacio(int c) //Caracter comun
 {
     switch (c)
     {
@@ -305,6 +307,7 @@ static void espacio(int c) //Caracter comun
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
 static void nuevaPalabra(int c){
@@ -313,7 +316,7 @@ static void nuevaPalabra(int c){
     palabra[contPalabra] = c;    
 }
 
-static void caracterEspecial(int c) //Caracter especial (distintos a los que puede ser un indentificador)
+static int caracterEspecial(int c) //Caracter especial (distintos a los que puede ser un indentificador)
 {
     switch (c)
     {
@@ -348,12 +351,12 @@ static void caracterEspecial(int c) //Caracter especial (distintos a los que pue
 
         default: //EOC
             putchar(c);
-            fun_ptr = &caracterEspecial;
-            
+            fun_ptr = &caracterEspecial;       
     }
+    return 1;
 }
 
-static void comienzoDeLinea(int c) //Despues de un \n o al principio del archivo
+int comienzoDeLinea(int c) //Despues de un \n o al principio del archivo
 {
     switch (c)
     {
@@ -394,9 +397,10 @@ static void comienzoDeLinea(int c) //Despues de un \n o al principio del archivo
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void aperturaComillasSimples(int c) //Apertura comillas simples
+static int aperturaComillasSimples(int c) //Apertura comillas simples
 {
     switch (c)
     {
@@ -409,9 +413,10 @@ static void aperturaComillasSimples(int c) //Apertura comillas simples
             putchar(c);
             fun_ptr = &entreComillasSimples;
     }
+    return 1;
 }
 
-static void entreComillasSimples(int c) //Dentro de comillas simples
+static int entreComillasSimples(int c) //Dentro de comillas simples
 {
     switch (c)
     {
@@ -424,9 +429,10 @@ static void entreComillasSimples(int c) //Dentro de comillas simples
             putchar(c);
             fun_ptr = &entreComillasSimples;
     }
+    return 1;
 }
 
-static void cierreComillasSimples(int c) //Cierre de comillas simples
+static int cierreComillasSimples(int c) //Cierre de comillas simples
 {
     switch (c)
     {
@@ -463,9 +469,10 @@ static void cierreComillasSimples(int c) //Cierre de comillas simples
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void aperturaComillasDobles(int c) //Entramos a las comillas dobles caracteres adentro
+static int aperturaComillasDobles(int c) //Entramos a las comillas dobles caracteres adentro
 {
     switch (c)
     {
@@ -478,9 +485,10 @@ static void aperturaComillasDobles(int c) //Entramos a las comillas dobles carac
             putchar(c);
             fun_ptr = &entreComillasDobles;
     }
+    return 1;
 }
 
-static void cierreComillasDobles(int c) //Cierre de comillas dobles, se busca el siguiente caracter
+static int cierreComillasDobles(int c) //Cierre de comillas dobles, se busca el siguiente caracter
 {
     switch (c)
     {
@@ -517,10 +525,10 @@ static void cierreComillasDobles(int c) //Cierre de comillas dobles, se busca el
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
-
+    return 1;
 }
 
-static void entreComillasDobles(int c) //Entre comillas dobles, se buscan los caracteres adentro de las
+static int entreComillasDobles(int c) //Entre comillas dobles, se buscan los caracteres adentro de las
 {
     switch (c)
     {
@@ -533,9 +541,10 @@ static void entreComillasDobles(int c) //Entre comillas dobles, se buscan los ca
             putchar(c);
             fun_ptr = &entreComillasDobles;
     }
+    return 1;
 }
 
-static void posibleIncludeDefineUndef(int c) //Tengo un # Busco una 'd' 'i' 'u'
+static int posibleIncludeDefineUndef(int c) //Tengo un # Busco una 'd' 'i' 'u'
 {
     switch (c)
     {
@@ -587,9 +596,10 @@ static void posibleIncludeDefineUndef(int c) //Tengo un # Busco una 'd' 'i' 'u'
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void d(int c) // Encuentro una 'd' buscamos completar el define
+static int d(int c) // Encuentro una 'd' buscamos completar el define
 {
     switch (c)
     {
@@ -637,9 +647,10 @@ static void d(int c) // Encuentro una 'd' buscamos completar el define
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void de(int c) // Encuentro una 'de' buscamos completar el define
+static int de(int c) // Encuentro una 'de' buscamos completar el define
 {
     switch (c)
     {
@@ -687,9 +698,10 @@ static void de(int c) // Encuentro una 'de' buscamos completar el define
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void def(int c) // Encuentro una 'def' buscamos completar el define
+static int def(int c) // Encuentro una 'def' buscamos completar el define
 {
     switch (c)
     {
@@ -737,9 +749,10 @@ static void def(int c) // Encuentro una 'def' buscamos completar el define
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void defi(int c) // Encuentro una 'defi' buscamos completar el define
+static int defi(int c) // Encuentro una 'defi' buscamos completar el define
 {
     switch (c)
     {
@@ -787,9 +800,10 @@ static void defi(int c) // Encuentro una 'defi' buscamos completar el define
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void defin(int c) // Encuentro una 'defin' buscamos completar el define
+static int defin(int c) // Encuentro una 'defin' buscamos completar el define
 {
     switch (c)
     {
@@ -837,9 +851,10 @@ static void defin(int c) // Encuentro una 'defin' buscamos completar el define
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void define(int c) // Encuentro una 'define' buscamos espacio para el identificador
+static int define(int c) // Encuentro una 'define' buscamos espacio para el identificador
 {
     switch (c)
     {
@@ -881,6 +896,7 @@ static void define(int c) // Encuentro una 'define' buscamos espacio para el ide
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
 static void nuevoIdentificador(int c){
@@ -889,7 +905,7 @@ static void nuevoIdentificador(int c){
     identificador[contIdentificador] = c;
 }
 
-static void defineEspacio(int c) // Espacio en el define, llenamos la palabra del identificador
+static int defineEspacio(int c) // Espacio en el define, llenamos la palabra del identificador
 {
     switch (c)
     {
@@ -905,6 +921,7 @@ static void defineEspacio(int c) // Espacio en el define, llenamos la palabra de
         default: //EOC
             fun_ptr = &identificadorInvalido;
     }
+    return 1;
 }
 
 static void nuevoCaracterIdentificador(int c){
@@ -912,7 +929,7 @@ static void nuevoCaracterIdentificador(int c){
     identificador[contIdentificador] = c;
 }
 
-static void defineIdentificador(int c) // Identificador completo del define
+static int defineIdentificador(int c) // Identificador completo del define
 {
     switch (c)
     {
@@ -928,12 +945,12 @@ static void defineIdentificador(int c) // Identificador completo del define
         default: //EOC
             fun_ptr = &identificadorInvalido;
     }
+    return 1;
 }
 
-static void identificadorInvalido(int c) //Identificador invalido
+static int identificadorInvalido(int c) //Identificador invalido
 {
-    printf("\nIdentificador Invalido");
-    exit(0);
+    return -1;
 }
 
 static void nuevoTextoDefine(int c){
@@ -942,7 +959,7 @@ static void nuevoTextoDefine(int c){
     textoDefine[contTextoDefine] = c;
 }
 
-static void defineIdentificadorEspacio(int c) //Buscamos el texto a reemplazar del idenficador
+static int defineIdentificadorEspacio(int c) //Buscamos el texto a reemplazar del idenficador
 {
     switch (c)
     {
@@ -958,12 +975,12 @@ static void defineIdentificadorEspacio(int c) //Buscamos el texto a reemplazar d
             nuevoTextoDefine(c);
             fun_ptr = &defineTexto;
     }
+    return 1;
 }
 
-static void textoDefineInvalido(int c) //Texto invalido
+static int textoDefineInvalido(int c) //Texto invalido
 {
-    printf("\nTexto define Invalido");
-    exit(0);
+    return -2;
 }
 
 static void nuevoCaracterTextoDefine(int c){
@@ -972,7 +989,7 @@ static void nuevoCaracterTextoDefine(int c){
 }
 
 
-static void defineTexto(int c) //Texto correspondiente al identificador
+static int defineTexto(int c) //Texto correspondiente al identificador
 {
     switch (c)
     {
@@ -985,9 +1002,10 @@ static void defineTexto(int c) //Texto correspondiente al identificador
             nuevoCaracterTextoDefine(c);
             fun_ptr = &defineTexto;
     }
+    return 1;
 }
 
-static void u(int c) // Encuentro una 'u' buscamos completar el undef
+static int u(int c) // Encuentro una 'u' buscamos completar el undef
 {
     switch (c)
     {
@@ -1035,9 +1053,10 @@ static void u(int c) // Encuentro una 'u' buscamos completar el undef
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void un(int c)  // Encuentro una 'un' buscamos completar el undef
+static int un(int c)  // Encuentro una 'un' buscamos completar el undef
 {
     switch (c)
     {
@@ -1085,10 +1104,10 @@ static void un(int c)  // Encuentro una 'un' buscamos completar el undef
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
-
+    return 1;
 }
 
-static void und(int c)  // Encuentro una 'und' buscamos completar el undef
+static int und(int c)  // Encuentro una 'und' buscamos completar el undef
 {
     switch (c)
     {
@@ -1136,10 +1155,10 @@ static void und(int c)  // Encuentro una 'und' buscamos completar el undef
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
-
+    return 1;
 }
 
-static void unde(int c)  // Encuentro una 'unde' buscamos completar el undef
+static int unde(int c)  // Encuentro una 'unde' buscamos completar el undef
 {
     switch (c)
     {
@@ -1187,9 +1206,10 @@ static void unde(int c)  // Encuentro una 'unde' buscamos completar el undef
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
-static void esUndef(int c)  // Encuentro un 'undef'
+static int esUndef(int c)  // Encuentro un 'undef'
 {
     switch (c)
     {
@@ -1231,10 +1251,11 @@ static void esUndef(int c)  // Encuentro un 'undef'
             putchar(c);
             fun_ptr = &caracterEspecial;
     }
+    return 1;
 }
 
 
-static void undefEspacio(int c) //Espacio despues del undef, busco el identificador asociado
+static int undefEspacio(int c) //Espacio despues del undef, busco el identificador asociado
 {
     switch (c)
     {
@@ -1250,10 +1271,10 @@ static void undefEspacio(int c) //Espacio despues del undef, busco el identifica
         default: //EOC
             fun_ptr = &identificadorInvalido;
     }
-
+    return 1;
 }
 
-static void undefIdentificador(int c) //Identificador asociado al undef, se deja de asociar para el cambio
+static int undefIdentificador(int c) //Identificador asociado al undef, se deja de asociar para el cambio
 {
     switch (c)
     {
@@ -1269,7 +1290,8 @@ static void undefIdentificador(int c) //Identificador asociado al undef, se deja
 
         default: //EOC
             fun_ptr = &identificadorInvalido;
-    }   
+    }  
+    return 1; 
 }
 
 
