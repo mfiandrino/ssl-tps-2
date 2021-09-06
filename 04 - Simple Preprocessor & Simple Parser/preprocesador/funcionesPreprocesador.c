@@ -1,3 +1,9 @@
+/*
+Funciones Preprocesador
+Archivo con la implementacion de las funciones como estados
+Grupo Nro 3 del curso K2051 Lunes TN
+20210905
+*/
 #include "funcionesPreprocesador.h"
 #include "../symbolTable/symbolTable.h"
 
