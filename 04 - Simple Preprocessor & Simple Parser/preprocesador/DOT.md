@@ -68,7 +68,6 @@ posibleIncludeDefineUndef;
             esUndef;
             undefEspacio;
             undefIdentificador;
-            textoUndefInvalido;
     		label = "UNDEF";		
     	}
 	
