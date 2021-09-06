@@ -1,8 +1,12 @@
 Formalizar la máquina de estados como una n-upla de Preprocesador
 
-M = {Q, E, T, qo, F}
+M = {}
 
-Q = {OUT, IN}
+Q = {comentarioFinDeLinea,comentarioMultilinea,posibleFinDeComentarioMultilinea, FinDeComentarioMultilinea, posibleComentario,
+     aperturaComillasSimples,entreComillasSimples, cierreComillasSimples,
+     aperturaComillasDobles,cierreComillasDobles,entreComillasDobles,
+     d,de,def,defi,defin,define,defineEspacio,defineIdentificador,identificadorInvalido,defineIdentificadorEspacio,textoDefineInvalido,defineTexto,
+      u, un, und, unde, esUndef, undefEspacio, undefIdentificador}
 
 E = {ASCII}
 
