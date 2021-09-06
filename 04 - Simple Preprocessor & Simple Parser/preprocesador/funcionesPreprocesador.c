@@ -1,5 +1,5 @@
 #include "funcionesPreprocesador.h"
-#include "../lookupTable/lookupTable.h"
+#include "../symbolTable/symbolTable.h"
 
 #define largoMaxIdentificador 32
 int contIdentificador;
