@@ -1,4 +1,4 @@
-# TP 04 - 
+# TP 04 - Simple Preprocessor & Simple Parser
 
 ## Numero de Equipo: 3
 
@@ -28,3 +28,7 @@
 - Atender #defines y #undef
 - (Opcional) Atender #include
 - Verificar balanceo de brackets
+
+
+### Implementación máquina de estado
+En la misma representamos los estados como funciones y variables puntero a función actual, y las transiciones como selección estructurada, actualización de variable e invocaciones.  
