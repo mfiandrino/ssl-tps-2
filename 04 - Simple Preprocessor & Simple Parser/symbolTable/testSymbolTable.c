@@ -1,4 +1,4 @@
-#include "lookupTable.h"
+#include "symbolTable.h"
 #include <stdio.h>
 
 void imprimirElemento(char *id)

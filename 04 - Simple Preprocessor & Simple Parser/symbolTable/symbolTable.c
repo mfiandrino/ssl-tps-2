@@ -1,4 +1,4 @@
-#include "lookupTable.h"
+#include "symbolTable.h"
 #include <stdio.h>
 
 /* hash: forma un valor hash para la cadena s */
