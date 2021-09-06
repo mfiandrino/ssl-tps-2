@@ -1,4 +1,11 @@
 	digraph CARACTER_COMUN { 
+		
+		labelloc=t;	
+		decorate=true;	
+		labelfloat=false;	
+		fontname=Helvetica;	
+		ranksep=equally;	
+		
 		"*comienzoDeLinea" [shape=box]; 
 		enPalabra;
 		espacio;
