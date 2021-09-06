@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void (*fun_ptr)(int);
+int (*fun_ptr)(int);
 
-int preprocesador();
+int comienzoDeLinea(int);
 
 #endif
