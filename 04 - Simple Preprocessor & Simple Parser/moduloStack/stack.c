@@ -6,7 +6,6 @@ Grupo Nro 3 del curso K2051 Lunes TN
 */
 #include "stack.h"
 
-static int estaVacia();
 static int estaLlena();
 static int entraString(char*);
 
@@ -50,7 +49,7 @@ int pop(char *dato)
     return 0;
 }
 
-static int estaVacia()
+ int estaVacia()
 {
     if(pila[indicePila] == '$')
         return 1;

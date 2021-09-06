@@ -15,5 +15,6 @@ int push(char);
 int pushString(char*);
 char cima();
 void inicializarPila();
+int estaVacia();
 
 #endif
