@@ -6,5 +6,6 @@
 int caracterComun(int);
 
 int (*fun_ptr)(int);
+[]}
 
 #endif

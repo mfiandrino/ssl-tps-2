@@ -11,12 +11,11 @@ int main()
     int c;
     inicializarPila();
     int resultado;
-   fun_ptr = &caracterComun;
+    fun_ptr = &caracterComun;
     while ((c = getchar()) != EOF){
         resultado = (*fun_ptr)(c);
         
         if(resultado == -1){
-           // printf("\nError: los brackets NO estan balanceados\n");
             break;
         }else if(resultado == -2){
             printf("\nError: hay mas de un caracter en unas comillas simples\n");
