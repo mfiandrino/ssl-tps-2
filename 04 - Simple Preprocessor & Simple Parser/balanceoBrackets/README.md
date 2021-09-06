@@ -12,7 +12,7 @@ M = {E, A, A', T, e0, p0, F}
     
     A' = { { , [ , ( , } , ] , ) }
     
-    T = T(CARACTER_COMUN,{,$) = { (APERTURA_BRACKET,{ )}
+    T = T(caracterComun,{,$) = { (aperturaBracket,{ )}
     
     e0 = {caracterComun}
     
