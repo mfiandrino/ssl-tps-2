@@ -25,12 +25,268 @@ typedef enum {
 
 static char bracketInvertido(char);
 static int cierraBracketCorrecto(char, char);
-static int atenderClausuraBracket(char*, int);
+static int atenderClausuraBracket(int);
+
+static void caracterComun(int);
+static void aperturaBracket(int);
+static void clausuraBracket(int);
+static void aperturaComillasSimples(int);
+static void caracterComillasSimples(int);
+static void clausuraComillasSimples(int);
+static void aperturaComillasDobles(int);
+static void caracterComillasDobles(int);
+static void clausuraComillasDobles(int);
+static int errorMasDeUnCaracterEnComillasSimples();
+static int errorComillasDentroDeComillasSimples();
+static void caracterContrabarraComillaSimple(int);
+static void caracterContrabarraComillaDoble(int);
+static int bracketsNoBalanceados();
+
+
+static void caracterComun(int c){
+    switch (c)
+                    {
+                        case '{': case '[': case '(':
+                            push(c);
+                            fun_ptr = &aperturaBracket;                            
+                            break;
+
+                        case '}': case ']': case ')':
+                            if(atenderClausuraBracket(c))
+                                fun_ptr = &clausuraBracket;
+                            else 
+                                fun_ptr = &bracketsNoBalanceados;                                
+                            break;
+
+                        case '\'': 
+                            fun_ptr = &aperturaComillasSimples;
+                            break;      
+
+                        case '\"':
+                            fun_ptr = &aperturaComillasDobles;                            
+                            break;
+
+                        default: //EOC
+                            fun_ptr = &caracterComun;                                                 
+                    }
+}
+
+
+static void aperturaBracket(int c){
+    switch (c)
+                {
+                    case '{': case '[': case '(':
+                        push(c);
+                        fun_ptr =  &aperturaBracket;                        
+                        break;
+
+                    case '}': case ']': case ')':
+                        if(atenderClausuraBracket(c))
+                            fun_ptr = &clausuraBracket;                           
+                        else 
+                            fun_ptr = &bracketsNoBalanceados;                            
+                        break;
+                       
+                    case '\'': 
+                        fun_ptr = &aperturaComillasSimples;                       
+                        break;
+                    
+                    case '\"':
+                        fun_ptr = &aperturaComillasDobles;                       
+                        break;
+     
+                    default: //EOC
+                        fun_ptr = &caracterComun;                        
+                }
+}
+
+
+static void clausuraBrackets(int c){
+     switch (c)
+                {
+                    case '{': case '[': case '(':
+                        push(c);
+                        fun_ptr = &aperturaBracket;
+                        break;
+
+                    case '}': case ']': case ')':
+                        if(atenderClausuraBracket(c))
+                            fun_ptr = &clausuraBracket;                           
+                        else                             
+                            fun_ptr = &bracketsNoBalanceados;
+                        break;
+
+                    case '\'':                         
+                        fun_ptr = &aperturaComillasSimples;
+                        break;
+                    
+                    case '\"':                        
+                        fun_ptr = &aperturaComillasDobles;
+                        break;
+      
+                    default: //EOC                        
+                        fun_ptr = &caracterComun;
+                }
+}
+
+
+static void aperturaComillasSimples(int c){
+    switch (c)
+                {
+                    case '\\':                        
+                        fun_ptr = &caracterContrabarraComillaSimple;
+                        break;
+
+                    case '\'': case '\"':                        
+                        fun_ptr = &errorComillasDentroDeComillasSimples;
+                        break;
+
+                    default:                        
+                        fun_ptr = &caracterComillasSimples;
+                }               
+}
+
+
+static void caracterComillasSimples(int c){
+     switch (c)
+            {
+                case '\'':                   
+                    fun_ptr = &clausuraComillasSimples;
+                    break;
+
+                default: //EOC                    
+                    fun_ptr = &errorMasDeUnCaracterEnComillasSimples;
+            }
+}
+
+static void clausuraComillasSimples(int c){
+     switch (c)
+            {
+                case '\"':                    
+                    fun_ptr = &aperturaComillasDobles;
+                    break;
+
+                case '\'':                    
+                    fun_ptr = &aperturaComillasSimples;
+                    break;
+
+                case '{': case '[': case '(':                   
+                    push(pila,c);
+                    fun_ptr = &aperturaBracket;
+                    break;
+
+                case '}': case ']': case ')':
+                    if(atenderClausuraBracket(pila,c))                       
+                        fun_ptr = &clausuraBracket;
+                    else                        
+                        fun_ptr = &bracketsNoBalanceados;
+                    break;
+
+                default: //EOC                    
+                    fun_ptr = &caracterComun;
+            }
+}
+
+static void aperturaComillasDobles(int c){
+    switch (c)
+            {
+                case '\\':                    
+                    fun_ptr = &caracterContrabarraComillaDoble;
+                    break;
+
+                case '\"':                                   
+                    fun_ptr = &clausuraComillasDobles;
+                    break;
+
+                default: //EOC                   
+                    fun_ptr = &caracterComillasDobles;
+            }
+}
+
+static void caracterComillasDobles(int c){
+ switch (c)
+            {
+                case '\\':                    
+                    fun_ptr = &caracterContrabarraComillaDoble;
+                    break;
+
+                case '\"':                   
+                    fun_ptr = &clausuraComillasDobles;
+                    break;
+
+                default: //EOC                    
+                    fun_ptr = &caracterComillasDobles;
+            }
+}
+
+static void clausuraComillasDobles(int c){
+ switch (c)
+            {
+                case '\"':                    
+                    fun_ptr = &aperturaComillasDobles;
+                    break;
+
+                case '\'':                    
+                    fun_ptr = &aperturaComillasSimples;
+                    break;
+
+                case '{': case '[': case '(':                   
+                    push(pila,c);
+                    fun_ptr = &aperturaBracket;
+                    break;
+
+                case '}': case ']': case ')':
+                    if(atenderClausuraBracket(pila,c))                        
+                        fun_ptr = &clausuraBracket;
+                    else                         
+                        fun_ptr = &bracketsNoBalanceados;
+                    break;
+
+                default: //EOC                   
+                    fun_ptr = &caracterComun;
+            }
+
+}
+
+static void caracterContrabarraComillaSimple(int c){
+    fun_ptr = &caracterComillasSimples;
+}
+
+static void caracterContrabarraComillaDoble(int c){
+    fun_ptr = &caracterComillasDobles;
+}
+
+static int bracketsNoBalanceados(){
+    return -1;
+}
+
+static int errorMasDeUnCaracterEnComillasSimples(){
+    return -2;
+}
+ 
+static int errorComillasDentroDeComillasSimples(){
+    return -3;
+}
+
+ 
+
 
 int balanceoDeBrackets()
 {
     int c;
     inicializarPila();
+    fun_ptr = &caracterComun;
+    while ((c = getchar() != EOF)){
+         (*fun_ptr)(c);
+    }
+}
+
+
+
+int balanceoDeBrackets()
+{
+    int c;
+    inicializarPila();   
     state s = CARACTER_COMUN;
 
     while ((c=getchar())!= EOF) 
@@ -279,10 +535,10 @@ static int cierraBracketCorrecto(char c, char bracket)
     return 0;
 }
 
-static int atenderClausuraBracket(char *pila, int caracter)
+static int atenderClausuraBracket(int caracter)
 {
     char bracket;
-    if(pop(pila,&bracket) && cierraBracketCorrecto(caracter,bracket))
+    if(pop(&bracket) && cierraBracketCorrecto(caracter,bracket))
         return 1;
     else 
         return 0;
