@@ -1,3 +1,9 @@
+/*
+Modulo Symbol Table
+Implementación de las funciones para guardar, buscar y borrar datos de una tabla de simbolos
+Grupo Nro 3 del curso K2051 Lunes TN
+20210905
+*/
 #include "symbolTable.h"
 #include <stdio.h>
 

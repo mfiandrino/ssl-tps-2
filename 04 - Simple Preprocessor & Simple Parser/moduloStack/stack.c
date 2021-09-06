@@ -13,7 +13,7 @@ static int entraString(char*);
 
 void inicializarPila()
 {
-    indicePila = 0;
+    indicePila = -1;
     push('$');
 }
 
@@ -34,7 +34,7 @@ int pushString(char *dato)
     {
         for(int i=0 ; *(dato+i) != '\0' ; i++)
             push(*(dato+i));
-        return 1; //ver
+        return 1; 
     }
     return 0;
 }
@@ -52,7 +52,6 @@ int pop(char *dato)
 
 static int estaVacia()
 {
-    printf("\nEl indice de la pila es: %d\n",indicePila);
     if(pila[indicePila] == '$')
         return 1;
     return 0;
@@ -67,7 +66,7 @@ static int estaLlena()
 
 static int entraString(char *string)
 {
-    if(indicePila + strlen(string) < maxPila)
+    if((indicePila + strlen(string)) < maxPila)
         return 1;
     return 0;
 }
