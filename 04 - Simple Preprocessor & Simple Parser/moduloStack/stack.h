@@ -9,9 +9,9 @@
 char pila[maxPila];
 int indicePila;
 
-int pop(char*,char*);
-int push(char*, char);
-char cima(char*);
+int pop(char*);
+int push(char);
+char cima();
 void inicializarPila();
 
 #endif
