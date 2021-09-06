@@ -1,4 +1,4 @@
-Formalizar la máquina de estados como una n-upla de Preprocesador
+Formalizar la máquina de estados como una 5-upla de Preprocesador
 
 M = {Q, E, T, qo, F}
 
