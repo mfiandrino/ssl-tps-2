@@ -1,64 +1,77 @@
 /*
 Modulo Stack
-Implementación de las funciones basicas para manejar pilas
+Implementación de las funciones basicas para manejar una pila
 Grupo Nro 3 del curso K2051 Lunes TN
-20210902
+20210905
 */
 #include "stack.h"
 
-static int estaVacia(char*);
-static int estaLlena(char*);
+static int estaVacia();
+static int estaLlena();
+static int entraString(char*);
 
 
 void inicializarPila()
 {
-    indicePila = 0;
-    push(pila,'$');
+    indicePila = -1;
+    push('$');
 }
 
-int push(char *pila , char dato)
+int push(char dato)
 {
-    if(!estaLlena(pila))
+    if(!estaLlena())
     {
         ++indicePila;
         pila[indicePila] = dato;
-        //printf("\nEl dato \"%c\" fue agregado correctamente a la pila\n",dato);
         return 1;
     }
-    //printf("\nLa pila esta llena, no se pueden agregar mas elementos\n");
     return 0;
 }
 
-int pop(char *pila,char *dato)
+int pushString(char *dato)
 {
-    if(!estaVacia(pila))
+    if(entraString(dato))
+    {
+        for(int i=0 ; *(dato+i) != '\0' ; i++)
+            push(*(dato+i));
+        return 1; 
+    }
+    return 0;
+}
+
+int pop(char *dato)
+{
+    if(!estaVacia())
     {
         *dato = pila[indicePila];
         --indicePila;
-        //printf("\nEl dato \"%c\" fue extraido correctamente de la pila\n",*dato);
         return 1;
     }
-
-    //printf("\nLa pila esta vacia, no se pueden extraer elementos\n");
     return 0;
 }
 
-static int estaVacia(char *pila)
+static int estaVacia()
 {
-    printf("\nEl indice de la pila es: %d\n",indicePila);
-    if(pila[indicePila] == '$') //Se podria hacer poniendo como condicion que el indice sea mayor a 0
+    if(pila[indicePila] == '$')
         return 1;
     return 0;
 }
 
-static int estaLlena(char *pila)
+static int estaLlena()
 {
-    if(indicePila == maxPila)
+    if(indicePila + 1 == maxPila)
         return 1;
     return 0;
 }
 
-char cima(char *pila)
+static int entraString(char *string)
+{
+    if((indicePila + strlen(string)) < maxPila)
+        return 1;
+    return 0;
+}
+
+char cima()
 {
     return pila[indicePila];
 }

@@ -3,15 +3,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define maxPila 100
 
 char pila[maxPila];
 int indicePila;
 
-int pop(char*,char*);
-int push(char*, char);
-char cima(char*);
+int pop(char*);
+int push(char);
+int pushString(char*);
+char cima();
 void inicializarPila();
 
 #endif

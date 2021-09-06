@@ -1,4 +1,10 @@
-#include "lookupTable.h"
+/*
+Modulo Symbol Table
+Implementación de las funciones para guardar, buscar y borrar datos de una tabla de simbolos
+Grupo Nro 3 del curso K2051 Lunes TN
+20210905
+*/
+#include "symbolTable.h"
 #include <stdio.h>
 
 /* hash: forma un valor hash para la cadena s */
@@ -12,8 +18,22 @@ unsigned hash(char *s)
     return hashval % HASHSIZE;
 }
 
-/* lookup: busca s en hashtab */
-struct nlist *lookup(char *s)
+/* get: busca s en hashtab y devuelve el texto a reemplazar*/
+const char *get(char *s)
+{
+    struct nlist *np;
+    for (np = hashtab[hash(s)]; np != NULL; np = np->siguiente)
+    {
+        if (strcmp(s, np->identificador) == 0)
+        {
+            return np->define; /* se encontró */
+        }
+    }
+    return NULL;  /* no se encontró */
+}
+
+/* get2: busca s en hashtab y devuelve la estructura */
+static struct nlist *getStruct(char *s)
 {
     struct nlist *np;
     for (np = hashtab[hash(s)]; np != NULL; np = np->siguiente)
@@ -26,13 +46,13 @@ struct nlist *lookup(char *s)
     return NULL;  /* no se encontró */
 }
 
-/* install: coloca (identificador, define) dentro de hashtab */
-struct nlist *install(char *identificador, char *define)
+/* set: coloca (identificador, define) dentro de hashtab y devuelve el texto a reemplazar*/
+const char *set(char *identificador, char *define)
 {
     struct nlist *np;
     unsigned hashval;
 
-    if ((np = lookup(identificador)) == NULL)  /* no fue encontrado */
+    if ((np = getStruct(identificador)) == NULL)  /* no fue encontrado */
     {
         np = (struct nlist *) malloc(sizeof(*np));
         if (np == NULL || (np->identificador = strdup(identificador)) == NULL)
@@ -47,12 +67,13 @@ struct nlist *install(char *identificador, char *define)
     if ((np->define = strdup(define)) == NULL)
         return NULL;
 
-    return np;
+    return np->define;
 }
 
-struct nlist *undef(char *identificador) 
+/* delete: borra identificador dentro de hashtab y devuelve el texto a reemplazar*/
+const char *delete(char *identificador) 
 {
-    struct nlist *found = lookup(identificador);
+    struct nlist *found = getStruct(identificador);
 
     if (found == NULL) /* no se encontro */
         return NULL;
@@ -69,6 +90,6 @@ struct nlist *undef(char *identificador)
             free((void *) found);
         }
     }
-    return found;
+    return found->define;
 }
 
