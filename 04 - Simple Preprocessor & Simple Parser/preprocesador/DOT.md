@@ -293,4 +293,4 @@
 	}
 		
 
-![Preprocesador - DOT](https://user-images.githubusercontent.com/82005945/132155509-c68031e6-a584-4343-a2d4-2fc2ec5c8bb8.png)
+![Preprocesador - DOT](https://user-images.githubusercontent.com/82005945/132162623-ee7bf7d0-869b-4789-a261-a07a6fa0f9af.png)
