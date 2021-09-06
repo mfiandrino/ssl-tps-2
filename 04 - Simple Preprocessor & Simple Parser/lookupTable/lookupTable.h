@@ -16,8 +16,8 @@ struct nlist
 static struct nlist *hashtab[HASHSIZE]; /* tabla de apuntadores*/
 
 //Funciones
-struct nlist *install(char*, char*);
-struct nlist *lookup(char*);
-struct nlist *undef(char*);
+const char *set(char*, char*);
+const char *get(char*);
+const char *delete(char*);
 
 #endif

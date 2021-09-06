@@ -14,7 +14,7 @@ int contPalabra;
 char palabra[largoMaxPalabra];
 
 
-struct nlist *elemento;
+const char *elemento;
 
 static void comentarioFinDeLinea(int);
 static void comentarioMultilinea(int);
@@ -52,8 +52,13 @@ static void undefEspacio(int);
 static void undefIdentificador(int);
 static void textoUndefInvalido(int);
 static void caracterEspecial(int);
-
-
+static void nuevaPalabra(int);
+static void nuevoCaracterEnPalabra(int);
+static void nuevoIdentificador(int);
+static void nuevoCaracterIdentificador(int);
+static void nuevoTextoDefine(int);
+static void nuevoCaracterTextoDefine(int);
+static void verificarEnTabla();
 
 int preprocesador()
 {
@@ -200,14 +205,14 @@ static void posibleComentario(int c) //Llego una / vemos siguiente caracter
 }
 
 static void verificarEnTabla( ){ 
-    if(elemento = lookup(palabra))
-        printf("%s",elemento->define);
+    if(elemento = get(palabra))
+        printf("%s",elemento);
     else
         printf("%s",palabra);
 }
 
 static void nuevoCaracterEnPalabra(int c){
-     contPalabra++;
+    contPalabra++;
     palabra[contPalabra] = c;
 }
 
@@ -232,7 +237,7 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
 
         case '\"':
             //Comparar con tabla de define y fijarse de reemplazar o imprimir la palabra
-           verificarEnTabla( );
+           verificarEnTabla();
                 
             putchar(c);
             fun_ptr = &aperturaComillasDobles;
@@ -252,7 +257,7 @@ static void enPalabra(int c) //Caracteres aptos para un identificador
             break;
 
         case '_': case 'A'...'Z': case 'a'...'z': case '0'...'9':
-            nuevoCaracterEnPalabra(int c);
+            nuevoCaracterEnPalabra(c);
             fun_ptr = &enPalabra;
             break;
 
@@ -951,7 +956,7 @@ static void defineIdentificadorEspacio(int c) //Buscamos el texto a reemplazar d
             break;
 
         default: //EOC
-           nuevoTextoDefine(int c);
+            nuevoTextoDefine(c);
             fun_ptr = &defineTexto;
     }
 }
@@ -973,7 +978,7 @@ static void defineTexto(int c) //Texto correspondiente al identificador
     switch (c)
     {
         case '\n':
-            install(identificador,textoDefine);
+            set(identificador,textoDefine);
             fun_ptr = &comienzoDeLinea;
             break;
 
@@ -1259,7 +1264,7 @@ static void undefIdentificador(int c) //Identificador asociado al undef, se deja
             break;
 
         case '\n' :
-            undef(identificador);
+            delete(identificador);
             fun_ptr = &comienzoDeLinea;
             break;
 
