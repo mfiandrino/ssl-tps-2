@@ -30,5 +30,5 @@
 - Verificar balanceo de brackets
 
 
-### Implementación maquina de estado
+### Implementación máquina de estado
 En la misma representamos los estados como funciones y variables puntero a función actual, y las transiciones como selección estructurada, actualización de variable e invocaciones.  
