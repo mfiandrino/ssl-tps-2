@@ -292,6 +292,8 @@ posibleIncludeDefineUndef;
         undefIdentificador -> comienzoDeLinea [label = "c == '\\n \n undef(identificador) " ];
         undefIdentificador -> identificadorInvalido [label = "c == 'EOC' " ];
 
+        //identificadorInvalido ; Ver como hacer estos 2 porque retornan a nada
+        //textoDefineInvalido
 	    
 	}
 

@@ -50,7 +50,6 @@ static void unde(int);
 static void esUndef(int);
 static void undefEspacio(int);
 static void undefIdentificador(int);
-static void textoUndefInvalido(int);
 static void caracterEspecial(int);
 static void nuevaPalabra(int);
 static void nuevoCaracterEnPalabra(int);
@@ -1273,11 +1272,7 @@ static void undefIdentificador(int c) //Identificador asociado al undef, se deja
     }   
 }
 
-static void textoUndefInvalido(int c)
-{
-    printf("\nTexto undef Invalido");
-    exit(0);
-}
+
 
 
 
