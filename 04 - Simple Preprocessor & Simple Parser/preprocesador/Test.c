@@ -14,15 +14,15 @@ int main(TRES)
     /*
     hola
     */
-    UNO
+    UNO;
 #undef UNO
 #undef TRES
 #undef CINCO
 #undef OCHO
-    TRES
-    UNO
-    TRES
-    UNO
+    TRES;
+    UNO;
+    TRES;
+    UNO;
     return UNO;
-    CINCO
+    CINCO;
 }

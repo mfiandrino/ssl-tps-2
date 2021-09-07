@@ -4,6 +4,9 @@ Archivo con la implementacion de las funciones como estados
 Grupo Nro 3 del curso K2051 Lunes TN
 20210905
 */
+
+//Cambiar define undef, hacerlo mas simple con el # solo acepta define undef e include, sino error
+
 #include "funcionesPreprocesador.h"
 #include "../symbolTable/symbolTable.h"
 
@@ -19,6 +22,7 @@ char textoDefine[largoMaxTextoDefine];
 int contPalabra;
 char palabra[largoMaxPalabra];
 
+int (*fun_ptr)(int)= comienzoDeLinea;
 const char *elemento;
 
 static int comentarioFinDeLinea(int);

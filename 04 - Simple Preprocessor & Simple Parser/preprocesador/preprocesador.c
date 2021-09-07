@@ -10,10 +10,11 @@ int main()
 {
     int c;
     int resultado;
-    fun_ptr = &comienzoDeLinea;
+    
+   // fun_ptr = &comienzoDeLinea; //TODO: Sacar el & en los estados
     while ((c=getchar( ))!= EOF) 
     {
-        resultado = (*fun_ptr)(c);
+        resultado = (*fun_ptr)(c); //TODO: se puede sacar el *
         
         if(resultado == -1)
         {

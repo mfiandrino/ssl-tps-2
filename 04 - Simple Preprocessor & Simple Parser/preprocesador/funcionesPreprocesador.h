@@ -4,8 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int (*fun_ptr)(int);
-
 int comienzoDeLinea(int);
+extern int (*fun_ptr)(int);
+
+//fun_ptr = &comienzoDeLinea; //TODO: Sacar el & en los estados
 
 #endif
+
+//Mover #includes a los .c Ver paper de interfaces
