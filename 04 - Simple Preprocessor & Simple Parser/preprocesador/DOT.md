@@ -1,74 +1,79 @@
 	digraph CARACTER_COMUN { 
-		
+		rankdir=LR;
 		labelloc=t;	
 		decorate=true;	
 		labelfloat=false;	
 		fontname=Helvetica;	
 		ranksep=equally;	
-		
-		"*comienzoDeLinea" [shape=box]; 
-		enPalabra;
-		espacio;
-		caracterEspecial;
-		posibleIncludeDefineUndef;
+		subgraph cluster_0 {		
+			style=filled;		
+			color=lightgrey;		
+		    "*comienzoDeLinea" [shape=box,fontsize=40, height=5, width=5]; 
+		    enPalabra [shape=box, height=1, width=1]; 
+		    espacio [shape=box, height=1, width=1];
+		    caracterEspecial [shape=box, height=1, width=1];
+		    posibleIncludeDefineUndef [shape=box, height=1, width=1];
+			label = "INICIO";		
+		}	
+	
 
 		subgraph cluster_0 {		
 			style=filled;		
 			color=lightgrey;		
-			comentarioFinDeLinea;
-			comentarioMultilinea;
-			posibleFinDeComentarioMultilinea;
-			FinDeComentarioMultilinea;
-			posibleComentario;
+			comentarioFinDeLinea [shape=box, height=1, width=1];
+			comentarioMultilinea [shape=box, height=1, width=1];
+			posibleFinDeComentarioMultilinea [shape=box, height=1, width=1];
+			FinDeComentarioMultilinea [shape=box, height=1, width=1];
+			posibleComentario [shape=box, height=1, width=1];
 			label = "COMENTARIOS";		
 		}		
 
 		subgraph cluster_1 {		
 			style=filled;		
-			color=lightgrey;		
-			aperturaComillasSimples;
-			entreComillasSimples;
-			cierreComillasSimples;
+			color=lightgrey;
+			aperturaComillasSimples [shape=box, height=1, width=1];
+			entreComillasSimples [shape=box, height=1, width=1];
+			cierreComillasSimples [shape=box, height=1, width=1];
 			label = "COMILLAS_SIMPLES";		
 		}
 
 		subgraph cluster_2 {		
 			style=filled;		
 			color=lightgrey;		
-			aperturaComillasDobles;
-			cierreComillasDobles;
-			entreComillasDobles;
+			aperturaComillasDobles [shape=box, height=1, width=1];
+			cierreComillasDobles [shape=box, height=1, width=1];
+			entreComillasDobles [shape=box, height=1, width=1];
 			label = "COMILLAS_DOBLES";		
 		}
 
 		subgraph cluster_3 {		
 			style=filled;		
 			color=lightgrey;		
-			d;
-			de;
-			def;
-			defi;
-			defin;
-			define;
-			defineEspacio;
-			defineIdentificador;
-			identificadorInvalido;
-			defineIdentificadorEspacio;
-			textoDefineInvalido;
-			defineTexto;
+			d [shape=box, height=1, width=1];
+			de [shape=box, height=1, width=1];
+			def [shape=box, height=1, width=1];
+			defi [shape=box, height=1, width=1];
+			defin [shape=box, height=1, width=1];
+			define [shape=box, height=1, width=1];
+			defineEspacio [shape=box, height=1, width=1];
+			defineIdentificador [shape=box, height=1, width=1];
+			identificadorInvalido [shape=box, height=1, width=1];
+			defineIdentificadorEspacio [shape=box, height=1, width=1];
+			textoDefineInvalido [shape=box, height=1, width=1];
+			defineTexto [shape=box, height=1, width=1];
 			label = "DEFINE";		
 		}
 
 		subgraph cluster_4 {		
 			style=filled;		
 			color=lightgrey;		
-			u;
-			un;
-			und;
-			unde;
-			esUndef;
-			undefEspacio;
-			undefIdentificador;
+			u [shape=box, height=1, width=1];
+			un [shape=box, height=1, width=1];
+			und [shape=box, height=1, width=1];
+			unde [shape=box, height=1, width=1];
+			esUndef [shape=box, height=1, width=1];
+			undefEspacio [shape=box, height=1, width=1];
+			undefIdentificador [shape=box, height=1, width=1];
 			label = "UNDEF";		
 		}
 
@@ -171,57 +176,22 @@
 	    posibleIncludeDefineUndef -> caracterEspecial [label = " EOC \n putchar('#'), putchar(c)"];
 
 	    d -> de [label = "c == 'e' " ];
-	    d -> aperturaComillasSimples [label = "c == ' \n printf(#d), putchar(c)" ];
-	    d -> aperturaComillasDobles [label = "c == '' \n printf(#d), putchar(c)" ];
-	    d -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#d), putchar(c)" ];
-	    d -> posibleComentario [label = "c == / \n printf(#d), putchar(c)" ];
-	    d -> espacio [label = "c == ' ' or c == '\\t'  \n printf(#d), putchar(c)" ];
-	    d -> enPalabra [label = "c == '_' or c == 'A'...'Z' or c == 'a'...'d' or c == 'f'...'z'  \n printf(#d), nuevaPalabra(c)" ];
-	    d -> caracterEspecial [label = " EOC \n printf(#d), putchar(c)" ];
+	    d -> identificadorInvalido [label = "c == EOC" ];
 
 	    de -> def [label = "c == 'f'" ];
-	    de -> aperturaComillasSimples [label = "c == ' \n printf(#de), putchar(c)" ];
-	    de -> aperturaComillasDobles [label = "c == \" \n printf(#de), putchar(c)" ];
-	    de -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#de), putchar(c)" ];
-	    de -> posibleComentario [label = "c == / \n printf(#de), putchar(c)" ];
-	    de -> espacio [label = "c == ' ' or c == '\t' \n printf(#de), putchar(c)" ];
-	    de -> enPalabra [label = "c == '_' or c == 'A'...'Z' or c == 'a'...'e' or c == 'g'...'z' \n printf(#de), nuevaPalabra(c)" ];
-	    de -> caracterEspecial [label = " EOC \n printf(#de), putchar(c)" ];
+	    de -> identificadorInvalido [label = "c == EOC " ];
 
 	    def -> defi [label = "c == 'i' " ];
-	    def -> aperturaComillasSimples [label = "c == ' \n printf(#def), putchar(c)" ];
-	    def -> aperturaComillasDobles [label = "c == \" \n printf(#def), putchar(c)" ];
-	    def -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#def), putchar(c)" ];
-	    def -> posibleComentario [label = "c == / \n printf(#def), putchar(c)" ];
-	    def -> espacio [label = "c == ' '  or c == '\t' \n printf(#def), putchar(c)" ];
-	    def -> enPalabra [label = "c == '_' or c == 'A'...'Z' or c == 'a'...'h' or c == 'j'...'z' \n printf(#def), nuevaPalabra(c)" ];
-	    def -> caracterEspecial [label = " EOC \n printf(#def), putchar(c)" ];
+	    def -> identificadorInvalido [label = "c == EOC " ];
 
 	    defi -> defin [label = "c == 'n' " ];
-	    defi -> aperturaComillasSimples [label = "c == ' \n printf(#defi), putchar(c)" ];
-	    defi -> aperturaComillasDobles [label = "c == \" \n printf(#defi), putchar(c)" ];
-	    defi -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#defi), putchar(c)" ];
-	    defi -> posibleComentario [label = "c == / \n printf(#defi), putchar(c)" ];
-	    defi -> espacio [label = "c == ' '  or c == '\t' \n printf(#defi), putchar(c)" ];
-	    defi -> enPalabra [label = "c == '_' or c == 'A'...'Z' or c == 'a'...'m' or c == 'o'...'z' \n printf(#defi), nuevaPalabra(c)" ];
-	    defi -> caracterEspecial [label = " EOC \n printf(#defi), putchar(c)" ];
+	    defi -> identificadorInvalido [label = "c == EOC " ];
 
 	    defin -> define [label = "c == 'e' " ];
-	    defin -> aperturaComillasSimples [label = "c == ' \n printf(#defin), putchar(c)" ];
-	    defin -> aperturaComillasDobles [label = "c == \" \n printf(#defin), putchar(c)" ];
-	    defin -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#defin), putchar(c)" ];
-	    defin -> posibleComentario [label = "c == / \n printf(#defin), putchar(c)" ];
-	    defin -> espacio [label = "c == ' '  or c == '\t' \n printf(#defin), putchar(c)" ];
-	    defin -> enPalabra [label = "c == '_' or c == 'A'...'Z' or c == 'a'...'d' or c == 'f'...'z' \n printf(#defin), nuevaPalabra(c)" ];
-	    defin -> caracterEspecial [label = " EOC \n printf(#defin), putchar(c)" ];
+	    defin -> identificadorInvalido [label = "c == EOC " ];
 
 	    define -> defineEspacio [label = "c == ' '  or c == '\\t' "];
-	    define -> aperturaComillasSimples [label = "c == ' \n printf(#define), putchar(c)" ];
-	    define -> aperturaComillasDobles [label = "c == \" \n printf(#define), putchar(c)" ];
-	    define -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#define), putchar(c)" ];
-	    define -> posibleComentario [label = "c == / \n printf(#define), putchar(c)" ];
-	    define -> enPalabra [label = "c == '_' or  c == 'A'...'Z' or c == 'a'...'d' or c == 'f'...'z' \n printf(#define), nuevaPalabra(c)" ];
-	    define -> caracterEspecial [label = " EOC \n printf(#define), putchar(c)" ];
+	    define -> identificadorInvalido [label = "c == EOC " ];
 
 	    defineEspacio -> defineIdentificador [label = " c == '_' or c == 'A'...'Z' or c == 'a'...'z' "];
 	    defineEspacio -> defineEspacio [label = " c == ' ' or c == '\\t' "];
@@ -239,48 +209,19 @@
 	    defineTexto -> defineTexto [label = " EOC " ];
 
 	    u -> un [label = "c == 'n' " ];
-	    u -> aperturaComillasSimples [label = "c == \' \n printf(#u), putchar(c)" ];
-	    u -> aperturaComillasDobles [label = "c == \" \n printf(#u), putchar(c)" ];
-	    u -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#u), putchar(c)" ];
-	    u -> posibleComentario [label = "c == / \n printf(#u), putchar(c)" ];
-	    u -> espacio [label = "c == ' ' or c == '\\t' \n printf(#u), putchar(c)" ];
-	    u -> enPalabra [label = "c == '_' or c == 'A'...'Z' or c == 'a'...'m' or 'o'...'z' \n printf(#u), nuevaPalabra(c)" ];
-	    u -> caracterEspecial [label = " EOC \n printf(#u), putchar(c)" ];
+	    u -> identificadorInvalido [label = "c == EOC " ];
 
 	    un -> und [label = "c == 'd' " ];
-	    un -> aperturaComillasSimples [label = "c == \' \n printf(#un), putchar(c)" ];
-	    un -> aperturaComillasDobles [label = "c == \" \n printf(#un), putchar(c)" ];
-	    un -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#un), putchar(c)" ];
-	    un -> posibleComentario [label = "c == / \n printf(#un), putchar(c)" ];
-	    un -> espacio [label = "c == ' ' or c == '\\t' \n printf(#un), putchar(c)" ];
-	    un -> enPalabra [label = "c == '_' c == or 'A'...'Z' or c == 'a'...'c' or 'e'...'z' \n printf(#un), nuevaPalabra(c)" ];
-	    un -> caracterEspecial [label = " EOC \n printf(#un), putchar(c)" ];
+	    un -> identificadorInvalido [label = "c == EOC " ];
 
 	    und -> unde [label = "c == 'e' " ];
-	    und -> aperturaComillasSimples [label = "c == \' \n printf(#und), putchar(c)" ];
-	    und -> aperturaComillasDobles [label = "c == \" \n printf(#und), putchar(c)" ];
-	    und -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#und), putchar(c)" ];
-	    und -> posibleComentario [label = "c == / \n printf(#und), putchar(c)" ];
-	    und -> espacio [label = "c == ' ' or c == '\\t' \n printf(#und), putchar(c)" ];
-	    und -> enPalabra [label = "c == '_' c == or 'A'...'Z' or c == 'a'...'d' or 'f'...'z' \n printf(#und), nuevaPalabra(c)" ];
-	    und -> caracterEspecial [label = " EOC \n printf(#und), putchar(c)" ];
+	    und -> identificadorInvalido [label = "c == EOC " ];
 
 	    unde -> esUndef [label = "c == 'f' " ];
-	    unde -> aperturaComillasSimples [label = "c == \' \n printf(#unde), putchar(c)" ];
-	    unde -> aperturaComillasDobles [label = "c == \" \n printf(#unde), putchar(c)" ];
-	    unde -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#unde), putchar(c)" ];
-	    unde -> posibleComentario [label = "c == / \n printf(#unde), putchar(c)" ];
-	    unde -> espacio [label = "c == ' ' or c == '\\t' \n printf(#unde), putchar(c)" ];
-	    unde -> enPalabra [label = "c == '_' or c == 'A'...'Z' or c == 'a'...'e' or 'g'...'z' \n printf(#unde), nuevaPalabra(c)" ];
-	    unde -> caracterEspecial [label = " EOC \n printf(#unde), putchar(c)" ];
+	    unde -> identificadorInvalido [label = "c == EOC " ];
 
 	    esUndef -> undefEspacio [label = "c == ' ' or c == '\\t' " ];
-	    esUndef -> aperturaComillasSimples [label = "c == \' \n printf(#undef), putchar(c)" ];
-	    esUndef -> aperturaComillasDobles [label = "c == \" \n printf(#undef), putchar(c)" ];
-	    esUndef -> "*comienzoDeLinea" [label = "c == '\\n' \n printf(#undef), putchar(c)" ];
-	    esUndef -> posibleComentario [label = "c == / \n printf(#undef), putchar(c)" ];
-	    esUndef -> enPalabra [label = "c == '_' or c == 'A'...'Z' or c == 'a'...'z' \n printf(#undef), nuevaPalabra(c)" ];
-	    esUndef -> caracterEspecial [label = " EOC  \n printf(#undef), putchar(c)" ];
+	    esUndef -> identificadorInvalido [label = "c == EOC " ];
 
 	    undefEspacio -> undefIdentificador [label = "c == '_' or c =='A'...'Z' or c =='a'...'z' \n nuevoIdentificador(c)" ];
 	    undefEspacio -> undefEspacio [label = "c == ' ' or c == '\\t' " ];
@@ -291,6 +232,4 @@
 	    undefIdentificador -> identificadorInvalido [label = " EOC " ];
 
 	}
-		
-
 ![Preprocesador - DOT](https://user-images.githubusercontent.com/82005945/132162623-ee7bf7d0-869b-4789-a261-a07a6fa0f9af.png)
