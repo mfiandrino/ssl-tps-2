@@ -58,6 +58,7 @@
 			defineEspacio [shape=box, height=1, width=1];
 			defineIdentificador [shape=box, height=1, width=1];
 			identificadorInvalido [shape=box, height=1, width=1];
+			numeralIncorrecto [shape=box, height=1, width=1];
 			defineIdentificadorEspacio [shape=box, height=1, width=1];
 			textoDefineInvalido [shape=box, height=1, width=1];
 			defineTexto [shape=box, height=1, width=1];
@@ -176,22 +177,22 @@
 	    posibleIncludeDefineUndef -> caracterEspecial [label = " EOC \n putchar('#'), putchar(c)"];
 
 	    d -> de [label = "c == 'e' " ];
-	    d -> identificadorInvalido [label = "c == EOC" ];
+	    d -> numeralIncorrecto [label = "c == EOC" ];
 
 	    de -> def [label = "c == 'f'" ];
-	    de -> identificadorInvalido [label = "c == EOC " ];
+	    de -> numeralIncorrecto [label = "c == EOC " ];
 
 	    def -> defi [label = "c == 'i' " ];
-	    def -> identificadorInvalido [label = "c == EOC " ];
+	    def -> numeralIncorrecto [label = "c == EOC " ];
 
 	    defi -> defin [label = "c == 'n' " ];
-	    defi -> identificadorInvalido [label = "c == EOC " ];
+	    defi -> numeralIncorrecto [label = "c == EOC " ];
 
 	    defin -> define [label = "c == 'e' " ];
-	    defin -> identificadorInvalido [label = "c == EOC " ];
+	    defin -> numeralIncorrecto [label = "c == EOC " ];
 
 	    define -> defineEspacio [label = "c == ' '  or c == '\\t' "];
-	    define -> identificadorInvalido [label = "c == EOC " ];
+	    define -> numeralIncorrecto [label = "c == EOC " ];
 
 	    defineEspacio -> defineIdentificador [label = " c == '_' or c == 'A'...'Z' or c == 'a'...'z' "];
 	    defineEspacio -> defineEspacio [label = " c == ' ' or c == '\\t' "];
@@ -209,19 +210,19 @@
 	    defineTexto -> defineTexto [label = " EOC " ];
 
 	    u -> un [label = "c == 'n' " ];
-	    u -> identificadorInvalido [label = "c == EOC " ];
+	    u -> numeralIncorrecto [label = "c == EOC " ];
 
 	    un -> und [label = "c == 'd' " ];
-	    un -> identificadorInvalido [label = "c == EOC " ];
+	    un -> numeralIncorrecto [label = "c == EOC " ];
 
 	    und -> unde [label = "c == 'e' " ];
-	    und -> identificadorInvalido [label = "c == EOC " ];
+	    und -> numeralIncorrecto [label = "c == EOC " ];
 
 	    unde -> esUndef [label = "c == 'f' " ];
-	    unde -> identificadorInvalido [label = "c == EOC " ];
+	    unde -> numeralIncorrecto [label = "c == EOC " ];
 
 	    esUndef -> undefEspacio [label = "c == ' ' or c == '\\t' " ];
-	    esUndef -> identificadorInvalido [label = "c == EOC " ];
+	    esUndef -> numeralIncorrecto [label = "c == EOC " ];
 
 	    undefEspacio -> undefIdentificador [label = "c == '_' or c =='A'...'Z' or c =='a'...'z' \n nuevoIdentificador(c)" ];
 	    undefEspacio -> undefEspacio [label = "c == ' ' or c == '\\t' " ];

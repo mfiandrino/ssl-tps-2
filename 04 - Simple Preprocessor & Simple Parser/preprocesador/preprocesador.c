@@ -11,10 +11,9 @@ int main()
     int c;
     int resultado;
     
-   // fun_ptr = &comienzoDeLinea; //TODO: Sacar el & en los estados
     while ((c=getchar( ))!= EOF) 
     {
-        resultado = (*fun_ptr)(c); //TODO: se puede sacar el *
+        resultado = (fun_ptr)(c);
         
         if(resultado == -1)
         {
@@ -25,7 +24,11 @@ int main()
         {
             printf("\nError: Un #define tiene el texto a reemplazar Invalido\n");
             break;
-        } 
+        }
+        else if (resultado== -3){
+            printf("\nError: Luego del # no hay un define ni undef\n");
+            break;
+        }
     }
     if(resultado == 1)
         printf("\nEl proceso ha finalizado con exito\n\n");
