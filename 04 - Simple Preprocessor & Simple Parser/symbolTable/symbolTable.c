@@ -2,10 +2,13 @@
 Modulo Symbol Table
 Implementación de las funciones para guardar, buscar y borrar datos de una tabla de simbolos
 Grupo Nro 3 del curso K2051 Lunes TN
-20210905
+20210911
 */
 #include "symbolTable.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 /* hash: forma un valor hash para la cadena s */
 unsigned hash(char *s)
@@ -49,6 +52,7 @@ static struct nlist *getStruct(char *s)
 /* set: coloca (identificador, define) dentro de hashtab y devuelve el texto a reemplazar*/
 const char *set(char *identificador, char *define)
 {
+    char *strdup (const char*);
     struct nlist *np;
     unsigned hashval;
 

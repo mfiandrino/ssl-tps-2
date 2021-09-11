@@ -2,13 +2,13 @@
 Funciones Preprocesador
 Archivo con la implementacion de las funciones como estados
 Grupo Nro 3 del curso K2051 Lunes TN
-20210905
+20210911
 */
-
-//Cambiar define undef, hacerlo mas simple con el # solo acepta define undef e include, sino error
 
 #include "funcionesPreprocesador.h"
 #include "../symbolTable/symbolTable.h"
+#include <stdio.h>
+#include <string.h>
 
 #define largoMaxIdentificador 32
 int contIdentificador;
@@ -233,25 +233,19 @@ static int enPalabra(int c) //Caracteres aptos para un identificador
             break;
 
         case '\'':
-            //Comparar con tabla de define y fijarse de reemplazar o imprimir la palabra
             verificarEnTabla( );
-
             putchar(c);
             fun_ptr = aperturaComillasSimples;
             break;
 
         case '\"':
-            //Comparar con tabla de define y fijarse de reemplazar o imprimir la palabra
-           verificarEnTabla();
-                
+            verificarEnTabla();
             putchar(c);
             fun_ptr = aperturaComillasDobles;
             break;
 
         case '/':
-            //Comparar con tabla de define y fijarse de reemplazar o imprimir la palabra
             verificarEnTabla( );
-                
             fun_ptr = posibleComentario;
             break;
 
@@ -267,7 +261,7 @@ static int enPalabra(int c) //Caracteres aptos para un identificador
             break;
 
         default: //EOC
-           verificarEnTabla( );
+            verificarEnTabla( );
             putchar(c);
             fun_ptr = caracterEspecial;
             break;
@@ -549,7 +543,7 @@ static int entreComillasDobles(int c) //Entre comillas dobles, se buscan los car
     return 1;
 }
 
-static int posibleIncludeDefineUndef(int c) //Tengo un # Busco una 'd' 'i' 'u'
+static int posibleIncludeDefineUndef(int c) //Tengo un # Busco una 'd' 'u' 'i'
 {
     switch (c)
     {
@@ -560,46 +554,15 @@ static int posibleIncludeDefineUndef(int c) //Tengo un # Busco una 'd' 'i' 'u'
         case 'u':
             fun_ptr = u;
             break;
-
-        case '\'':
-            putchar('#');
-            putchar(c);
-            fun_ptr = aperturaComillasSimples;
-            break;
-
-        case '\"':
-            putchar('#');
-            putchar(c);
-            fun_ptr = aperturaComillasDobles;
-            break;
-
-        case '\n':
-            putchar('#');
-            putchar(c);
-            fun_ptr = comienzoDeLinea;
-            break;
-
-        case '/':
-            putchar('#');
-            fun_ptr = posibleComentario;
-            break;
-
-        case ' ': case '\t':
-            putchar('#');
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-      //TODO: Contemplar caso defZ
-        case '_': case 'A'...'Z': case 'a'...'c': case 'e'...'t': case 'v'...'z':
+        
+        case 'i':
             putchar('#');
             nuevaPalabra(c);
             fun_ptr = enPalabra;
             break;
 
         default: //EOC
-            putchar('#');
-            putchar(c);
-            fun_ptr = caracterEspecial;
+            fun_ptr = numeralIncorrecto;
     }
     return 1;
 }
@@ -613,8 +576,6 @@ static int d(int c) // Encuentro una 'd' buscamos completar el define
             break;
 
         default: //EOC
-            printf("%s","#d");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -629,8 +590,6 @@ static int de(int c) // Encuentro una 'de' buscamos completar el define
             break;
 
         default: //EOC 
-            printf("%s","#de");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -645,8 +604,6 @@ static int def(int c) // Encuentro una 'def' buscamos completar el define
             break;
 
         default: //EOC
-            printf("%s","#def");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -661,8 +618,6 @@ static int defi(int c) // Encuentro una 'defi' buscamos completar el define
             break;
 
         default: //EOC
-            printf("%s","#defi");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -677,8 +632,6 @@ static int defin(int c) // Encuentro una 'defin' buscamos completar el define
             break;
 
         default: //EOC
-            printf("%s","#defin");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -693,8 +646,6 @@ static int define(int c) // Encuentro una 'define' buscamos espacio para el iden
             break;
 
         default: //EOC
-            printf("%s","#define");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -820,8 +771,6 @@ static int u(int c) // Encuentro una 'u' buscamos completar el undef
             break;
 
         default: //EOC
-            printf("%s","#u");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -836,8 +785,6 @@ static int un(int c)  // Encuentro una 'un' buscamos completar el undef
             break;
 
         default: //EOC
-            printf("%s","#un");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -852,8 +799,6 @@ static int und(int c)  // Encuentro una 'und' buscamos completar el undef
             break;
 
         default: //EOC
-            printf("%s","#und");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -868,8 +813,6 @@ static int unde(int c)  // Encuentro una 'unde' buscamos completar el undef
             break;
 
         default: //EOC
-            printf("%s","#unde");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;
@@ -884,8 +827,6 @@ static int esUndef(int c)  // Encuentro un 'undef'
             break;
 
         default: //EOC
-            printf("%s","#undef");
-            putchar(c);
             fun_ptr = numeralIncorrecto;
     }
     return 1;

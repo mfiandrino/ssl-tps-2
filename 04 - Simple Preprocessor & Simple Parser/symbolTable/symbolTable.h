@@ -1,9 +1,6 @@
 #ifndef LOOKUPTABLE_H_INCLUDED
 #define LOOKUPTABLE_H_INCLUDED
 
-#include <stdlib.h>
-#include <string.h>
-
 #define HASHSIZE 101
 
 struct nlist  
