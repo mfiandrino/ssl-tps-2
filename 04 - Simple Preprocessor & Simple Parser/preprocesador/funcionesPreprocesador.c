@@ -22,6 +22,12 @@ char textoDefine[largoMaxTextoDefine];
 int contPalabra;
 char palabra[largoMaxPalabra];
 
+#define largoMaxPath 100
+int contPath;
+char path[largoMaxPath];
+FILE * arch;
+int nc;
+
 int (*fun_ptr)(int)= comienzoDeLinea;
 const char *elemento;
 
@@ -68,6 +74,18 @@ static void nuevoCaracterIdentificador(int);
 static void nuevoTextoDefine(int);
 static void nuevoCaracterTextoDefine(int);
 static void verificarEnTabla();
+static int i(int);
+static int in(int);
+static int inc(int);
+static int incl(int);
+static int inclu(int);
+static int includ(int);
+static int include(int);
+static int includeEspacio(int);
+static int includeComillas(int);
+static int includePath(int);
+static int includeCierreComillas(int);
+static int pathInvalido(int);
 
 
 static int comentarioFinDeLinea(int c) //Dentro de un comentario de linea
@@ -558,7 +576,7 @@ static int posibleIncludeDefineUndef(int c) //Tengo un # Busco una 'd' 'u' 'i'
         case 'i':
             putchar('#');
             nuevaPalabra(c);
-            fun_ptr = enPalabra;
+            fun_ptr = i;
             break;
 
         default: //EOC
@@ -872,8 +890,207 @@ static int undefIdentificador(int c) //Identificador asociado al undef, se deja 
     return 1; 
 }
 
+static int i(int c) // Encuentro una 'd' buscamos completar el define
+{
+    switch (c)
+    {
+        case 'n':
+            fun_ptr = in;
+            break;
 
+        default: //EOC
+            fun_ptr = numeralIncorrecto;
+    }
+    return 1;
+}
 
+static int in(int c) // Encuentro una 'de' buscamos completar el define
+{
+    switch (c)
+    {
+        case 'c':
+            fun_ptr = inc;
+            break;
 
+        default: //EOC 
+            fun_ptr = numeralIncorrecto;
+    }
+    return 1;
+}
 
+static int inc(int c) // Encuentro una 'def' buscamos completar el define
+{
+    switch (c)
+    {
+        case 'l':
+            fun_ptr = incl;
+            break;
 
+        default: //EOC
+            fun_ptr = numeralIncorrecto;
+    }
+    return 1;
+}
+
+static int incl(int c) // Encuentro una 'defi' buscamos completar el define
+{
+    switch (c)
+    {
+        case 'u':
+            fun_ptr = inclu;
+            break;
+
+        default: //EOC
+            fun_ptr = numeralIncorrecto;
+    }
+    return 1;
+}
+
+static int inclu(int c) // Encuentro una 'defin' buscamos completar el define
+{
+    switch (c)
+    {
+        case 'd':
+            fun_ptr = includ;
+            break;
+
+        default: //EOC
+            fun_ptr = numeralIncorrecto;
+    }
+    return 1;
+}
+
+static int includ(int c) // Encuentro una 'define' buscamos espacio para el identificador
+{
+    switch (c)
+    {
+        case 'e':
+            fun_ptr = include;
+            break;
+
+        default: //EOC
+            fun_ptr = numeralIncorrecto;
+    }
+    return 1;
+}
+
+static int include(int c) // Encuentro una 'define' buscamos espacio para el identificador
+{
+    switch (c)
+    {
+        case ' ': case '\t':
+            fun_ptr = includeEspacio;
+            break;
+
+        default: //EOC
+            fun_ptr = numeralIncorrecto;
+    }
+    return 1;
+}
+
+static int includeEspacio(int c) // Identificador completo del define
+{
+    switch (c)
+    {
+        case '\"': 
+            fun_ptr = includeComillas;
+            break;
+        default: //EOC
+            fun_ptr = pathInvalido;
+    }
+    return 1;
+}
+
+static int includeComillas(int c) // Identificador completo del define
+{
+    switch (c)
+    {
+        case '<': case '>': case ':': case '/': case '\\': case '?': case '*': //EOC
+            fun_ptr = pathInvalido;
+            break;
+        default: //EOC 
+            fun_ptr = includePath;
+    }
+    return 1;
+}
+static void nuevoPath(int c){
+    contPath = 0;
+    memset(path,'\0',sizeof(char) * largoMaxPath);
+    path[contPath] = c;
+}
+
+static void nuevoCaracterPath(int c){
+    contPath++;
+    path[contPath] = c;
+}
+
+static int includePath(int c) // Identificador completo del define
+{
+    switch (c)
+    {
+        case '\"': 
+            arch = fopen (path, "r");
+            if (arch == NULL){
+                    return -1;
+                }
+                else{
+                    while ((nc = fgetc(arch))!= EOF)
+                    {
+                        putchar(nc);
+                    }
+                    fclose(arch);   
+                }
+            fun_ptr = includeCierreComillas;
+        case '<': case '>': case ':': case '/': case '\\': case '?': case '*': //EOC
+            fun_ptr = pathInvalido;
+            break;
+        default: //EOC
+            fun_ptr = includePath;
+    }
+    return 1;
+}
+
+static int pathInvalido(int c) //Identificador invalido
+{
+    return -1;
+}
+
+static int includeCierreComillas(int c) //Cierre de comillas dobles, se busca el siguiente caracter
+{
+    switch (c)
+    {
+        case '\'':
+            putchar(c);
+            fun_ptr = aperturaComillasSimples;
+            break;
+
+        case '\"':
+            putchar(c);
+            fun_ptr = aperturaComillasDobles;
+            break;
+
+        case '\n':
+            putchar(c);
+            fun_ptr = comienzoDeLinea;
+            break;
+
+        case '/':
+            fun_ptr = posibleComentario;
+            break;
+
+        case ' ': case '\t':
+            putchar(c);
+            fun_ptr = espacio;
+            break;
+
+        case '_': case 'A'...'Z': case 'a'...'z':
+            nuevaPalabra(c);
+            fun_ptr = enPalabra;
+            break;
+
+        default: //EOC
+            putchar(c);
+            fun_ptr = caracterEspecial;
+    }
+    return 1;
+}
