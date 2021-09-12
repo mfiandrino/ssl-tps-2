@@ -168,13 +168,8 @@
 
 	    posibleIncludeDefineUndef -> d [label = " c == 'd' "];
 	    posibleIncludeDefineUndef -> u [label = " c == 'u' "];
-	    posibleIncludeDefineUndef -> aperturaComillasSimples [label = " c == ' \n putchar('#'), putchar(c)"];
-	    posibleIncludeDefineUndef -> aperturaComillasDobles [label = " c == \" \n putchar('#'), putchar(c)"];
-	    posibleIncludeDefineUndef -> "*comienzoDeLinea" [label = " c == '\\n' \n putchar('#'), putchar(c)"];
-	    posibleIncludeDefineUndef -> posibleComentario [label = " c == '/' \n putchar('#')"];
-	    posibleIncludeDefineUndef -> espacio [label = " c == ' ' or c == '\\t' \n putchar('#'), putchar(c)"];
-	    posibleIncludeDefineUndef -> enPalabra [label = " c == '_' or c == 'A'...'Z' or c == 'a'...'z' \n putchar('#'), putchar(c)"];
-	    posibleIncludeDefineUndef -> caracterEspecial [label = " EOC \n putchar('#'), putchar(c)"];
+	    posibleIncludeDefineUndef -> i [label = " c == 'i' "];
+	    posibleIncludeDefineUndef -> numeralIncorrecto [label = " EOC \n putchar('#'), putchar(c)"];
 
 	    d -> de [label = "c == 'e' " ];
 	    d -> numeralIncorrecto [label = "c == EOC" ];
