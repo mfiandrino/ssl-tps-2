@@ -228,4 +228,6 @@
 	    undefIdentificador -> identificadorInvalido [label = " EOC " ];
 
 	}
-![Preprocesador - DOT](https://user-images.githubusercontent.com/82005945/132162623-ee7bf7d0-869b-4789-a261-a07a6fa0f9af.png)
+	
+![DOT - Preprocesador](https://user-images.githubusercontent.com/82002194/133004996-f765dc2e-ab79-445a-9220-409dbf865ce3.png)
+
