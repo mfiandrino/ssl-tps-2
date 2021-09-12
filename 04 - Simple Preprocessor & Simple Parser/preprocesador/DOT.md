@@ -4,7 +4,8 @@
 		decorate=true;	
 		labelfloat=false;	
 		fontname=Helvetica;	
-		ranksep=equally;	
+		ranksep=equally;
+		
 		subgraph cluster_0 {		
 			style=filled;		
 			color=lightgrey;		
@@ -17,7 +18,7 @@
 		}	
 	
 
-		subgraph cluster_0 {		
+		subgraph cluster_1 {		
 			style=filled;		
 			color=lightgrey;		
 			comentarioFinDeLinea [shape=box, height=1, width=1];
@@ -28,7 +29,7 @@
 			label = "COMENTARIOS";		
 		}		
 
-		subgraph cluster_1 {		
+		subgraph cluster_2 {		
 			style=filled;		
 			color=lightgrey;
 			aperturaComillasSimples [shape=box, height=1, width=1];
@@ -37,7 +38,7 @@
 			label = "COMILLAS_SIMPLES";		
 		}
 
-		subgraph cluster_2 {		
+		subgraph cluster_3 {		
 			style=filled;		
 			color=lightgrey;		
 			aperturaComillasDobles [shape=box, height=1, width=1];
@@ -46,7 +47,7 @@
 			label = "COMILLAS_DOBLES";		
 		}
 
-		subgraph cluster_3 {		
+		subgraph cluster_4 {		
 			style=filled;		
 			color=lightgrey;		
 			d [shape=box, height=1, width=1];
@@ -65,7 +66,7 @@
 			label = "DEFINE";		
 		}
 
-		subgraph cluster_4 {		
+		subgraph cluster_5 {		
 			style=filled;		
 			color=lightgrey;		
 			u [shape=box, height=1, width=1];
@@ -229,5 +230,6 @@
 
 	}
 	
-![DOT - Preprocesador](https://user-images.githubusercontent.com/82002194/133004996-f765dc2e-ab79-445a-9220-409dbf865ce3.png)
+![DOT - Preprocesador](https://user-images.githubusercontent.com/82002194/133005045-b106f81f-9a80-4d83-9b9d-e4607b805b82.png)
+
 
