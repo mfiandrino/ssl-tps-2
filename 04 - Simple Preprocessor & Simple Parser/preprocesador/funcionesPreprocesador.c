@@ -25,8 +25,6 @@ char palabra[largoMaxPalabra];
 #define largoMaxPath 100
 int contPath;
 char path[largoMaxPath];
-FILE * arch;
-int nc;
 
 int (*fun_ptr)(int)= comienzoDeLinea;
 const char *elemento;
@@ -86,6 +84,9 @@ static int includeComillas(int);
 static int includePath(int);
 static int includeCierreComillas(int);
 static int pathInvalido(int);
+static int traerArchivoInlcude();
+static void nuevoPath(int);
+static void nuevoCaracterPath(int);
 
 
 static int comentarioFinDeLinea(int c) //Dentro de un comentario de linea
@@ -574,8 +575,6 @@ static int posibleIncludeDefineUndef(int c) //Tengo un # Busco una 'd' 'u' 'i'
             break;
         
         case 'i':
-            putchar('#');
-            nuevaPalabra(c);
             fun_ptr = i;
             break;
 
@@ -995,6 +994,11 @@ static int includeEspacio(int c) // Identificador completo del define
         case '\"': 
             fun_ptr = includeComillas;
             break;
+        
+        case ' ': case '\t': 
+            fun_ptr = includeEspacio;
+            break;
+
         default: //EOC
             fun_ptr = pathInvalido;
     }
@@ -1008,7 +1012,9 @@ static int includeComillas(int c) // Identificador completo del define
         case '<': case '>': case ':': case '/': case '\\': case '?': case '*': //EOC
             fun_ptr = pathInvalido;
             break;
+
         default: //EOC 
+            nuevoPath(c);
             fun_ptr = includePath;
     }
     return 1;
@@ -1024,27 +1030,38 @@ static void nuevoCaracterPath(int c){
     path[contPath] = c;
 }
 
+static int traerArchivoInlcude()
+{
+    int nc;
+    FILE *arch = fopen (path, "r");
+    if (arch == NULL)
+        return 0;
+    else
+    {
+        while ((nc = fgetc(arch))!= EOF)
+            putchar(nc);
+
+        fclose(arch);
+        return 1;  
+    }
+}
+
 static int includePath(int c) // Identificador completo del define
 {
     switch (c)
     {
         case '\"': 
-            arch = fopen (path, "r");
-            if (arch == NULL){
-                    return -1;
-                }
-                else{
-                    while ((nc = fgetc(arch))!= EOF)
-                    {
-                        putchar(nc);
-                    }
-                    fclose(arch);   
-                }
+            if(!traerArchivoInlcude())
+                return -5;
             fun_ptr = includeCierreComillas;
+            break;
+
         case '<': case '>': case ':': case '/': case '\\': case '?': case '*': //EOC
             fun_ptr = pathInvalido;
             break;
+
         default: //EOC
+            nuevoCaracterPath(c);
             fun_ptr = includePath;
     }
     return 1;
@@ -1052,7 +1069,7 @@ static int includePath(int c) // Identificador completo del define
 
 static int pathInvalido(int c) //Identificador invalido
 {
-    return -1;
+    return -4;
 }
 
 static int includeCierreComillas(int c) //Cierre de comillas dobles, se busca el siguiente caracter

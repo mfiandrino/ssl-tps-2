@@ -25,9 +25,19 @@ int main()
             printf("\nError: Un #define tiene el texto a reemplazar Invalido\n");
             break;
         }
-        else if (resultado== -3)
+        else if (resultado == -3)
         {
             printf("\nError: Luego del # no hay un define ni undef\n");
+            break;
+        }
+        else if (resultado == -4)
+        {
+            printf("\nError: Path Invalido\n");
+            break;
+        }
+        else if (resultado == -5)
+        {
+            printf("\nError: No se encontro el archivo\n");
             break;
         }
     }
