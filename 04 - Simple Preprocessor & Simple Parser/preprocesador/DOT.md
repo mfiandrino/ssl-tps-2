@@ -1,22 +1,23 @@
-	digraph CARACTER_COMUN { 
-		rankdir=LR;
-		labelloc=t;	
-		decorate=true;	
-		labelfloat=false;	
-		fontname=Helvetica;	
-		ranksep=equally;
+	digraph PREPROCESADOR { 
+	rankdir=LR;
+	labelloc=t;	
+	decorate=true;	
+	labelfloat=false;	
+	fontname=Helvetica;	
+	ranksep=equally;
 		
 		subgraph cluster_0 {		
 			style=filled;		
 			color=lightgrey;		
-		    "*comienzoDeLinea" [shape=box,fontsize=40, height=5, width=5]; 
-		    enPalabra [shape=box, height=1, width=1]; 
-		    espacio [shape=box, height=1, width=1];
-		    caracterEspecial [shape=box, height=1, width=1];
-		    posibleIncludeDefineUndef [shape=box, height=1, width=1];
+			"*comienzoDeLinea" [shape=box,fontsize=40, height=5, width=5]; 
+		    	enPalabra [shape=box, height=1, width=1]; 
+		    	espacio [shape=box, height=1, width=1];
+		    	caracterEspecial [shape=box, height=1, width=1];
+		    	posibleIncludeDefineUndef [shape=box, height=1, width=1];
 			label = "INICIO";		
 		}	
-	
+	    
+	    numeralIncorrecto [shape=box, height=1, width=1];
 
 		subgraph cluster_1 {		
 			style=filled;		
@@ -59,7 +60,6 @@
 			defineEspacio [shape=box, height=1, width=1];
 			defineIdentificador [shape=box, height=1, width=1];
 			identificadorInvalido [shape=box, height=1, width=1];
-			numeralIncorrecto [shape=box, height=1, width=1];
 			defineIdentificadorEspacio [shape=box, height=1, width=1];
 			textoDefineInvalido [shape=box, height=1, width=1];
 			defineTexto [shape=box, height=1, width=1];
@@ -77,6 +77,24 @@
 			undefEspacio [shape=box, height=1, width=1];
 			undefIdentificador [shape=box, height=1, width=1];
 			label = "UNDEF";		
+		}
+
+		subgraph cluster_6 {
+			style=filled;
+			color=lightgrey;
+			i [shape=box, height=1, width=1];
+			in [shape=box, height=1, width=1];
+			inc [shape=box, height=1, width=1];
+			incl [shape=box, height=1, width=1];
+			inclu [shape=box, height=1, width=1];
+			includ [shape=box, height=1, width=1];
+			include [shape=box, height=1, width=1];
+			includeEspacio [shape=box, height=1, width=1];
+			includeComillas [shape=box, height=1, width=1];
+			includePath [shape=box, height=1, width=1];
+			includeCierreComillas [shape=box, height=1, width=1];
+			pathInvalido [shape=box, height=1, width=1];
+			label = "INCLUDE";
 		}
 
 	    comentarioFinDeLinea -> "*comienzoDeLinea" [label = " c == '\\n' \n putchar(' '), putchar(c)"];
@@ -228,8 +246,47 @@
 	    undefIdentificador -> "*comienzoDeLinea" [label = "c == '\\n \n undef(identificador) " ];
 	    undefIdentificador -> identificadorInvalido [label = " EOC " ];
 
+		i -> in [label = "c == 'n' " ];
+	    i -> numeralIncorrecto [label = "c == EOC" ];
+
+	    in -> inc [label = "c == 'c'" ];
+	    in -> numeralIncorrecto [label = "c == EOC " ];
+
+	    inc -> incl [label = "c == 'l' " ];
+	    inc -> numeralIncorrecto [label = "c == EOC " ];
+
+	    incl -> inclu [label = "c == 'u' " ];
+	    incl -> numeralIncorrecto [label = "c == EOC " ];
+
+	    inclu -> includ [label = "c == 'd' " ];
+	    inclu -> numeralIncorrecto [label = "c == EOC " ];
+
+	    includ -> include [label = "c == 'e' "];
+	    includ -> numeralIncorrecto [label = "c == EOC " ];
+
+		include -> includeEspacio [label = "c == ' '  or c == '\\t' "];
+	    include -> numeralIncorrecto [label = "c == EOC " ];
+
+	    includeEspacio -> includeComillas [label = " c == '' "];
+	    includeEspacio -> includeEspacio [label = " c == ' ' or c == '\\t' "];
+	    includeEspacio -> pathInvalido [label = " EOC "];
+
+		includeComillas -> pathInvalido [label = " c == '<' or c == '>' or c == ':' or c == '/' or c == '\\' or c == '?' or c == '*' "];
+	    includeComillas -> includePath [label = " EOC "];
+
+	    includePath -> pathInvalido [label = "c == '<' or c == '>' or c == ':' or c == '/' or c == '\\' or c == '?' or c == '*' " ];
+	    includePath -> includeCierreComillas [label = "c == '' " ];
+	    includePath -> includePath [label = " EOC " ];
+
+		includeCierreComillas -> "*comienzoDeLinea" [label = " c == '\\n' \n putchar(c)"];
+	    includeCierreComillas -> aperturaComillasSimples [label = " c == ' \n putchar(c)"];
+	    includeCierreComillas -> aperturaComillasDobles [label = " c == \" \n putchar(c)"];
+	    includeCierreComillas -> posibleComentario [label = " c == '/' "];
+	    includeCierreComillas -> espacio [label = " c == ' ' or c == '\\t' \n putchar(c)"];
+	    includeCierreComillas -> enPalabra [label = " c == '_' or c == 'A'...'Z' or c == 'a'...'z' \n nuevaPalabra(c)"];
+	    includeCierreComillas -> caracterEspecial [label = " EOC \n putchar(c)"];
+
 	}
 	
-![DOT - Preprocesador](https://user-images.githubusercontent.com/82002194/133005045-b106f81f-9a80-4d83-9b9d-e4607b805b82.png)
-
+![PREPROCESADOR](https://user-images.githubusercontent.com/82005945/133007920-d96bd58b-4990-4f84-b31e-e006b8c6e823.png)
 
