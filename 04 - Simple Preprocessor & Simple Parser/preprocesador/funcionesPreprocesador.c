@@ -32,16 +32,12 @@ const char *elemento;
 static int comentarioFinDeLinea(int);
 static int comentarioMultilinea(int);
 static int posibleFinDeComentarioMultilinea(int);
-static int FinDeComentarioMultilinea(int);
 static int posibleComentario(int);
 static int enPalabra(int);
-static int espacio(int);
 
 static int aperturaComillasSimples(int);
 static int entreComillasSimples(int);
-static int cierreComillasSimples(int);
 static int aperturaComillasDobles(int);
-static int cierreComillasDobles(int);
 static int entreComillasDobles(int);
 static int posibleIncludeDefineUndef(int);
 static int d(int);
@@ -64,7 +60,6 @@ static int unde(int);
 static int esUndef(int);
 static int undefEspacio(int);
 static int undefIdentificador(int);
-static int caracterEspecial(int);
 static void nuevaPalabra(int);
 static void nuevoCaracterEnPalabra(int);
 static void nueintentificador(int);
@@ -82,11 +77,11 @@ static int include(int);
 static int includeEspacio(int);
 static int includeComillas(int);
 static int includePath(int);
-static int includeCierreComillas(int);
 static int pathInvalido(int);
 static int traerArchivoInclude();
 static void nuevoPath(int);
 static void nuevoCaracterPath(int);
+static int restoDeLinea(int);
 
 
 static int comentarioFinDeLinea(int c) //Dentro de un comentario de linea
@@ -129,7 +124,7 @@ static int posibleFinDeComentarioMultilinea(int c) //Dentro de comentario multil
 
         case '/':
             putchar(' ');
-            fun_ptr = FinDeComentarioMultilinea;
+            fun_ptr = restoDeLinea;
             break;
 
         default: //EOC
@@ -138,7 +133,7 @@ static int posibleFinDeComentarioMultilinea(int c) //Dentro de comentario multil
     return 1;
 }
 
-static int FinDeComentarioMultilinea(int c) //Fin de comentario multilinea, siguiente caracter
+static int restoDeLinea(int c) //Fin de comentario multilinea, siguiente caracter
 {
     switch (c)
     {
@@ -161,11 +156,6 @@ static int FinDeComentarioMultilinea(int c) //Fin de comentario multilinea, sigu
             fun_ptr = comienzoDeLinea;
             break;
 
-        case ' ': case '\t':
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-
         case '_': case 'A'...'Z': case 'a'...'z':
             nuevaPalabra(c);
             fun_ptr = enPalabra;
@@ -173,7 +163,7 @@ static int FinDeComentarioMultilinea(int c) //Fin de comentario multilinea, sigu
 
         default: //EOC
             putchar(c);
-            fun_ptr = caracterEspecial;
+            fun_ptr = restoDeLinea;
     }
     return 1;
 }
@@ -208,12 +198,6 @@ static int posibleComentario(int c) //Llego una / vemos siguiente caracter
             fun_ptr = comentarioMultilinea;
             break;
 
-        case ' ': case '\t':
-            putchar('/');
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-
         case '_': case 'A'...'Z': case 'a'...'z':
             putchar('/');
             nuevaPalabra(c);
@@ -223,7 +207,7 @@ static int posibleComentario(int c) //Llego una / vemos siguiente caracter
         default: //EOC
             putchar('/');
             putchar(c);
-            fun_ptr = caracterEspecial;
+            fun_ptr = restoDeLinea;
     }
     return 1;
 }
@@ -268,12 +252,6 @@ static int enPalabra(int c) //Caracteres aptos para un identificador
             fun_ptr = posibleComentario;
             break;
 
-        case ' ': case '\t':
-            verificarEnTabla( );
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-
         case '_': case 'A'...'Z': case 'a'...'z': case '0'...'9':
             nuevoCaracterEnPalabra(c);
             fun_ptr = enPalabra;
@@ -282,48 +260,8 @@ static int enPalabra(int c) //Caracteres aptos para un identificador
         default: //EOC
             verificarEnTabla( );
             putchar(c);
-            fun_ptr = caracterEspecial;
+            fun_ptr = restoDeLinea;
             break;
-    }
-    return 1;
-}
-
-static int espacio(int c) //Caracter comun
-{
-    switch (c)
-    {
-        case '\n':
-            putchar(c);
-            fun_ptr = comienzoDeLinea;
-            break;
-
-        case '\'':
-            putchar(c);
-            fun_ptr = aperturaComillasSimples;
-            break;
-
-        case '\"':
-            putchar(c);
-            fun_ptr = aperturaComillasDobles;
-            break;
-
-        case '/':
-            fun_ptr = posibleComentario;
-            break;
-
-        case ' ': case '\t':
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-
-        case '_': case 'A'...'Z': case 'a'...'z':
-            nuevaPalabra(c);
-            fun_ptr = enPalabra;
-            break;
-
-        default: //EOC
-            putchar(c);
-            fun_ptr = caracterEspecial;
     }
     return 1;
 }
@@ -332,46 +270,6 @@ static void nuevaPalabra(int c){
     contPalabra = 0;
     memset(palabra,'\0',sizeof(char) * largoMaxPalabra);
     palabra[contPalabra] = c;    
-}
-
-static int caracterEspecial(int c) //Caracter especial (distintos a los que puede ser un indentificador)
-{
-    switch (c)
-    {
-        case '\n':
-            putchar(c);
-            fun_ptr = comienzoDeLinea;
-            break;
-
-        case '\'':
-            putchar(c);
-            fun_ptr = aperturaComillasSimples;
-            break;
-
-        case '\"':
-            putchar(c);
-            fun_ptr = aperturaComillasDobles;
-            break;
-
-        case '/':
-            fun_ptr = posibleComentario;
-            break;
-
-        case ' ': case '\t':
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-
-        case '_': case 'A'...'Z': case 'a'...'z':
-            nuevaPalabra(c);
-            fun_ptr = enPalabra;
-            break;
-
-        default: //EOC
-            putchar(c);
-            fun_ptr = caracterEspecial;       
-    }
-    return 1;
 }
 
 int comienzoDeLinea(int c) //Despues de un \n o al principio del archivo
@@ -401,19 +299,14 @@ int comienzoDeLinea(int c) //Despues de un \n o al principio del archivo
             fun_ptr = aperturaComillasDobles;
             break;
 
-        case ' ': case '\t':
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-
         case '_': case 'A'...'Z': case 'a'...'z':
-           nuevaPalabra(c);
+            nuevaPalabra(c);
             fun_ptr = enPalabra;
             break;
 
         default: //EOC
             putchar(c);
-            fun_ptr = caracterEspecial;
+            fun_ptr = restoDeLinea;
     }
     return 1;
 }
@@ -424,7 +317,7 @@ static int aperturaComillasSimples(int c) //Apertura comillas simples
     {
         case '\'':
             putchar(c);
-            fun_ptr = cierreComillasSimples;
+            fun_ptr = restoDeLinea;
             break;
 
         default: //EOC
@@ -440,7 +333,7 @@ static int entreComillasSimples(int c) //Dentro de comillas simples
     {
         case '\'':
             putchar(c);
-            fun_ptr = cierreComillasSimples;
+            fun_ptr = restoDeLinea;
             break;
 
         default: //EOC
@@ -450,45 +343,6 @@ static int entreComillasSimples(int c) //Dentro de comillas simples
     return 1;
 }
 
-static int cierreComillasSimples(int c) //Cierre de comillas simples
-{
-    switch (c)
-    {
-        case '\'':
-            putchar(c);
-            fun_ptr = aperturaComillasSimples;
-            break;
-
-        case '\"':
-            putchar(c);
-            fun_ptr = aperturaComillasDobles;
-            break;
-
-        case '\n':
-            putchar(c);
-            fun_ptr = comienzoDeLinea;
-            break;
-
-        case '/':
-            fun_ptr = posibleComentario;
-            break;
-
-        case ' ': case '\t':
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-
-        case '_': case 'A'...'Z': case 'a'...'z':
-            nuevaPalabra(c);
-            fun_ptr = enPalabra;
-            break;
-
-        default: //EOC
-            putchar(c);
-            fun_ptr = caracterEspecial;
-    }
-    return 1;
-}
 
 static int aperturaComillasDobles(int c) //Entramos a las comillas dobles caracteres adentro
 {
@@ -496,7 +350,7 @@ static int aperturaComillasDobles(int c) //Entramos a las comillas dobles caract
     {
         case '\"':
             putchar(c);
-            fun_ptr = cierreComillasDobles;
+            fun_ptr = restoDeLinea;
             break;
 
         default: //EOC
@@ -506,45 +360,6 @@ static int aperturaComillasDobles(int c) //Entramos a las comillas dobles caract
     return 1;
 }
 
-static int cierreComillasDobles(int c) //Cierre de comillas dobles, se busca el siguiente caracter
-{
-    switch (c)
-    {
-        case '\'':
-            putchar(c);
-            fun_ptr = aperturaComillasSimples;
-            break;
-
-        case '\"':
-            putchar(c);
-            fun_ptr = aperturaComillasDobles;
-            break;
-
-        case '\n':
-            putchar(c);
-            fun_ptr = comienzoDeLinea;
-            break;
-
-        case '/':
-            fun_ptr = posibleComentario;
-            break;
-
-        case ' ': case '\t':
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-
-        case '_': case 'A'...'Z': case 'a'...'z':
-            nuevaPalabra(c);
-            fun_ptr = enPalabra;
-            break;
-
-        default: //EOC
-            putchar(c);
-            fun_ptr = caracterEspecial;
-    }
-    return 1;
-}
 
 static int entreComillasDobles(int c) //Entre comillas dobles, se buscan los caracteres adentro de las
 {
@@ -552,7 +367,7 @@ static int entreComillasDobles(int c) //Entre comillas dobles, se buscan los car
     {
         case '\"':
             putchar(c);
-            fun_ptr = cierreComillasDobles;
+            fun_ptr = restoDeLinea;
             break;
 
         default: //EOC
@@ -874,7 +689,7 @@ static int undefIdentificador(int c) //Identificador asociado al undef, se deja 
     switch (c)
     {
         case '_': case 'A'...'Z': case 'a'...'z': case '0'...'9':
-           nuevoCaracterIdentificador(c);
+            nuevoCaracterIdentificador(c);
             fun_ptr = undefIdentificador;
             break;
 
@@ -1053,7 +868,7 @@ static int includePath(int c) // Path completo del include
         case '\"': 
             if(!traerArchivoInclude())
                 return -5;
-            fun_ptr = includeCierreComillas;
+            fun_ptr = restoDeLinea;
             break;
 
         case '<': case '>': case ':': case '/': case '\\': case '?': case '*': //EOC
@@ -1072,42 +887,3 @@ static int pathInvalido(int c) //Path invalido
     return -4;
 }
 
-static int includeCierreComillas(int c) //Cierre de comillas del include
-{
-    switch (c)
-    {
-        case '\'':
-            putchar(c);
-            fun_ptr = aperturaComillasSimples;
-            break;
-
-        case '\"':
-            putchar(c);
-            fun_ptr = aperturaComillasDobles;
-            break;
-
-        case '\n':
-            putchar(c);
-            fun_ptr = comienzoDeLinea;
-            break;
-
-        case '/':
-            fun_ptr = posibleComentario;
-            break;
-
-        case ' ': case '\t':
-            putchar(c);
-            fun_ptr = espacio;
-            break;
-
-        case '_': case 'A'...'Z': case 'a'...'z':
-            nuevaPalabra(c);
-            fun_ptr = enPalabra;
-            break;
-
-        default: //EOC
-            putchar(c);
-            fun_ptr = caracterEspecial;
-    }
-    return 1;
-}
