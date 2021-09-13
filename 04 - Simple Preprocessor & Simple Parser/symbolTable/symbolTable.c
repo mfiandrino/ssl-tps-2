@@ -4,6 +4,7 @@ Implementación de las funciones para guardar, buscar y borrar datos de una tabl
 Grupo Nro 3 del curso K2051 Lunes TN
 20210911
 */
+
 #include "symbolTable.h"
 #include <stdio.h>
 #include <stdlib.h>
