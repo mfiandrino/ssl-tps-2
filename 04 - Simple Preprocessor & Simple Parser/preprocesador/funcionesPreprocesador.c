@@ -84,7 +84,7 @@ static int includeComillas(int);
 static int includePath(int);
 static int includeCierreComillas(int);
 static int pathInvalido(int);
-static int traerArchivoInlcude();
+static int traerArchivoInclude();
 static void nuevoPath(int);
 static void nuevoCaracterPath(int);
 
@@ -889,7 +889,7 @@ static int undefIdentificador(int c) //Identificador asociado al undef, se deja 
     return 1; 
 }
 
-static int i(int c) // Encuentro una 'd' buscamos completar el define
+static int i(int c) // Encuentro una 'i' buscamos completar el include
 {
     switch (c)
     {
@@ -903,7 +903,7 @@ static int i(int c) // Encuentro una 'd' buscamos completar el define
     return 1;
 }
 
-static int in(int c) // Encuentro una 'de' buscamos completar el define
+static int in(int c) // Encuentro una 'in' buscamos completar el include
 {
     switch (c)
     {
@@ -917,7 +917,7 @@ static int in(int c) // Encuentro una 'de' buscamos completar el define
     return 1;
 }
 
-static int inc(int c) // Encuentro una 'def' buscamos completar el define
+static int inc(int c) //Encuentro una 'inc' buscamos completar el include
 {
     switch (c)
     {
@@ -931,7 +931,7 @@ static int inc(int c) // Encuentro una 'def' buscamos completar el define
     return 1;
 }
 
-static int incl(int c) // Encuentro una 'defi' buscamos completar el define
+static int incl(int c) // Encuentro una 'incl' buscamos completar el include
 {
     switch (c)
     {
@@ -945,7 +945,7 @@ static int incl(int c) // Encuentro una 'defi' buscamos completar el define
     return 1;
 }
 
-static int inclu(int c) // Encuentro una 'defin' buscamos completar el define
+static int inclu(int c) // Encuentro una 'inclu' buscamos completar el include
 {
     switch (c)
     {
@@ -959,7 +959,7 @@ static int inclu(int c) // Encuentro una 'defin' buscamos completar el define
     return 1;
 }
 
-static int includ(int c) // Encuentro una 'define' buscamos espacio para el identificador
+static int includ(int c) // Encuentro una 'includ' buscamos completar el include
 {
     switch (c)
     {
@@ -973,7 +973,7 @@ static int includ(int c) // Encuentro una 'define' buscamos espacio para el iden
     return 1;
 }
 
-static int include(int c) // Encuentro una 'define' buscamos espacio para el identificador
+static int include(int c) // Encuentro un 'include' buscamos espacio para el path
 {
     switch (c)
     {
@@ -987,7 +987,7 @@ static int include(int c) // Encuentro una 'define' buscamos espacio para el ide
     return 1;
 }
 
-static int includeEspacio(int c) // Identificador completo del define
+static int includeEspacio(int c) // Encuentro un 'include ' buscamos comillas para el path
 {
     switch (c)
     {
@@ -1005,7 +1005,7 @@ static int includeEspacio(int c) // Identificador completo del define
     return 1;
 }
 
-static int includeComillas(int c) // Identificador completo del define
+static int includeComillas(int c) // Comillas en el include, llenamos la palabra del path
 {
     switch (c)
     {
@@ -1030,7 +1030,7 @@ static void nuevoCaracterPath(int c){
     path[contPath] = c;
 }
 
-static int traerArchivoInlcude()
+static int traerArchivoInclude()
 {
     int nc;
     FILE *arch = fopen (path, "r");
@@ -1046,12 +1046,12 @@ static int traerArchivoInlcude()
     }
 }
 
-static int includePath(int c) // Identificador completo del define
+static int includePath(int c) // Path completo del include
 {
     switch (c)
     {
         case '\"': 
-            if(!traerArchivoInlcude())
+            if(!traerArchivoInclude())
                 return -5;
             fun_ptr = includeCierreComillas;
             break;
@@ -1067,12 +1067,12 @@ static int includePath(int c) // Identificador completo del define
     return 1;
 }
 
-static int pathInvalido(int c) //Identificador invalido
+static int pathInvalido(int c) //Path invalido
 {
     return -4;
 }
 
-static int includeCierreComillas(int c) //Cierre de comillas dobles, se busca el siguiente caracter
+static int includeCierreComillas(int c) //Cierre de comillas del include
 {
     switch (c)
     {
