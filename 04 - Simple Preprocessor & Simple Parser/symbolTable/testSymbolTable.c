@@ -2,10 +2,10 @@
 Test Modulo Symbol Table
 Pruebas de las funciones del modulo Symbol Table
 Grupo Nro 3 del curso K2051 Lunes TN
-20210905
+20210914
 */
 #include "symbolTable.h"
-#include <stdio.h>
+#include "string.h"
 #include <assert.h>
 
 int main()
