@@ -3,8 +3,14 @@
 
 #include "../moduloStack/stack.h"
 
-int caracterComun(int);
+typedef enum {
+    MAS_DE_UN_CARACTER_EN_COMILLAS_SIMPLES,
+    COMILLAS_DENTRO_DE_COMILLAS_SIMPLES,
+    BRACKETS_NO_BALANCEADOS
+}error;
 
-int (*fun_ptr)(int);
+void manejoDeErrores(error);
+
+extern void (*fun_ptr)(int);
 
 #endif

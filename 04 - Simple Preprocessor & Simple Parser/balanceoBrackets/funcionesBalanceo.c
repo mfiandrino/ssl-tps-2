@@ -2,33 +2,41 @@
 Balanceo de brackets
 Modulo con las funciones para el balanceo de brackets para el TP4.
 Grupo Nro 3 del curso K2051 Lunes TN
-20210905
+20210920
 */
 #include "funcionesBalanceo.h"
+#include <stdio.h>
+#include <stdlib.h>
 
+/*Funciones varias*/
 static char bracketInvertido(char);
 static int cierraBracketCorrecto(char, char);
 static int atenderClausuraBracket(int);
 
-//static int caracterComun(int);
-static int aperturaBracket(int);
-static int clausuraBracket(int);
-static int aperturaComillasSimples(int);
-static int caracterComillasSimples(int);
-static int clausuraComillasSimples(int);
-static int aperturaComillasDobles(int);
-static int caracterComillasDobles(int);
-static int clausuraComillasDobles(int);
-//
-static int errorMasDeUnCaracterEnComillasSimples();
-static int errorComillasDentroDeComillasSimples();
-static int caracterContrabarraComillaSimple(int);
-static int caracterContrabarraComillaDoble(int);
-//
-static int bracketsNoBalanceados();
+//--------------ESTADOS--------------------
+static void caracterComun(int);
+static void aperturaBracket(int);
+static void clausuraBracket(int);
+static void aperturaComillasSimples(int);
+static void caracterComillasSimples(int);
+static void clausuraComillasSimples(int);
+static void aperturaComillasDobles(int);
+static void caracterComillasDobles(int);
+static void clausuraComillasDobles(int);
+static void caracterContrabarraComillaSimple(int);
+static void caracterContrabarraComillaDoble(int);
 
+/*Errores*/
+static void errorMasDeUnCaracterEnComillasSimples();
+static void errorComillasDentroDeComillasSimples();
+static void bracketsNoBalanceados();
+void manejoDeErrores(error codigo);
 
-int caracterComun(int c){
+//Asignacion de estado inicial
+void (*fun_ptr)(int)= caracterComun;
+
+static void caracterComun(int c)
+{
     switch (c)
     {
         case '{': case '[': case '(':
@@ -53,12 +61,11 @@ int caracterComun(int c){
 
         default: //EOC
             fun_ptr = &caracterComun;                                                 
-    }
-    return 1;                    
+    }                   
 }
 
 
-static int aperturaBracket(int c){
+static void aperturaBracket(int c){
     switch (c)
     {
         case '{': case '[': case '(':
@@ -83,12 +90,11 @@ static int aperturaBracket(int c){
 
         default: //EOC
             fun_ptr = &caracterComun;                        
-    }    
-    return 1;            
+    }                
 }
 
 
-static int clausuraBracket(int c){
+static void clausuraBracket(int c){
     switch (c)
     {
         case '{': case '[': case '(':
@@ -113,12 +119,11 @@ static int clausuraBracket(int c){
 
         default: //EOC                        
             fun_ptr = &caracterComun;
-    }  
-    return 1;              
+    }               
 }
 
 
-static int aperturaComillasSimples(int c){
+static void aperturaComillasSimples(int c){
     switch (c)
     {
         case '\\':                        
@@ -131,12 +136,11 @@ static int aperturaComillasSimples(int c){
 
         default:                        
             fun_ptr = &caracterComillasSimples;
-    }    
-    return 1;           
+    }               
 }
 
 
-static int caracterComillasSimples(int c){
+static void caracterComillasSimples(int c){
     switch (c)
     {
         case '\'':                   
@@ -146,10 +150,9 @@ static int caracterComillasSimples(int c){
         default: //EOC                    
             fun_ptr = &errorMasDeUnCaracterEnComillasSimples;
     }
-    return 1;
 }
 
-static int clausuraComillasSimples(int c){
+static void clausuraComillasSimples(int c){
     switch (c)
     {
         case '\"':                    
@@ -175,10 +178,9 @@ static int clausuraComillasSimples(int c){
         default: //EOC                    
             fun_ptr = &caracterComun;
     }
-    return 1;
 }
 
-static int aperturaComillasDobles(int c){
+static void aperturaComillasDobles(int c){
     switch (c)
     {
         case '\\':                    
@@ -192,10 +194,9 @@ static int aperturaComillasDobles(int c){
         default: //EOC                   
             fun_ptr = &caracterComillasDobles;
     }
-    return 1;
 }
 
-static int caracterComillasDobles(int c){
+static void caracterComillasDobles(int c){
     switch (c)
     {
         case '\\':                    
@@ -209,10 +210,9 @@ static int caracterComillasDobles(int c){
         default: //EOC                    
             fun_ptr = &caracterComillasDobles;
     }
-    return 1;
 }
 
-static int clausuraComillasDobles(int c){
+static void clausuraComillasDobles(int c){
     switch (c)
     {
         case '\"':                    
@@ -238,33 +238,30 @@ static int clausuraComillasDobles(int c){
         default: //EOC                   
             fun_ptr = &caracterComun;
     }
-    return 1;
 }
 
-static int caracterContrabarraComillaSimple(int c){
+static void caracterContrabarraComillaSimple(int c){
     fun_ptr = &caracterComillasSimples;
-    return 1;
 }
 
-static int caracterContrabarraComillaDoble(int c){
+static void caracterContrabarraComillaDoble(int c){
     fun_ptr = &caracterComillasDobles;
-    return 1;
 }
 
-static int bracketsNoBalanceados(){       
-    return -1;
+static void bracketsNoBalanceados()
+{       
+    manejoDeErrores(BRACKETS_NO_BALANCEADOS);
 }
 
-static int errorMasDeUnCaracterEnComillasSimples(){   
-    return -2;
+static void errorMasDeUnCaracterEnComillasSimples()
+{   
+    manejoDeErrores(MAS_DE_UN_CARACTER_EN_COMILLAS_SIMPLES);
 }
  
-static int errorComillasDentroDeComillasSimples(){  
-    return -3;
+static void errorComillasDentroDeComillasSimples()
+{  
+    manejoDeErrores(COMILLAS_DENTRO_DE_COMILLAS_SIMPLES);
 }
-
- 
-
 
 static char bracketInvertido(char bracket)
 {
@@ -296,3 +293,20 @@ static int atenderClausuraBracket(int caracter)
         return 0;
 }
 
+void manejoDeErrores(error codigo)
+{
+    switch (codigo)
+    {
+    case MAS_DE_UN_CARACTER_EN_COMILLAS_SIMPLES:
+        printf("\nError: hay mas de un caracter en unas comillas simples\n");
+        break;
+
+    case COMILLAS_DENTRO_DE_COMILLAS_SIMPLES:
+        printf("\nError: hay comillas dentro de comillas simples sin usar la contrabarra\n");
+        break;
+    
+    default: //BRACKETS_NO_BALANCEADOS
+        printf("\nError: los brackets NO estan balanceados\n");
+    }
+    exit(0);
+}
