@@ -51,7 +51,7 @@ Formalizar la máquina de estados como una 5-upla de Preprocesador
     posibleIncludeDefineUndef -> c == 'd' -> d, 
     posibleIncludeDefineUndef -> c == 'u' -> u, 
     posibleIncludeDefineUndef -> c == 'i' -> i, 
-    posibleIncludeDefineUndef -> EOC \n putchar('#'), putchar(c) -> numeralIncorrecto, 
+    posibleIncludeDefineUndef -> EOC -> numeralIncorrecto, 
     d -> c == 'e' -> de, 
     d -> EOC -> numeralIncorrecto, 
     de -> c == 'f' -> def, 
@@ -103,17 +103,15 @@ Formalizar la máquina de estados como una 5-upla de Preprocesador
     inclu -> EOC -> numeralIncorrecto, 
     includ -> c == 'e' -> include, 
     includ -> EOC -> numeralIncorrecto, 
-    include -> c == ' '  or c == '\\t' -> includeEspacio, 
-    include -> EOC -> numeralIncorrecto, 
-    includeEspacio -> c == \" -> includeComillas, 
-    includeEspacio -> c == ' ' or c == '\\t' -> includeEspacio, 
-    includeEspacio -> EOC -> pathInvalido, 
-    includeComillas -> c == '<' or c == '>' or c == ':' or c == '/' or c == '\\' or c == '?' or c == '*' -> pathInvalido, 
+    include -> c == ' '  or c == '\\t' -> include,
+    include -> c == \"  -> includeComillas, 
+    include -> EOC -> numeralIncorrecto,  
+    includeComillas -> c == '\n' -> pathInvalido, 
     includeComillas -> EOC \n nuevoPath(c) -> includePath, 
-    includePath -> c == '<' or c == '>' or c == ':' or c == '/' or c == '\\' or c == '?'  '*' -> pathInvalido, 
+    includePath -> c == '\n' -> pathInvalido, 
     includePath -> c == \", if(traerArchivoInclude()) -> restoDeLinea, 
     includePath -> EOC \n nuevoCaracterPath(c) -> includePath }        
 
     qo = comienzoDeLinea        
 
-    F = { comienzoDeLinea, enPalabra, restoDeLinea, posibleIncludeDefineUndef, numeralIncorrecto, comentarioFinDeLinea, comentarioMultilinea, posibleFinDeComentarioMultilinea, posibleComentario, aperturaComillasSimples, entreComillasSimples, aperturaComillasDobles, entreComillasDobles, d, de, def, defi, defin, define, defineEspacio, defineIdentificador, identificadorInvalido, defineIdentificadorEspacio¸ textoDefineInvalido¸ defineTexto, u, un, und, unde, esUndef, undefEspacio, undefIdentificador, i, in, inc, incl, inclu, includ, include, includeEspacio, includeComillas, includePath, pathInvalido }            
+    F = { comienzoDeLinea, enPalabra, restoDeLinea, posibleIncludeDefineUndef, numeralIncorrecto, comentarioFinDeLinea, comentarioMultilinea, posibleFinDeComentarioMultilinea, posibleComentario, aperturaComillasSimples, entreComillasSimples, aperturaComillasDobles, entreComillasDobles, d, de, def, defi, defin, define, defineEspacio, defineIdentificador, identificadorInvalido, defineIdentificadorEspacio¸ textoDefineInvalido¸ defineTexto, u, un, und, unde, esUndef, undefEspacio, undefIdentificador, i, in, inc, incl, inclu, includ, include, includeComillas, includePath, pathInvalido }            
