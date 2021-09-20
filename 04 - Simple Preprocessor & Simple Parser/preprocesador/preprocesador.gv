@@ -85,7 +85,6 @@
 			inclu [shape=box, height=1, width=1];		
 			includ [shape=box, height=1, width=1];		
 			include [shape=box, height=1, width=1];		
-			includeEspacio [shape=box, height=1, width=1];		
 			includeComillas [shape=box, height=1, width=1];		
 			includePath [shape=box, height=1, width=1];			
 			pathInvalido [shape=box, height=1, width=1];		
@@ -147,7 +146,7 @@
 	    posibleIncludeDefineUndef -> d [label = " c == 'd' "];				
 	    posibleIncludeDefineUndef -> u [label = " c == 'u' "];				
 	    posibleIncludeDefineUndef -> i [label = " c == 'i' "];				
-	    posibleIncludeDefineUndef -> numeralIncorrecto [label = " EOC \n putchar('#'), putchar(c)"];				
+	    posibleIncludeDefineUndef -> numeralIncorrecto [label = " EOC "];				
 					
 	    d -> de [label = "c == 'e' " ];				
 	    d -> numeralIncorrecto [label = "c == EOC" ];				
@@ -223,18 +222,15 @@
 	    includ -> include [label = "c == 'e' "];				
 	    includ -> numeralIncorrecto [label = "c == EOC " ];				
 					
-		include -> includeEspacio [label = "c == ' '  or c == '\\t' "];			
+		include -> include [label = "c == ' '  or c == '\\t' "];
+		include -> includeComillas [label = "c == \" " ];
 	    include -> numeralIncorrecto [label = "c == EOC " ];				
 					
-	    includeEspacio -> includeComillas [label = " c == \" "];				
-	    includeEspacio -> includeEspacio [label = " c == ' ' or c == '\\t' "];				
-	    includeEspacio -> pathInvalido [label = " EOC "];				
-					
-		includeComillas -> pathInvalido [label = " c == '<' or c == '>' or c == ':' or c == '/' or c == '\\' or c == '?'  '*' "];			
+		includeComillas -> pathInvalido [label = " c == '\n'"];			
 	    includeComillas -> includePath [label = " EOC \n nuevoPath(c)"];				
 					
-	    includePath -> pathInvalido [label = "c == '<' or c == '>' or c == ':' or c == '/' or c == '\\' or c == '?' c == '*' " ];	
-	    includePath -> restoDeLinea [label = "c == \" \n if(traerArchivoInclude()) "];				
+	    includePath -> pathInvalido [label = "c == '\n' " ];	
+	    includePath -> restoDeLinea [label = "c == \" \n traerArchivoInclude()  "];				
 	    includePath -> includePath [label = " EOC \n nuevoCaracterPath(c)" ];							
 					
-	}				
+	}
