@@ -21,8 +21,20 @@ int main()
         printf("\nLos brackets estan balanceados\n");
     else
         manejoDeErrores(BRACKETS_NO_BALANCEADOS);
-        
 }
 
+int main()
+{
+    int c;
+    inicializarPila();
+
+    for(;;)
+        fun_ptr(getchar());
+       
+    if (estaVacia())
+        printf("\nLos brackets estan balanceados\n");
+    else
+        manejoDeErrores(BRACKETS_NO_BALANCEADOS);
+}
 
 
