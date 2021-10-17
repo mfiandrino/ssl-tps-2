@@ -1,26 +1,27 @@
 #include <stdbool.h>
 
 typedef enum {
-    Comentario,
-    Numeral,
-    Define,
-    Undefine,
+    Comentario, //Listo
+    Numeral, //Listo
+    Define, //Listo
+    Undefine, //Listo
     Ifdef,
-    Endif,
-    Include,
-    Path,
-    Identificador,
-    TextoReemplazo,
-    LParen='(',
-    RParen=')',
-    LBrack='[',
-    RBrack=']',
-    LBrace='{',
-    RBrace='}',
-    Punctuator,
-    LexError,
-    LitCadena,
-    LitCaracter
+    Endif, 
+    Include, //Listo
+    Path, //Uso LitCadena
+    Identificador, //Listo
+    TextoReemplazo, //Listo
+    LParen='(', //Listo
+    RParen=')', //Listo
+    LBrack='[', //Listo
+    RBrack=']', //Listo
+    LBrace='{', //Listo
+    RBrace='}', //Listo
+    Punctuator, //Listo
+    LexError, //Listo
+    LitCadena, //Listo
+    NewLine, //Listo
+    FDT //Listo
 } TokenType;
 
 typedef struct{

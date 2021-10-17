@@ -4,3 +4,9 @@ balanceoBrackets/balanceoDeBrackets.png
 preprocesador/preprocesador
 preprocesador/test.c
 preprocesador/salida.txt
+preprocesador/salida.c
+preprocesador/testeo.c
+
+moduloStack/testModuloStack
+
+symbolTable/testSymbolTable
