@@ -15,6 +15,10 @@ char textoDefine[largoMaxTextoDefine];
 int contLitCadena;
 char litCadena[largoMaxLitCadena];
 
+#define largoMaxConstNumerica 10
+int contConstNumerica;
+char constNumerica[largoMaxConstNumerica];
+
 //--------------ESTADOS--------------------
 /*Comentarios*/
 static int posibleComentario(int, Token*);
@@ -25,6 +29,7 @@ static int posibleFinDeComentarioMultilinea(int, Token*);
 /*Generales*/
 static int enIdentificador(int,Token*);
 static int nuevoLexema(int,Token*);
+static int enConstanteNumerica(int,Token*);
 
 /*Comillas
 static int aperturaComillasSimples(int);
@@ -67,6 +72,8 @@ static void nuevoIdentificador(int);
 static void nuevoCaracterIdentificador(int);
 static void nuevoLitCadena(int);
 static void nuevoCaracterLitCadena(int);
+static void nuevoConstNumerica(int);
+static void nuevoCaracterConstNumerica(int);
 void llenarToken(Token*, TokenType, char*);
 
 /*Estado Inicial*/
@@ -208,12 +215,34 @@ static int nuevoLexema(int c , Token *token) //Despues de un \n o al principio d
             nuevoIdentificador(c);
             fun_ptr = enIdentificador;
             break;
+
+        case '0'...'9':
+            nuevoConstNumerica(c);
+            fun_ptr = enConstanteNumerica;
+            break;
         
         default: //EOC
             llenarToken(token,LexError,NULL);
             return 1;
     }
-    
+    return 0;
+}
+
+static int enConstanteNumerica(int c, Token *token)
+{
+    switch (c)
+    {
+        case '0'...'9':
+            nuevoCaracterConstNumerica(c);
+            fun_ptr = enConstanteNumerica;
+            break;
+
+        default: //EOC
+            ungetc(c,stdin);
+            llenarToken(token,ConstNumerica,constNumerica);
+            fun_ptr = nuevoLexema;
+            return 1;
+    }
     return 0;
 }
 
@@ -715,7 +744,6 @@ static void nuevoCaracterTextoDefine(int c)
     textoDefine[contTextoDefine] = c;
 }
 
-
 static void nuevoLitCadena(int c)
 {
     contLitCadena = 0;
@@ -727,6 +755,19 @@ static void nuevoCaracterLitCadena(int c)
 {
     contLitCadena++;
     litCadena[contLitCadena] = c;
+}
+
+static void nuevoConstNumerica(int c)
+{
+    contConstNumerica = 0;
+    memset(constNumerica,'\0',sizeof(char) * largoMaxConstNumerica);
+    constNumerica[contConstNumerica] = c;
+}
+
+static void nuevoCaracterConstNumerica(int c)
+{
+    contConstNumerica++;
+    constNumerica[contConstNumerica] = c;
 }
 
 void llenarToken(Token *t, TokenType tt, char* valor)

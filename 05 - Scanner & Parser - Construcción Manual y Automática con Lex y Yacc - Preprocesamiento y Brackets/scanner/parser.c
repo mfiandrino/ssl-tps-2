@@ -65,8 +65,14 @@ char* stringTypeToken(TokenType tokTyp)
     case NewLine:
         return "(NewLine)";
 
-    default: // FDT
+    case ConstNumerica:
+        return "(ConstNumerica)";
+
+    case FDT:
         return "(FDT)";
+
+    default: // No deberia pasar
+        return "Error, no deberia haber llegado aca";
     }
 }
 
