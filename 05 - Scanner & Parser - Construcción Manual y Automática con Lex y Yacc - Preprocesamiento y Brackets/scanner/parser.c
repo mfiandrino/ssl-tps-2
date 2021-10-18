@@ -104,19 +104,20 @@ void TokenNumeral (void){
 
        case Define:
             TokenDefine();
-
             break;
 
        case Undefine:
-
-            break;
-            
+            TokenUndefine();
+            break;            
 
        case Ifdef:
 
        case Endif:
 
        case Include:
+            TokenInclude();
+            break;
+
 
        default:
             ErrorSintactico();
@@ -169,10 +170,18 @@ void TokenIdentificador (void){
 
 }
 
+//Asumimos que despues de un comentario hay un NewLine
+void TokenComentario (void){    
+
+            Token t;
+            t.type = NewLine;
+            Match(t);                  
+    
+
+}
 
 
 //Consultar: Podemos asumir que un undef siempre termina con un newLine?
-//
 void TokenUndefine (void){
 
     GetNextToken(&token);
@@ -180,12 +189,41 @@ void TokenUndefine (void){
      switch (token.type){
 
          case Identificador:
+            TokenIdentificador();
+            break;
 
         default:
             ErrorSintactico();
             
          
      } 
+
+}
+
+void TokenInclude (void){
+
+    GetNextToken(&token);
+
+     switch (token.type){
+
+         case Path:
+            TokenPath();
+            break;
+
+        default:
+            ErrorSintactico();
+            
+         
+     } 
+
+}
+
+void TokenPath (void){
+
+    Token t;
+    t.type = NewLine;
+    Match(t);                  
+
 
 }
 
@@ -205,7 +243,10 @@ int main ()
         switch (token.type){
             case Numeral:
                 TokenNumeral();
+                break;
 
+            case Comentario:
+                TokenComentario();
                 break;
             
             default:               
