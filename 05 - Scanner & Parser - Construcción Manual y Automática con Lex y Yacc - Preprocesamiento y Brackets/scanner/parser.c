@@ -93,176 +93,131 @@ void Match (Token tokenEsperado){
     }else{
         ErrorSintactico();
     }
-
 }
 
 void TokenNumeral (void){
-
     GetNextToken(&token);
-
     switch(token.type){
-
-       case Define:
+        case Define:
             TokenDefine();
-            break;
-
-       case Undefine:
+        break;
+        case Undefine:
             TokenUndefine();
-            break;            
-
-       case Ifdef:
-
-       case Endif:
-
-       case Include:
+        break;            
+        case Ifdef:
+            TokenIfdef();
+        break;
+        case Endif:
+            TokenEndif();
+        break;
+        case Include:
             TokenInclude();
-            break;
-
-
-       default:
-            ErrorSintactico();
-            
-    }
-
-}
-
-
-
-void TokenDefine (void){
-
-    GetNextToken(&token);
-
-     switch (token.type){
-
-         case Identificador:
-
-            TokenIdentificador();
-
-         break;
-
+        break;
         default:
             ErrorSintactico();
-            
-         
-     } 
+    }
+}
 
+void TokenDefine (void){
+    GetNextToken(&token);
+    switch (token.type){
+        case Identificador:
+            TokenIdentificador();
+        break;
+        default:
+            ErrorSintactico();        
+    } 
 }
 
 void TokenIdentificador (void){
-
     GetNextToken(&token);
-
-     switch (token.type){
-
-         case TextoReemplazo:
-
+    switch (token.type){
+        case TextoReemplazo:
             Token t;
             t.type = NewLine;
             Match(t);
-
-            break;
-
+        break;
         default:
             ErrorSintactico();
-            
-         
-     } 
-
+    } 
 }
 
 //Asumimos que despues de un comentario hay un NewLine
 void TokenComentario (void){    
-
-            Token t;
-            t.type = NewLine;
-            Match(t);                  
-    
-
+    Token t;
+    t.type = NewLine;
+    Match(t);
 }
-
 
 //Consultar: Podemos asumir que un undef siempre termina con un newLine?
 void TokenUndefine (void){
-
     GetNextToken(&token);
-
-     switch (token.type){
-
-         case Identificador:
+    switch (token.type){
+        case Identificador:
             TokenIdentificador();
-            break;
-
+        break;
         default:
             ErrorSintactico();
-            
-         
-     } 
-
+    } 
 }
 
 void TokenInclude (void){
-
     GetNextToken(&token);
-
-     switch (token.type){
-
-         case Path:
+    switch (token.type){
+        case Path:
             TokenPath();
-            break;
-
+        break;
         default:
             ErrorSintactico();
-            
-         
-     } 
-
+    } 
 }
 
 void TokenPath (void){
-
     Token t;
     t.type = NewLine;
     Match(t);                  
-
-
 }
 
+void TokenIfdef (void){
+    GetNextToken(&token);
+    switch (token.type){
+        case Identificador:
+            TokenIdentificador();
+        break;
+        default:
+            ErrorSintactico();        
+    } 
+}
+
+void TokenEndif (void){
+    Token t;
+    t.type = NewLine;
+    Match(t);
+}
 
 void ErrorSintactico(){
     printf("Ocurrió un Error Sintáctico");
 }
 
 
-int main ()
-{
-    
 
-    while(GetNextToken(&token) && token.type != LexError)
-    {
-        
+int main (){
+    while(GetNextToken(&token) && token.type != LexError){
         switch (token.type){
             case Numeral:
                 TokenNumeral();
-                break;
-
+            break;
             case Comentario:
                 TokenComentario();
-                break;
-            
+            break;
             default:               
 
-
         }
-
-
         printf("\n%s\t%s",stringTypeToken(token.type),token.val);
     }
     printf("\n%s\t\t%s",stringTypeToken(token.type),token.val);
-
-    
     printf("\n");
 }
-
 
 
 
