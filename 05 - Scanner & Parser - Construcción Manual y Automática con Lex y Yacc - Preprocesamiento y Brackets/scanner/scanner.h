@@ -21,7 +21,7 @@ typedef enum {
     LexError, //Listo
     LitCadena, //Listo
     NewLine, //Listo
-    ConstNumerica,
+    ConstNumerica, //Listo
     FDT //Listo
 } TokenType;
 

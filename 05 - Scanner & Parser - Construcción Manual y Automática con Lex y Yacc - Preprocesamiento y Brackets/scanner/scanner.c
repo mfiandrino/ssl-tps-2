@@ -83,14 +83,11 @@ int (*fun_ptr)(int,Token*)= nuevoLexema;
 bool GetNextToken(Token *t)
 {
     int c;
-    int resultado;
+
     while ((c=getchar())!= EOF) 
-    {
-        resultado = (fun_ptr)(c,t);
-        
-        if(resultado)
+        if((fun_ptr)(c,t))
             return true;
-    }
+
     llenarToken(t,FDT,NULL);
     return false;
 }

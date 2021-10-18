@@ -7,7 +7,7 @@ Token token;
 //int (*fun_ptr)(Token token);
 
 
-char* stringTypeToken(TokenType tokTyp)
+char* stringTokenType(TokenType tokTyp)
 {
     switch (tokTyp)
     {
@@ -39,7 +39,7 @@ char* stringTypeToken(TokenType tokTyp)
         return "(Identificador)";
 
     case TextoReemplazo:
-        return "(TextoReemplazo)";
+        return "(TextoReemp)";
 
     case LParen:
         return "(LParen)";
@@ -81,7 +81,7 @@ char* stringTypeToken(TokenType tokTyp)
         return "Error, no deberia haber llegado aca";
     }
 }
-
+/*
 void Match (Token tokenEsperado){
 
     Token t;
@@ -198,11 +198,12 @@ void TokenEndif (void){
 void ErrorSintactico(){
     printf("Ocurrió un Error Sintáctico");
 }
-
+*/
 
 
 int main (){
     while(GetNextToken(&token) && token.type != LexError){
+        /*
         switch (token.type){
             case Numeral:
                 TokenNumeral();
@@ -212,10 +213,10 @@ int main (){
             break;
             default:               
 
-        }
-        printf("\n%s\t%s",stringTypeToken(token.type),token.val);
+        }*/
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
     }
-    printf("\n%s\t\t%s",stringTypeToken(token.type),token.val);
+    printf("\n%s\t\t%s",stringTokenType(token.type),token.val);
     printf("\n");
 }
 
