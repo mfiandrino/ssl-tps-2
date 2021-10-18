@@ -3,20 +3,9 @@
 
 Token token;
 
-int (*fun_ptr)(Token token)= nuevoToken;
+//TODO: Analizar si se puede implementar 
+//int (*fun_ptr)(Token token);
 
-
-static int nuevoToken(Token token){
-
-    switch (token.type){
-
-        case Numeral:
-        
-            TokenNumeral();
-
-    }
-
-}
 
 char* stringTypeToken(TokenType tokTyp)
 {
@@ -96,7 +85,7 @@ char* stringTypeToken(TokenType tokTyp)
 void Match (Token tokenEsperado){
 
     Token t;
-    //GetNextToken(&t);
+    GetNextToken(&t);
 
     if (strcmp(t.val, tokenEsperado.val) == 0){
         token.type = t.type;
@@ -114,6 +103,9 @@ void TokenNumeral (void){
     switch(token.type){
 
        case Define:
+            TokenDefine();
+
+            break;
 
        case Undefine:
 
@@ -125,7 +117,7 @@ void TokenNumeral (void){
 
        default:
             ErrorSintactico();
-            break;
+            
     }
 
 }
@@ -140,9 +132,13 @@ void TokenDefine (void){
 
          case Identificador:
 
+            TokenIdentificador();
+
+         break;
+
         default:
             ErrorSintactico();
-            break;
+            
          
      } 
 
@@ -160,9 +156,11 @@ void TokenIdentificador (void){
             t.type = NewLine;
             Match(t);
 
+            break;
+
         default:
             ErrorSintactico();
-            break;
+            
          
      } 
 
@@ -182,7 +180,7 @@ void TokenUndefine (void){
 
         default:
             ErrorSintactico();
-            break;
+            
          
      } 
 
@@ -200,13 +198,14 @@ int main ()
 
     while(GetNextToken(&token) && token.type != LexError)
     {
-
+        
         switch (token.type){
             case Numeral:
                 TokenNumeral();
-            
-            default:
 
+                break;
+            
+            default:               
 
 
         }
@@ -223,3 +222,38 @@ int main ()
 
 
 
+/*
+
+UnidadDeTraducción ->
+    Componente
+    UnidadDeTraducción Componente
+    
+X ->
+    Token
+    { X }
+    [ X ]
+    ( X )
+    
+Ejemplo de Parseo
+({hola})
+
+X
+( X )
+( { X } )
+( { Token } )
+( { Identificador } )
+( { hola } )
+    
+Componente ->
+    Directiva
+    Comentario
+    Identificador
+    Punctator
+
+Directiva ->
+    NUMERAL DEFINE IDENTIFICADOR TEXTODEREEMPLAZO NL?
+    NUMERAL UNDEFINE IDENTIFICADOR NL?
+    NUMERAL INCLUDE PATH //"" <>
+
+
+*/
