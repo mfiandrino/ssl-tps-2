@@ -1,6 +1,23 @@
 #include "scanner.h"
 #include <stdio.h>
 
+Token token;
+
+int (*fun_ptr)(Token token)= nuevoToken;
+
+
+static int nuevoToken(Token token){
+
+    switch (token.type){
+
+        case Numeral:
+        
+            TokenNumeral();
+
+    }
+
+}
+
 char* stringTypeToken(TokenType tokTyp)
 {
     switch (tokTyp)
@@ -76,12 +93,125 @@ char* stringTypeToken(TokenType tokTyp)
     }
 }
 
+void Match (Token tokenEsperado){
+
+    Token t;
+    //GetNextToken(&t);
+
+    if (strcmp(t.val, tokenEsperado.val) == 0){
+        token.type = t.type;
+        token.val = t.val;
+    }else{
+        ErrorSintactico();
+    }
+
+}
+
+void TokenNumeral (void){
+
+    GetNextToken(&token);
+
+    switch(token.type){
+
+       case Define:
+
+       case Undefine:
+
+       case Ifdef:
+
+       case Endif:
+
+       case Include:
+
+       default:
+            ErrorSintactico();
+            break;
+    }
+
+}
+
+
+
+void TokenDefine (void){
+
+    GetNextToken(&token);
+
+     switch (token.type){
+
+         case Identificador:
+
+        default:
+            ErrorSintactico();
+            break;
+         
+     } 
+
+}
+
+void TokenIdentificador (void){
+
+    GetNextToken(&token);
+
+     switch (token.type){
+
+         case TextoReemplazo:
+
+            Token t;
+            t.type = NewLine;
+            Match(t);
+
+        default:
+            ErrorSintactico();
+            break;
+         
+     } 
+
+}
+
+
+
+//Consultar: Podemos asumir que un undef siempre termina con un newLine?
+//
+void TokenUndefine (void){
+
+    GetNextToken(&token);
+
+     switch (token.type){
+
+         case Identificador:
+
+        default:
+            ErrorSintactico();
+            break;
+         
+     } 
+
+}
+
+
+void ErrorSintactico(){
+    printf("Ocurrió un Error Sintáctico");
+}
+
+
 int main ()
 {
-    Token token;
+    
 
     while(GetNextToken(&token) && token.type != LexError)
     {
+
+        switch (token.type){
+            case Numeral:
+                TokenNumeral();
+            
+            default:
+
+
+
+        }
+
+
         printf("\n%s\t%s",stringTypeToken(token.type),token.val);
     }
     printf("\n%s\t\t%s",stringTypeToken(token.type),token.val);
