@@ -109,6 +109,9 @@ void TokenNumeral (void){
 
        case Undefine:
 
+            break;
+            
+
        case Ifdef:
 
        case Endif:
