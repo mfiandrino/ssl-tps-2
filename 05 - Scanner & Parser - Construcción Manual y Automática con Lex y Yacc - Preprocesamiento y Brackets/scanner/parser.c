@@ -129,7 +129,7 @@ void TokenDefine (void){
 
 }
 
-void TokenIdentificador (void) {
+void TokenIdentificadorNumeral (void) {
 
     Token t;
     t.type = NewLine;
@@ -169,7 +169,7 @@ void TokenUndefine (void){
     t.type = Identificador;
     Match(t);
 
-    TokenIdentificador();        
+    TokenIdentificadorNumeral();        
 }
 
 void TokenInclude (void){
@@ -191,7 +191,7 @@ void TokenIfdef (void){
     t.type = Identificador;
     Match(t);
 
-    TokenIdentificador();        
+    TokenIdentificadorNumeral();        
 }
 
 void TokenEndif (void){
@@ -200,15 +200,117 @@ void TokenEndif (void){
     Match(t);
 }
 
+void TokenIdentificador(void){ 
+    GetNextToken(&token);
+    switch(token.type){
+        case Identificador:
+            TokenIdentificador();
+        break;
+        case Punctuator:
+            TokenPunctuator();
+        break;
+        case LParen:
+            TokenLParen();
+        break;
+        case RParen:
+            TokenRParen();
+        break;
+        case LBrack:
+            TokenLBrack();
+        break;
+        case RBrack:
+            TokenRBrack();
+        break;
+        case LBrace:
+            TokenLBrace();
+        break;
+        case RBrace:
+            TokenRBrace();
+        break;
+        case Comentario:
+            TokenComentario();
+        break;
+        case NewLine: break;
+        default:
+            ErrorSintactico();
+    }
+}
+
+void TokenPunctuator(void){ 
+    GetNextToken(&token);
+    switch(token.type){
+        case Comentario:
+            TokenComentario();
+        break;
+        case Punctuator:
+            TokenPunctuator();
+        break;
+        case LitCadena:
+            TokenLitCadena();
+        break;
+        case ConstNumerica:
+            TokenConstNumerica();
+        break;
+        case RParen:
+            TokenRParen();
+        break;
+        case RBrack:
+            TokenRBrack();
+        break;
+        case RBrace:
+            TokenRBrace();
+        break;
+        case NewLine: break;
+        default:
+            ErrorSintactico();
+    }    
+}
+
+void TokenLitCadena(void){
+    GetNextToken(&token);
+    switch (token.type){
+    case Punctuator:
+    case Comentario:
+    case RParen:
+    case RBrack:
+    default:
+    }
+}
+
+void TokenConstNumerica(void){
+    GetNextToken(&token);
+    switch (token.type){
+    case Punctuator:
+    case Comentario:
+    case RParen:
+    case RBrack:
+    default:
+    }
+}
+
+void TokenLParen(void){
+    GetNextToken(&token);
+    switch (token.type){
+    case Identificador:
+    case LitCadena:
+    case ConstNumerica:
+    case RParen:
+    case Comentario:
+    case Punctuator:
+    case NewLine:
+    default:
+    }
+
+}
+
 void ErrorSintactico(){
     printf("Ocurrió un Error Sintáctico");
     //TODO: CORTAR LA EJECUCION
 }
 
 
-
 int main (){
-    while(GetNextToken(&token) && token.type != LexError){
+    while(GetNextToken(&token)){
         
         switch (token.type){
             case Numeral:
@@ -216,6 +318,9 @@ int main (){
             break;
             case Comentario:
                 TokenComentario();
+            break;
+            case Identificador:
+                TokenIdentificador();
             break;
             default:               
 
