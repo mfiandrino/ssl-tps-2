@@ -88,6 +88,7 @@ void Match (Token tokenEsperado){
     GetNextToken(&t);
 
     if (strcmp(t.type, tokenEsperado.type) == 0){
+        //TODO: Falta utilizar esta variable mas adelante  
         token.type = t.type;
         token.val = t.val;
     }else{
@@ -123,21 +124,37 @@ void TokenDefine (void){
     Token t;
     t.type = Identificador;
     Match(t);
-       
+
+    TokenIdentificadorDefine();
+
 }
 
-void TokenIdentificador (void){
-    GetNextToken(&token);
-    switch (token.type){
-        case TextoReemplazo:
-            Token t;
-            t.type = NewLine;
-            Match(t);
-        break;
-        default:
-            ErrorSintactico();
-    } 
+void TokenIdentificador (void) {
+
+    Token t;
+    t.type = NewLine;
+    Match(t);
+
 }
+
+
+void TokenIdentificadorDefine (void){    
+
+    Token t;
+    t.type = TextoReemplazo;
+    Match(t);
+
+    TokenTextoReemplazo();   
+}
+
+void TokenTextoReemplazo (void){   
+
+    Token t;
+    t.type = NewLine;
+    Match(t);
+
+}
+
 
 //Asumimos que despues de un comentario hay un NewLine
 void TokenComentario (void){    
@@ -148,25 +165,19 @@ void TokenComentario (void){
 
 //Consultar: Podemos asumir que un undef siempre termina con un newLine?
 void TokenUndefine (void){
-    GetNextToken(&token);
-    switch (token.type){
-        case Identificador:
-            TokenIdentificador();
-        break;
-        default:
-            ErrorSintactico();
-    } 
+    Token t;
+    t.type = Identificador;
+    Match(t);
+
+    TokenIdentificador();        
 }
 
 void TokenInclude (void){
-    GetNextToken(&token);
-    switch (token.type){
-        case Path:
-            TokenPath();
-        break;
-        default:
-            ErrorSintactico();
-    } 
+    Token t;
+    t.type = Path;
+    Match(t);   
+
+    TokenPath(); 
 }
 
 void TokenPath (void){
@@ -176,14 +187,11 @@ void TokenPath (void){
 }
 
 void TokenIfdef (void){
-    GetNextToken(&token);
-    switch (token.type){
-        case Identificador:
-            TokenIdentificador();
-        break;
-        default:
-            ErrorSintactico();        
-    } 
+    Token t;
+    t.type = Identificador;
+    Match(t);
+
+    TokenIdentificador();        
 }
 
 void TokenEndif (void){
@@ -194,6 +202,7 @@ void TokenEndif (void){
 
 void ErrorSintactico(){
     printf("Ocurrió un Error Sintáctico");
+    //TODO: CORTAR LA EJECUCION
 }
 
 

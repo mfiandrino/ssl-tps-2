@@ -31,4 +31,5 @@ typedef struct{
 } Token;
 
 // Retorna si pudo leer, almacena en t el token leido.
+//CONSULTAR: Como hacemos con el *
 bool GetNextToken(Token *t);
