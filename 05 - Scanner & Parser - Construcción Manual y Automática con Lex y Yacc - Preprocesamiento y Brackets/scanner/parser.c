@@ -298,10 +298,133 @@ void TokenLParen(void){
     case Comentario:
     case Punctuator:
     case NewLine:
+    case LParen:
     default:
     }
 
 }
+
+void TokenRParen(void){
+    GetNextToken(&token);
+    switch (token.type){
+    case Identificador:  
+    case RParen:
+    case LParen:
+    case LBrace:
+    case Comentario:
+    case Punctuator:
+    case NewLine:
+    default:
+    }
+}
+
+void TokenLBrack(void){
+    GetNextToken(&token);
+    switch (token.type){
+    case Identificador:      
+    case LParen:    
+    case Comentario:
+    case Punctuator:
+    case NewLine:
+    case ConstNumerica:
+    case RBrack:
+    default:
+    }
+}
+
+void TokenRBrack(void){
+    GetNextToken(&token);
+    switch (token.type){
+    case Identificador:           
+    case Comentario:
+    case Punctuator:
+    case NewLine:    
+    case RBrack:
+    case RParen:
+    default:
+    }
+}
+
+void TokenLBrace(void){
+    GetNextToken(&token);
+    switch (token.type){
+    case Identificador:           
+    case Comentario:    
+    case NewLine:     
+    
+    
+    default:
+    }
+}
+
+
+
+/*
+Comentario
+ Directiva
+ GrupoIf
+ Texto
+ ( Grupo )
+ [ Grupo ]
+ { Grupo }
+*/
+void Directiva(){
+    GetNextToken(&token);
+    switch (token.type)
+    {
+    case Define:
+        Match(Identificador);
+        Match(TextoReemplazo);
+        Match(NewLine);
+        break;
+
+    case Undefine:
+        Match(Identificador);    
+        Match(NewLine);
+        break;
+
+    case Include:
+        Match(LitCadena);
+        Match(NewLine);
+        break;
+    
+    case Ifdef:
+        Match(Identificador);
+        Match(NewLine);
+        Grupo();
+        Match(Numeral);
+        Match(Endif);
+        Match(NewLine);
+        break;
+    
+    default:
+        ErrorSintactico();       
+    }
+
+}
+
+void Grupo(){
+    GetNextToken(&token);
+    switch (token.type)
+    {
+    case Comentario:
+        break;
+
+    case Numeral:
+        Directiva();
+        break;
+
+    case LParen:
+        Grupo();
+        Match(RParen);
+        break;
+    
+    default:
+       
+    }
+
+}
+
 
 void ErrorSintactico(){
     printf("Ocurrió un Error Sintáctico");
@@ -368,3 +491,20 @@ Directiva ->
 
 
 */
+
+
+/*
+
+UnidadDeTraducción ->
+ Grupo FDT |
+ Grupo UnidadDeTraducción
+
+
+UnidadDeTraducción
+UnidadDeTraducción Grupo
+UnidadDeTraducción Grupo Grupo
+Grupo Grupo Grupo FDT
+
+
+
+ */
