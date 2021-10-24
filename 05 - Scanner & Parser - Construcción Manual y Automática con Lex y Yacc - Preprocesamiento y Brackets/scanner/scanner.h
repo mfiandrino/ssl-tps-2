@@ -5,8 +5,9 @@ typedef enum {
     Numeral, //Listo
     Define, //Listo
     Undefine, //Listo
-    Ifdef,
-    Endif, 
+    Ifdef, //Listo
+    Else, //Listo
+    Endif, //Listo
     Include, //Listo
     Path, //Uso LitCadena
     Identificador, //Listo
@@ -31,4 +32,4 @@ typedef struct{
 } Token;
 
 // Retorna si pudo leer, almacena en t el token leido.
-bool GetNextToken(Token *t);
+int GetNextToken(Token *t);

@@ -1,5 +1,6 @@
 #include "scanner.h"
 #include <stdio.h>
+#include <unistd.h>
 
 Token token;
 
@@ -81,6 +82,7 @@ char* stringTokenType(TokenType tokTyp)
         return "Error, no deberia haber llegado aca";
     }
 }
+
 /*
 void Match (Token tokenEsperado){
 
@@ -202,7 +204,8 @@ void ErrorSintactico(){
 
 
 int main (){
-    while(GetNextToken(&token) && token.type != LexError){
+    while(GetNextToken(&token)){
+        //sleep(1);
         /*
         switch (token.type){
             case Numeral:
@@ -222,7 +225,11 @@ int main (){
 
 
 
+
 /*
+Objetivo -> 
+    UnidadDeTraduccion
+    FDT
 
 UnidadDeTraducción ->
     Componente

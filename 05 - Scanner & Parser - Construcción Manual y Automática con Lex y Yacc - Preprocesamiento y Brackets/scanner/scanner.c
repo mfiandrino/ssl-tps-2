@@ -19,52 +19,6 @@ char litCadena[largoMaxLitCadena];
 int contConstNumerica;
 char constNumerica[largoMaxConstNumerica];
 
-//--------------ESTADOS--------------------
-/*Comentarios*/
-static int posibleComentario(int, Token*);
-static int comentarioFinDeLinea(int, Token*);
-static int comentarioMultilinea(int, Token*);
-static int posibleFinDeComentarioMultilinea(int, Token*);
-
-/*Generales*/
-static int enIdentificador(int,Token*);
-static int nuevoLexema(int,Token*);
-static int enConstanteNumerica(int,Token*);
-
-/*Comillas
-static int aperturaComillasSimples(int);
-static int entreComillasSimples(int);*/
-static int aperturaComillasDobles(int, Token*);
-static int entreComillasDobles(int, Token*);
-
-/*Define, Undef e Include*/
-static int posibleIncludeDefineUndef(int, Token*);
-
-static int d(int, Token*);
-static int de(int, Token*);
-static int def(int, Token*);
-static int defi(int, Token*);
-static int defin(int, Token*);
-static int define(int, Token*);
-static int defineEspacio(int, Token*);
-static int defineIdentificador(int, Token*);
-static int defineIdentificadorEspacio(int, Token*);
-static int defineTexto(int, Token*);
-
-static int u(int, Token*);
-static int un(int, Token*);
-static int und(int, Token*);
-static int unde(int, Token*);
-
-static int i(int, Token*);
-static int in(int, Token*);
-static int inc(int, Token*);
-static int incl(int, Token*);
-static int inclu(int, Token*);
-static int includ(int, Token*);
-//--------------FIN ESTADOS-----------------
-
-
 /*Funciones varias*/
 static void nuevoTextoDefine(int);
 static void nuevoCaracterTextoDefine(int);
@@ -75,578 +29,147 @@ static void nuevoCaracterLitCadena(int);
 static void nuevoConstNumerica(int);
 static void nuevoCaracterConstNumerica(int);
 void llenarToken(Token*, TokenType, char*);
+int GetNextToken(Token*);
+int analisisComentario(Token*);
+int analisisIdentificador(Token*,int);
+int analisisConstNumerica(Token*,int);
+int analisisComillasDobles(Token*);
 
-/*Estado Inicial*/
-int (*fun_ptr)(int,Token*)= nuevoLexema;
+
+//--------------ESTADOS--------------------
+static int posibleComentario(int, Token*);
+static int comentarioFinDeLinea(int, Token*);
+static int comentarioMultilinea(int, Token*);
+static int posibleFinDeComentarioMultilinea(int, Token*);
+static int enIdentificador(int,Token*);
+static int aperturaComillasDobles(int, Token*);
+static int entreComillasDobles(int, Token*);
+static int primerNumHexa(int, Token*);
+static int numHexa(int, Token*);
+static int numOctal(int, Token*);
 
 
-bool GetNextToken(Token *t)
+
+/*Puntero a funcion para las maquinas de estado*/
+int (*fun_ptr)(int,Token*);
+
+int GetNextToken(Token *token)
 {
     int c;
-
-    while ((c=getchar())!= EOF) 
-        if((fun_ptr)(c,t))
-            return true;
-
-    llenarToken(t,FDT,NULL);
-    return false;
-}
-
-static int nuevoLexema(int c , Token *token) //Despues de un \n o al principio del archivo3
-{
+    while ((c = getchar()) == ' ' || c == '\t');
     switch (c)
     {
         case '\n':
             llenarToken(token,NewLine,NULL);
-            fun_ptr = nuevoLexema;
             return 1;
         
         case '/':
-            fun_ptr = posibleComentario;
-            break;
+            return analisisComentario(token);
 
         //Punctuators----------------------------
         case '.':
-            fun_ptr = nuevoLexema;
             llenarToken(token,Punctuator,".");
             return 1;
 
         case '&':
-            fun_ptr = nuevoLexema;
             llenarToken(token,Punctuator,"&");
             return 1;
 
         case '*':
-            fun_ptr = nuevoLexema;
             llenarToken(token,Punctuator,"*");
             return 1;
             
         case '+':
-            fun_ptr = nuevoLexema;
             llenarToken(token,Punctuator,"+");
             return 1;
 
         case '-':
-            fun_ptr = nuevoLexema;
             llenarToken(token,Punctuator,"-");
             return 1;
 
         case ';':
-            fun_ptr = nuevoLexema;
             llenarToken(token,Punctuator,";");
             return 1;
 
         case ':':
-            fun_ptr = nuevoLexema;
             llenarToken(token,Punctuator,":");
             return 1;
 
         case '!':
-            fun_ptr = nuevoLexema;
             llenarToken(token,Punctuator,"!");
             return 1;
 
         case '=':
-            fun_ptr = nuevoLexema;
-            llenarToken(token,Punctuator,"=");
+            if((c=getchar()) == '=')
+                llenarToken(token,Punctuator,"==");
+            else
+            {
+                llenarToken(token,Punctuator,"=");
+                ungetc(c,stdin);
+            }
             return 1;
 
         case ',':
-            fun_ptr = nuevoLexema;
-            char stringDeC [2];
             llenarToken(token,Punctuator,",");
             return 1;
         //Fin Punctuators----------------------------
 
         //Brackets----------------------------
         case '(':
-            fun_ptr = nuevoLexema;
             llenarToken(token,LParen,NULL);
             return 1;
 
         case ')':
-            fun_ptr = nuevoLexema;
             llenarToken(token,RParen,NULL);
             return 1;
 
         case '[':
-            fun_ptr = nuevoLexema;
             llenarToken(token,LBrack,NULL);
             return 1;
 
         case ']':
-            fun_ptr = nuevoLexema;
             llenarToken(token,RBrack,NULL);
             return 1;
 
         case '{':
-            fun_ptr = nuevoLexema;
             llenarToken(token,LBrace,NULL);
             return 1;
 
         case '}':
-            fun_ptr = nuevoLexema;
             llenarToken(token,RBrace,NULL);
             return 1;
         //Fin Brackets----------------------------
 
         case '#':
-            fun_ptr = posibleIncludeDefineUndef;
             llenarToken(token,Numeral,NULL);
             return 1;
-
-        case ' ':
-            fun_ptr = nuevoLexema;
-            break;
         
+        case '_': case 'A'...'Z': case 'a'...'z':
+            return analisisIdentificador(token,c);
+
+        case '0'...'9':
+            return analisisConstNumerica(token,c);
+
+        case '\"':
+            return analisisComillasDobles(token);
+
         /*
         case '\'':
             fun_ptr = aperturaComillasSimples;
             break;*/
 
-        case '\"':
-            fun_ptr = aperturaComillasDobles;
-            break;
-
-        case '_': case 'A'...'Z': case 'a'...'z':
-            nuevoIdentificador(c);
-            fun_ptr = enIdentificador;
-            break;
-
-        case '0'...'9':
-            nuevoConstNumerica(c);
-            fun_ptr = enConstanteNumerica;
-            break;
-        
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int enConstanteNumerica(int c, Token *token)
-{
-    switch (c)
-    {
-        case '0'...'9':
-            nuevoCaracterConstNumerica(c);
-            fun_ptr = enConstanteNumerica;
-            break;
-
-        default: //EOC
-            ungetc(c,stdin);
-            llenarToken(token,ConstNumerica,constNumerica);
-            fun_ptr = nuevoLexema;
-            return 1;
-    }
-    return 0;
-}
-
-static int posibleIncludeDefineUndef(int c, Token *token) //Tengo un # Busco una 'd' 'u' 'i'
-{
-    switch (c)
-    {
-        case 'd':
-            fun_ptr = d;
-            break;
-
-        case 'u':
-            fun_ptr = u;
-            break;
-        
-        case 'i':
-            fun_ptr = i;
-            break;
+        case EOF:
+            llenarToken(token,FDT,NULL);
+            return 0;
 
         default: //EOC
             llenarToken(token,LexError,NULL);
-            return 1;
+            return 0;
     }
-    return 0;
 }
 
-static int d(int c, Token *token) // Encuentro una 'd' buscamos completar el define
-{
-    switch (c)
-    {
-        case 'e':
-            fun_ptr = de;
-            break;
 
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int de(int c, Token *token) // Encuentro una 'de' buscamos completar el define
-{
-    switch (c)
-    {
-        case 'f':
-            fun_ptr = def;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int def(int c, Token *token) // Encuentro una 'def' buscamos completar el define
-{
-    switch (c)
-    {
-        case 'i':
-            fun_ptr = defi;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int defi(int c, Token *token) // Encuentro una 'defi' buscamos completar el define
-{
-    switch (c)
-    {
-        case 'n':
-            fun_ptr = defin;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int defin(int c, Token *token) // Encuentro una 'defin' buscamos completar el define
-{
-    switch (c)
-    {
-        case 'e':
-            llenarToken(token,Define,NULL);
-            fun_ptr = define;
-            return 1;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int define(int c, Token *token) // Encuentro una 'defin' buscamos completar el define
-{
-    switch (c)
-    {
-        case ' ': case '\t':
-            fun_ptr = defineEspacio;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int defineEspacio(int c, Token *token) // Encuentro una 'defin' buscamos completar el define
-{
-    switch (c)
-    {
-        case ' ': case '\t':
-            fun_ptr = defineEspacio;
-            break;
-
-        case '_': case 'A'...'Z': case 'a'...'z':
-            nuevoIdentificador(c);
-            fun_ptr = defineIdentificador;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int defineIdentificador(int c, Token *token) //Caracteres aptos para un identificador
-{
-    switch (c)
-    {
-        case '_': case 'A'...'Z': case 'a'...'z': case '0'...'9':
-            nuevoCaracterIdentificador(c);
-            fun_ptr = defineIdentificador;
-            break;
-
-        case ' ': case '\t':
-            llenarToken(token,Identificador,identificador);
-            ungetc(c,stdin);
-            fun_ptr = defineIdentificadorEspacio;
-            return 1;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int defineIdentificadorEspacio(int c, Token *token)
-{
-    switch (c)
-    {
-        case ' ': case '\t':
-            fun_ptr = defineIdentificadorEspacio;
-            break;
-
-        case '\n':
-            llenarToken(token,LexError,NULL);
-            return 1;
-
-        default: //EOC
-            nuevoTextoDefine(c);
-            fun_ptr = defineTexto;
-            break;
-    }
-    return 0;
-}
-
-static int defineTexto(int c, Token *token)
-{
-    switch (c)
-    {
-        case '\n':
-            llenarToken(token,TextoReemplazo,textoDefine);
-            ungetc(c,stdin);
-            fun_ptr = nuevoLexema;
-            return 1;
-
-        default: //EOC
-            nuevoCaracterTextoDefine(c);
-            fun_ptr = defineTexto;
-            break;
-    }
-    return 0;
-}
-
-static int u(int c, Token *token) // Encuentro una 'u' buscamos completar el undef
-{
-    switch (c)
-    {
-        case 'n':
-            fun_ptr = un;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int un(int c, Token *token)  // Encuentro una 'un' buscamos completar el undef
-{
-    switch (c)
-    {
-        case 'd':
-            fun_ptr = und;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;;
-    }
-    return 0;
-}
-
-static int und(int c, Token *token)  // Encuentro una 'und' buscamos completar el undef
-{
-    switch (c)
-    {
-        case 'e':
-            fun_ptr = unde;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int unde(int c, Token *token)  // Encuentro una 'unde' buscamos completar el undef
-{
-    switch (c)
-    {
-        case 'f':
-            llenarToken(token,Undefine,NULL);
-            fun_ptr = nuevoLexema;
-            return 1;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int i(int c, Token *token) // Encuentro una 'i' buscamos completar el include
-{
-    switch (c)
-    {
-        case 'n':
-            fun_ptr = in;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int in(int c, Token *token) // Encuentro una 'in' buscamos completar el include
-{
-    switch (c)
-    {
-        case 'c':
-            fun_ptr = inc;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int inc(int c, Token *token) //Encuentro una 'inc' buscamos completar el include
-{
-    switch (c)
-    {
-        case 'l':
-            fun_ptr = incl;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int incl(int c, Token *token) // Encuentro una 'incl' buscamos completar el include
-{
-    switch (c)
-    {
-        case 'u':
-            fun_ptr = inclu;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int inclu(int c, Token *token) // Encuentro una 'inclu' buscamos completar el include
-{
-    switch (c)
-    {
-        case 'd':
-            fun_ptr = includ;
-            break;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int includ(int c, Token *token) // Encuentro una 'includ' buscamos completar el include
-{
-    switch (c)
-    {
-        case 'e':
-            llenarToken(token,Include,NULL);
-            fun_ptr = nuevoLexema;
-            return 1;
-
-        default: //EOC
-            llenarToken(token,LexError,NULL);
-            return 1;
-    }
-    return 0;
-}
-
-static int enIdentificador(int c, Token *token) //Caracteres aptos para un identificador
-{
-    switch (c)
-    {
-        case '_': case 'A'...'Z': case 'a'...'z': case '0'...'9':
-            nuevoCaracterIdentificador(c);
-            fun_ptr = enIdentificador;
-            break;
-
-        default: //EOC
-            llenarToken(token,Identificador,identificador);
-            ungetc(c,stdin);
-            fun_ptr = nuevoLexema;
-            return 1;
-    }
-    return 0;
-}
-
-static int aperturaComillasDobles(int c, Token *token) //Entramos a las comillas dobles caracteres adentro
-{
-    switch (c)
-    {
-        case '\"':
-            llenarToken(token,LitCadena,litCadena);
-            fun_ptr = nuevoLexema;
-            return 1;
-
-        case '\n':
-            llenarToken(token,LexError,NULL);
-            return 1;
-
-        default: //EOC
-            nuevoLitCadena(c);         
-            fun_ptr = entreComillasDobles;
-    }
-    return 0;
-}
-
-static int entreComillasDobles(int c, Token *token) //Entre comillas dobles, se buscan los caracteres adentro de las
-{
-    switch (c)
-    {
-        case '\"':
-            llenarToken(token,LitCadena,litCadena);
-            fun_ptr = nuevoLexema;
-            return 1;
-
-        case '\n':
-            llenarToken(token,LexError,NULL);
-            return 1;
-
-        default: //EOC
-            nuevoCaracterLitCadena(c);         
-            fun_ptr = entreComillasDobles;
-    }
-    return 0;
-}
-
+//--------------COMENTARIOS----------------------
 static int posibleComentario(int c, Token* token) //Llego una / vemos siguiente caracter
 {
     switch (c)
@@ -671,7 +194,6 @@ static int comentarioFinDeLinea(int c, Token *token) //Dentro de un comentario d
     switch (c)
     {
         case '\n':
-            fun_ptr = nuevoLexema;
             ungetc(c,stdin);
             llenarToken(token,Comentario,NULL);
             return 1;
@@ -705,7 +227,6 @@ static int posibleFinDeComentarioMultilinea(int c, Token *token) //Dentro de com
             break;
 
         case '/':
-            fun_ptr = nuevoLexema;
             llenarToken(token,Comentario,NULL);
             return 1;
 
@@ -714,6 +235,249 @@ static int posibleFinDeComentarioMultilinea(int c, Token *token) //Dentro de com
     }
     return 0;
 }
+
+int analisisComentario(Token *t)
+{
+    int c;
+    fun_ptr = posibleComentario;
+    while((c=getchar()) != EOF)
+    {
+        if((fun_ptr)(c,t))
+            if(t->type == LexError)
+                return false;
+            else
+                return true;
+    }
+
+    //Si sale del while es porque llego un EOF
+    llenarToken(t,FDT,NULL);
+    return false;
+}
+//--------------FIN COMENTARIOS----------------------
+
+//--------------IDENTIFICADOR----------------------
+
+static int enIdentificador(int c, Token *token) //Caracteres aptos para un identificador
+{
+    switch (c)
+    {
+        case '_': case 'A'...'Z': case 'a'...'z': case '0'...'9':
+            nuevoCaracterIdentificador(c);
+            fun_ptr = enIdentificador;
+            break;
+
+        default: //EOC
+            if(strcmp(identificador,"define")==0)
+                llenarToken(token,Define,identificador);
+            else if(strcmp(identificador,"undef")==0)
+                llenarToken(token,Undefine,identificador);
+            else if(strcmp(identificador,"include")==0)
+                llenarToken(token,Include,identificador);   
+            else if(strcmp(identificador,"ifdef")==0)
+                llenarToken(token,Ifdef,identificador);
+            else if(strcmp(identificador,"else")==0)
+                llenarToken(token,Else,identificador);
+            else if(strcmp(identificador,"endif")==0)
+                llenarToken(token,Endif,identificador);
+            else
+                llenarToken(token,Identificador,identificador);
+
+            ungetc(c,stdin);
+            return 1;
+    }
+    return 0;
+}
+
+int analisisIdentificador(Token *t, int c)
+{
+    fun_ptr = enIdentificador;
+    nuevoIdentificador(c);
+    while((c=getchar()) != EOF)
+    {
+        if((fun_ptr)(c,t))
+            if(t->type == LexError)
+                return false;
+            else
+                return true;
+    }
+
+    //Si sale del while es porque llego un EOF
+    llenarToken(t,FDT,NULL);
+    return false;
+}
+//--------------FIN IDENTIFICADOR----------------------
+
+//--------------CONSTANTE NUMERICA----------------------
+
+static int baseNumerica(int c, Token *token) //Caracteres aptos para un identificador
+{
+    switch (c)
+    {
+        case 'x':
+            nuevoCaracterConstNumerica(c);
+            fun_ptr = primerNumHexa;
+            break;
+
+        case '0'...'7':
+            nuevoCaracterConstNumerica(c);
+            fun_ptr = numOctal;
+
+        default: //EOC
+            ungetc(c,stdin);
+            llenarToken(token,ConstNumerica,constNumerica);
+            return 1;
+    }
+    return 0;
+}
+
+static int primerNumHexa(int c, Token *token) //Caracteres aptos para un identificador
+{
+    switch (c)
+    {
+        case '0'...'9': case 'a'...'f': case 'A'...'F':
+            nuevoCaracterConstNumerica(c);
+            fun_ptr = numHexa;
+            break;
+
+        default: //EOC
+            llenarToken(token,LexError,NULL);
+            return 1;
+    }
+    return 0;
+}
+
+static int numHexa(int c, Token *token) //Caracteres aptos para un identificador
+{
+    switch (c)
+    {
+        case '0'...'9': case 'a'...'f': case 'A'...'F':
+            nuevoCaracterConstNumerica(c);
+            fun_ptr = numHexa;
+            break;
+
+        default: //EOC
+            ungetc(c,stdin);
+            llenarToken(token,ConstNumerica,constNumerica);
+            return 1;
+    }
+    return 0;
+}
+
+static int numOctal(int c, Token *token)
+{
+    switch (c)
+    {
+        case '0'...'7':
+            nuevoCaracterConstNumerica(c);
+            fun_ptr = numOctal;
+            break;
+
+        default: //EOC
+            ungetc(c,stdin);
+            llenarToken(token,ConstNumerica,constNumerica);
+            return 1;
+    }
+    return 0;
+}
+
+static int numDecimal(int c, Token *token)
+{
+    switch (c)
+    {
+        case '0'...'9':
+            nuevoCaracterConstNumerica(c);
+            fun_ptr = numDecimal;
+            break;
+
+        default: //EOC
+            ungetc(c,stdin);
+            llenarToken(token,ConstNumerica,constNumerica);
+            return 1;
+    }
+    return 0;
+}
+
+int analisisConstNumerica(Token *t, int c)
+{
+    if(c == '0')
+        fun_ptr = baseNumerica;
+    else
+        fun_ptr = numDecimal;
+    nuevoConstNumerica(c);
+    while((c=getchar()) != EOF)
+    {
+        if((fun_ptr)(c,t))
+            if(t->type == LexError)
+                return false;
+            else
+                return true;
+    }
+
+    //Si sale del while es porque llego un EOF
+    llenarToken(t,FDT,NULL);
+    return false;
+}
+//--------------FIN CONSTANTE NUMERICA----------------------
+
+
+//--------------COMILLAS DOBLES----------------------
+static int aperturaComillasDobles(int c, Token *token) //Entramos a las comillas dobles caracteres adentro
+{
+    switch (c)
+    {
+        case '\"':
+            nuevoLitCadena('\0');
+            llenarToken(token,LitCadena,litCadena);
+            return 1;
+
+        case '\n':
+            llenarToken(token,LexError,NULL);
+            return 1;
+
+        default: //EOC
+            nuevoLitCadena(c);         
+            fun_ptr = entreComillasDobles;
+    }
+    return 0;
+}
+
+static int entreComillasDobles(int c, Token *token) //Entre comillas dobles, se buscan los caracteres adentro de las
+{
+    switch (c)
+    {
+        case '\"':
+            llenarToken(token,LitCadena,litCadena);
+            return 1;
+
+        case '\n':
+            llenarToken(token,LexError,NULL);
+            return 1;
+
+        default: //EOC
+            nuevoCaracterLitCadena(c);         
+            fun_ptr = entreComillasDobles;
+    }
+    return 0;
+}
+
+int analisisComillasDobles(Token *t)
+{
+    int c;
+    fun_ptr = aperturaComillasDobles;
+    while((c=getchar()) != EOF)
+    {
+        if((fun_ptr)(c,t))
+            if(t->type == LexError)
+                return false;
+            else
+                return true;
+    }
+
+    //Si sale del while es porque llego un EOF
+    llenarToken(t,FDT,NULL);
+    return false;
+}
+//--------------FIN COMILLAS DOBLES----------------------
 
 static void nuevoIdentificador(int c)
 {
