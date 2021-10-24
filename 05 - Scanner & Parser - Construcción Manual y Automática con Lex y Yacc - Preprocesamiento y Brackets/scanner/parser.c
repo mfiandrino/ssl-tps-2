@@ -369,32 +369,45 @@ Comentario
  { Grupo }
 */
 void Directiva(){
+    Token t;    
     GetNextToken(&token);
     switch (token.type)
     {
     case Define:
-        Match(Identificador);
-        Match(TextoReemplazo);
-        Match(NewLine);
+        t.type = Identificador;
+        Match(t);
+        t.type = TextoReemplazo;
+        Match(t);
+        t.type = NewLine;
+        Match(t);
         break;
 
     case Undefine:
-        Match(Identificador);    
-        Match(NewLine);
+        t.type = Identificador;
+        Match(t);
+        t.type = NewLine;    
+        Match(t);
         break;
 
     case Include:
-        Match(LitCadena);
-        Match(NewLine);
+        t.type = LitCadena;
+        Match(t);
+        t.type = NewLine;
+        Match(t);
         break;
     
     case Ifdef:
-        Match(Identificador);
-        Match(NewLine);
+        t.type = Identificador;
+        Match(t);
+        t.type = NewLine;
+        Match(t);
         Grupo();
-        Match(Numeral);
-        Match(Endif);
-        Match(NewLine);
+        t.type = Numeral;
+        Match(t);
+        t.type = Endif;
+        Match(t);
+        t.type = NewLine;
+        Match(t);
         break;
     
     default:
@@ -404,6 +417,7 @@ void Directiva(){
 }
 
 void Grupo(){
+    Token t;
     GetNextToken(&token);
     switch (token.type)
     {
@@ -416,7 +430,8 @@ void Grupo(){
 
     case LParen:
         Grupo();
-        Match(RParen);
+        t.type = RParen;
+        Match(t);
         break;
     
     default:
@@ -428,6 +443,7 @@ void Grupo(){
 
 void ErrorSintactico(){
     printf("Ocurrió un Error Sintáctico");
+    exit(-1);
     //TODO: CORTAR LA EJECUCION
 }
 
