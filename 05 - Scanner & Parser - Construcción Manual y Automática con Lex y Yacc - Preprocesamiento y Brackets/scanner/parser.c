@@ -433,6 +433,18 @@ void Grupo(){
         t.type = RParen;
         Match(t);
         break;
+
+    case LBrack:
+        Grupo();
+        t.type = RBrack;
+        Match(t);
+        break;
+
+    case LBrace:
+        Grupo();
+        t.type = RBrace;
+        Match(t);
+        break;
     
     default:
        
@@ -443,8 +455,7 @@ void Grupo(){
 
 void ErrorSintactico(){
     printf("Ocurrió un Error Sintáctico");
-    exit(-1);
-    //TODO: CORTAR LA EJECUCION
+    exit(-1);   
 }
 
 
