@@ -447,10 +447,46 @@ void Grupo(){
         break;
     
     default:
-       
+        ErrorSintactico();
     }
 
 }
+
+
+void Componente(){
+
+}
+
+
+/*
+UnidadDeTraducción ->
+ Grupo FDT |
+ Grupo UnidadDeTraducción
+
+*/
+
+void UnidadDeTraduccion(){
+     
+     Grupo();
+     
+     GetNextToken(&token);
+
+
+
+}
+
+/*
+Componente ->
+    Directiva
+    Comentario
+    Identificador
+    Punctator
+
+UnidadDeTraducción ->
+    Componente
+    UnidadDeTraducción Componente
+
+*/
 
 
 void ErrorSintactico(){
