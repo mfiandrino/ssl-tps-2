@@ -1,11 +1,11 @@
 #include "scanner.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 Token token;
-
-//TODO: Analizar si se puede implementar 
-//int (*fun_ptr)(Token token);
+void ErrorSintactico();
+void Grupo();
 
 
 char* stringTokenType(TokenType tokTyp)
@@ -83,282 +83,14 @@ char* stringTokenType(TokenType tokTyp)
     }
 }
 
-void Match (Token tokenEsperado){
-
-    Token t;
-    GetNextToken(&t);
-
-    if (strcmp(t.type, tokenEsperado.type) == 0){
-        //TODO: Falta utilizar esta variable mas adelante  
-        token.type = t.type;
-        token.val = t.val;
-    }else{
-        ErrorSintactico();
-    }
-}
-
-void TokenNumeral (void){
-    GetNextToken(&token);
-    switch(token.type){
-        case Define:
-            TokenDefine();
-        break;
-        case Undefine:
-            TokenUndefine();
-        break;            
-        case Ifdef:
-            TokenIfdef();
-        break;
-        case Endif:
-            TokenEndif();
-        break;
-        case Include:
-            TokenInclude();
-        break;
-        default:
-            ErrorSintactico();
-    }
-}
-
-void TokenDefine (void){
-
-    Token t;
-    t.type = Identificador;
-    Match(t);
-
-    TokenIdentificadorDefine();
-
-}
-
-void TokenIdentificadorNumeral (void) {
-
-    Token t;
-    t.type = NewLine;
-    Match(t);
-
-}
-
-
-void TokenIdentificadorDefine (void){    
-
-    Token t;
-    t.type = TextoReemplazo;
-    Match(t);
-
-    TokenTextoReemplazo();   
-}
-
-void TokenTextoReemplazo (void){   
-
-    Token t;
-    t.type = NewLine;
-    Match(t);
-
-}
-
-
-//Asumimos que despues de un comentario hay un NewLine
-void TokenComentario (void){    
-    Token t;
-    t.type = NewLine;
-    Match(t);
-}
-
-//Consultar: Podemos asumir que un undef siempre termina con un newLine?
-void TokenUndefine (void){
-    Token t;
-    t.type = Identificador;
-    Match(t);
-
-    TokenIdentificadorNumeral();        
-}
-
-void TokenInclude (void){
-    Token t;
-    t.type = Path;
-    Match(t);   
-
-    TokenPath(); 
-}
-
-void TokenPath (void){
-    Token t;
-    t.type = NewLine;
-    Match(t);                  
-}
-
-void TokenIfdef (void){
-    Token t;
-    t.type = Identificador;
-    Match(t);
-
-    TokenIdentificadorNumeral();        
-}
-
-void TokenEndif (void){
-    Token t;
-    t.type = NewLine;
-    Match(t);
-}
-
-void TokenIdentificador(void){ 
-    GetNextToken(&token);
-    switch(token.type){
-        case Identificador:
-            TokenIdentificador();
-        break;
-        case Punctuator:
-            TokenPunctuator();
-        break;
-        case LParen:
-            TokenLParen();
-        break;
-        case RParen:
-            TokenRParen();
-        break;
-        case LBrack:
-            TokenLBrack();
-        break;
-        case RBrack:
-            TokenRBrack();
-        break;
-        case LBrace:
-            TokenLBrace();
-        break;
-        case RBrace:
-            TokenRBrace();
-        break;
-        case Comentario:
-            TokenComentario();
-        break;
-        case NewLine: break;
-        default:
-            ErrorSintactico();
-    }
-}
-
-void TokenPunctuator(void){ 
-    GetNextToken(&token);
-    switch(token.type){
-        case Comentario:
-            TokenComentario();
-        break;
-        case Punctuator:
-            TokenPunctuator();
-        break;
-        case LitCadena:
-            TokenLitCadena();
-        break;
-        case ConstNumerica:
-            TokenConstNumerica();
-        break;
-        case RParen:
-            TokenRParen();
-        break;
-        case RBrack:
-            TokenRBrack();
-        break;
-        case RBrace:
-            TokenRBrace();
-        break;
-        case NewLine: break;
-        default:
-            ErrorSintactico();
-    }    
-}
-
-void TokenLitCadena(void){
-    GetNextToken(&token);
-    switch (token.type){
-    case Punctuator:
-    case Comentario:
-    case RParen:
-    case RBrack:
-    default:
-    }
-}
-
-void TokenConstNumerica(void){
-    GetNextToken(&token);
-    switch (token.type){
-    case Punctuator:
-    case Comentario:
-    case RParen:
-    case RBrack:
-    default:
-    }
-}
-
-void TokenLParen(void){
-    GetNextToken(&token);
-    switch (token.type){
-    case Identificador:
-    case LitCadena:
-    case ConstNumerica:
-    case RParen:
-    case Comentario:
-    case Punctuator:
-    case NewLine:
-    case LParen:
-    default:
-    }
-
-}
-
-void TokenRParen(void){
-    GetNextToken(&token);
-    switch (token.type){
-    case Identificador:  
-    case RParen:
-    case LParen:
-    case LBrace:
-    case Comentario:
-    case Punctuator:
-    case NewLine:
-    default:
-    }
-}
-
-void TokenLBrack(void){
-    GetNextToken(&token);
-    switch (token.type){
-    case Identificador:      
-    case LParen:    
-    case Comentario:
-    case Punctuator:
-    case NewLine:
-    case ConstNumerica:
-    case RBrack:
-    default:
-    }
-}
-
-void TokenRBrack(void){
-    GetNextToken(&token);
-    switch (token.type){
-    case Identificador:           
-    case Comentario:
-    case Punctuator:
-    case NewLine:    
-    case RBrack:
-    case RParen:
-    default:
-    }
-}
-
-void TokenLBrace(void){
-    GetNextToken(&token);
-    switch (token.type){
-    case Identificador:           
-    case Comentario:    
-    case NewLine:     
+void Match (TokenType ttype){
     
-    
-    default:
-    }
+    GetNextToken(&token);
+
+    if (ttype != token.type)       
+        ErrorSintactico();   
+            
 }
-
-
 
 /*
 Comentario
@@ -369,47 +101,40 @@ Comentario
  [ Grupo ]
  { Grupo }
 */
-void Directiva(){
-    Token t;    
+void Directiva(){      
     GetNextToken(&token);
     switch (token.type)
     {
-    case Define:
-        t.type = Identificador;
-        Match(t);
-        t.type = TextoReemplazo;
-        Match(t);
-        t.type = NewLine;
-        Match(t);
+    case Define:        
+        Match(Identificador);        
+        Match(TextoReemplazo);        
+        Match(NewLine);
         break;
 
-    case Undefine:
-        t.type = Identificador;
-        Match(t);
-        t.type = NewLine;    
-        Match(t);
+    case Undefine:       
+        Match(Identificador);           
+        Match(NewLine);
         break;
 
-    case Include:
-        t.type = LitCadena;
-        Match(t);
-        t.type = NewLine;
-        Match(t);
+    case Include:        
+        Match(LitCadena);        
+        Match(NewLine);
         break;
     
-    case Ifdef:
-        t.type = Identificador;
-        Match(t);
-        t.type = NewLine;
-        Match(t);
+    case Ifdef:        
+        Match(Identificador);        
+        Match(NewLine);
+        //GetNextToken(&token);
         Grupo();
-        t.type = Numeral;
-        Match(t);
-        t.type = Endif;
-        Match(t);
-        t.type = NewLine;
-        Match(t);
+        Match(NewLine);        
+        Match(Numeral);       
+        Match(Endif);        
+        Match(NewLine);
         break;
+
+    case LexError:
+        printf("Hay un error léxico");
+        exit(-1);
     
     default:
         ErrorSintactico();       
@@ -417,8 +142,44 @@ void Directiva(){
 
 }
 
-void Grupo(){
-    Token t;
+/*
+ Texto ->
+    Identificador
+    Punctuator
+    ConstNumerica
+    Texto Identificador
+    Texto Punctuator   
+    Texto ConstNumerica
+    */
+   /*
+   int a = 5; //
+Texto
+Identificador Texto
+Identificador Identificador Texto
+Identificador Identificado Punctuator Texto
+Identificador Identificado Punctuator ConstNumerica Texto
+Identificador Identificado Punctuator ConstNumerica Texto
+*/
+
+
+//TODO: Estamos leyendo un token al final, que estamos perdiendo porque se pisa con uno nuevo.
+void Texto(){    
+    if (token.type == Identificador || token.type == Punctuator || token.type == ConstNumerica){        
+        GetNextToken(&token);
+        Texto();
+     } 
+}
+
+/*
+Grupo ->
+    Directiva
+    Comentario
+    Texto
+    ( Grupo )
+    [ Grupo ]
+    { Grupo }
+*/
+void Grupo(){    
     GetNextToken(&token);
     switch (token.type)
     {
@@ -429,23 +190,31 @@ void Grupo(){
         Directiva();
         break;
 
+    case Identificador: case Punctuator: case ConstNumerica:
+        Texto();
+        break;
+  
     case LParen:
-        Grupo();
-        t.type = RParen;
-        Match(t);
+        //GetNextToken(&token);
+        Grupo();        
+        Match(RParen);
         break;
 
     case LBrack:
-        Grupo();
-        t.type = RBrack;
-        Match(t);
+        //GetNextToken(&token);
+        Grupo();        
+        Match(RBrack);
         break;
 
     case LBrace:
-        Grupo();
-        t.type = RBrace;
-        Match(t);
+        //GetNextToken(&token);
+        Grupo();        
+        Match(RBrace);
         break;
+
+    case LexError:
+        printf("Hay un error léxico");
+        exit(-1);
     
     default:
         ErrorSintactico();
@@ -454,40 +223,33 @@ void Grupo(){
 }
 
 
-void Componente(){
-
-}
-
-
 /*
 UnidadDeTraducción ->
  Grupo FDT |
  Grupo UnidadDeTraducción
-
 */
 
-void UnidadDeTraduccion(){
+void UnidadDeTraduccion(){    
+    
+    Grupo();
      
-     Grupo();
-     
-     GetNextToken(&token);
+   GetNextToken(&token);
 
+    switch(token.type)
+    {
+        case FDT:
+            printf("Está todo bien");
+            break;
 
+        case LexError:
+            printf("Hay un error léxico");
+            break;
+
+        default:
+            UnidadDeTraduccion();
+      }
 
 }
-
-/*
-Componente ->
-    Directiva
-    Comentario
-    Identificador
-    Punctator
-
-UnidadDeTraducción ->
-    Componente
-    UnidadDeTraducción Componente
-
-*/
 
 
 void ErrorSintactico(){
@@ -497,23 +259,11 @@ void ErrorSintactico(){
 
 
 int main (){
-    while(GetNextToken(&token)){
+    
+    UnidadDeTraduccion();    
         
-        switch (token.type){
-            case Numeral:
-                TokenNumeral();
-            break;
-            case Comentario:
-                TokenComentario();
-            break;
-            case Identificador:
-                TokenIdentificador();
-            break;
-            default:               
-
-        }
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
-    }
+    printf("\n%s\t%s",stringTokenType(token.type),token.val);
+    
     printf("\n%s\t\t%s",stringTokenType(token.type),token.val);
     printf("\n");
 }
@@ -522,57 +272,34 @@ int main (){
 
 
 /*
-Objetivo -> 
-    UnidadDeTraduccion
-    FDT
-
-UnidadDeTraducción ->
-    Componente
-    UnidadDeTraducción Componente
-    
-X ->
-    Token
-    { X }
-    [ X ]
-    ( X )
-    
-Ejemplo de Parseo
-({hola})
-
-X
-( X )
-( { X } )
-( { Token } )
-( { Identificador } )
-( { hola } )
-    
-Componente ->
-    Directiva
-    Comentario
-    Identificador
-    Punctator
-
-Directiva ->
-    NUMERAL DEFINE IDENTIFICADOR TEXTODEREEMPLAZO NL?
-    NUMERAL UNDEFINE IDENTIFICADOR NL?
-    NUMERAL INCLUDE PATH //"" <>
-
-
-*/
-
-
-/*
 
 UnidadDeTraducción ->
  Grupo FDT |
  Grupo UnidadDeTraducción
 
+Grupo ->
+    Directiva
+    Comentario
+    Texto
+    ( Grupo )
+    [ Grupo ]
+    { Grupo }
 
-UnidadDeTraducción
-UnidadDeTraducción Grupo
-UnidadDeTraducción Grupo Grupo
-Grupo Grupo Grupo FDT
+Directiva ->
+    Numeral Define Identificador TEXTODEREEMPLAZO NewLine
+    Numeral Undefine Identificador NewLine
+    Numeral Include LitCadena NewLine
+    Numeral Ifdef Identificador NewLine Grupo NewLine Numeral EndIf NewLine
+ 
+ Texto ->
+    Identifcador
+    Punctuator
+    ConstNumerica
+    Texto Identificador
+    Texto Punctuator   
+    Texto ConstNumerica
 
-
+TODO: Consultar por token identificador, es texto o token?
+TODO: Consultar por el Else del ifdef. 
 
  */
