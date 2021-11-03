@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 
 Token token;
 void ErrorSintactico();
@@ -86,6 +87,7 @@ char* stringTokenType(TokenType tokTyp)
 void Match (TokenType ttype){
     
     GetNextToken(&token);
+    printf("\n%s\t%s",stringTokenType(token.type),token.val);
 
     if (ttype != token.type)       
         ErrorSintactico();   
@@ -101,14 +103,41 @@ Comentario
  [ Grupo ]
  { Grupo }
 */
+#define largoMaxTextoReemplazo 100
+void MatchTexto()
+{    
+    char *textoReemplazo = (char*)malloc(largoMaxTextoReemplazo);
+    memset(textoReemplazo,'\0',sizeof(char) * largoMaxTextoReemplazo);
+    
+    do{
+        GetNextToken(&token);
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        if(token.type == LexError || token.type == FDT)
+            ErrorSintactico();
+        else
+        {
+            if(token.val)
+            {
+                textoReemplazo = strcat(textoReemplazo,token.val);
+                textoReemplazo = strcat(textoReemplazo," ");
+            }
+        }
+    } while(token.type != NewLine);
+
+    printf("\nTexto Reemplazo: %s",textoReemplazo);
+    //Guardar texto reemplazo en symboltable
+}
+
 void Directiva(){      
     GetNextToken(&token);
     switch (token.type)
     {
     case Define:        
-        Match(Identificador);        
-        Match(TextoReemplazo);        
-        Match(NewLine);
+        Match(Identificador);
+        //#define MAX MIN 10\n        
+        MatchTexto();
+        //Match(TextoReemplazo);        
+        //Match(NewLine);
         break;
 
     case Undefine:       
@@ -180,7 +209,9 @@ Grupo ->
     { Grupo }
 */
 void Grupo(){    
+    printf("\nEntro a Grupo");
     GetNextToken(&token);
+    printf("\n%s\t%s",stringTokenType(token.type),token.val);
     switch (token.type)
     {
     case Comentario:
@@ -230,11 +261,11 @@ UnidadDeTraducción ->
 */
 
 void UnidadDeTraduccion(){    
-    
+    printf("\nEntro a Unidad de Traduccion");
     Grupo();
      
-   GetNextToken(&token);
-
+    GetNextToken(&token);
+    printf("\n%s\t%s",stringTokenType(token.type),token.val);
     switch(token.type)
     {
         case FDT:
@@ -247,10 +278,8 @@ void UnidadDeTraduccion(){
 
         default:
             UnidadDeTraduccion();
-      }
-
+    }
 }
-
 
 void ErrorSintactico(){
     printf("Ocurrió un Error Sintáctico");
@@ -260,15 +289,122 @@ void ErrorSintactico(){
 
 int main (){
     
-    UnidadDeTraduccion();    
-        
-    printf("\n%s\t%s",stringTokenType(token.type),token.val);
+    //UnidadDeTraduccion();
+    
+    while(GetNextToken(&token))
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
     
     printf("\n%s\t\t%s",stringTokenType(token.type),token.val);
     printf("\n");
+    
+}
+/*
+void Grupo2(){    
+    printf("\nEntro a Grupo");
+    GetNextToken(&token);
+    printf("\n%s\t%s",stringTokenType(token.type),token.val);
+    switch (token.type)
+    {
+    case Comentario:
+        break;
+
+    case Numeral:
+        Directiva();
+        break;
+
+    case Identificador: case Punctuator: case ConstNumerica:
+        Texto();
+        break;
+  
+    case LParen:
+        //GetNextToken(&token);
+        Grupo();        
+        Match(RParen);
+        break;
+
+    case LBrack:
+        //GetNextToken(&token);
+        Grupo();        
+        Match(RBrack);
+        break;
+
+    case LBrace:
+        //GetNextToken(&token);
+        Grupo();        
+        Match(RBrace);
+        break;
+
+    case LexError:
+        printf("Hay un error léxico");
+        exit(-1);
+    
+    default:
+        ErrorSintactico();
+    }
+
 }
 
+void ListaDeGrupos()
+{
+    Grupo2();
+    while(1)
+    {
+        GetNextToken(&token);
+        switch (token.type)
+        {
+            case :
+                break;
+        
+            default:
+                break;
+        }
+        
+    }
+}
 
+void UnidadDeTraduccion2()
+{    
+    ListaDeGrupos();
+    Match(FDT);    
+}
+
+int main()
+{
+    UnidadDeTraduccion2();
+}*/
+
+/*Version 2
+
+UnidadDeTraducción -> <ListaDeGrupos> FDT
+
+ListaDeGrupos -> <Grupo> {<Grupo>}
+
+Grupo -> 
+    <Directiva>
+    Comentario
+    <Texto>
+    ( <Grupo> )
+    [ <Grupo> ]
+    { <Grupo> }
+
+Directiva ->
+    Numeral Define Identificador TextoReemplazo NewLine
+    Numeral Undefine Identificador NewLine
+    Numeral Include LitCadena NewLine
+    Numeral Ifdef Identificador NewLine <Grupo> NewLine Numeral EndIf NewLine
+ 
+ Texto ->
+    Identifcador
+    Punctuator
+    ConstNumerica
+    Identificador <Texto>
+    Punctuator <Texto>   
+    ConstNumerica <Texto>
+
+TODO: Consultar por token identificador, es texto o token?
+TODO: Consultar por el Else del ifdef. 
+
+*/
 
 
 /*

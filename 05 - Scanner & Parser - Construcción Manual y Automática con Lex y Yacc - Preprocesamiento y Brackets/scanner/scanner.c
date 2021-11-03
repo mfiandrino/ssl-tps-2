@@ -256,7 +256,6 @@ int analisisComentario(Token *t)
 //--------------FIN COMENTARIOS----------------------
 
 //--------------IDENTIFICADOR----------------------
-
 static int enIdentificador(int c, Token *token) //Caracteres aptos para un identificador
 {
     switch (c)
@@ -268,7 +267,7 @@ static int enIdentificador(int c, Token *token) //Caracteres aptos para un ident
 
         default: //EOC
             if(strcmp(identificador,"define")==0)
-                llenarToken(token,Define,identificador);
+                llenarToken(token,Define,identificador);                
             else if(strcmp(identificador,"undef")==0)
                 llenarToken(token,Undefine,identificador);
             else if(strcmp(identificador,"include")==0)
