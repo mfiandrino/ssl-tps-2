@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+bool tengoToken = false;
 Token token;
 void ErrorSintactico();
 void Grupo();
@@ -94,6 +95,7 @@ void Match (TokenType ttype){
             
 }
 
+
 /*
 Comentario
  Directiva
@@ -128,37 +130,42 @@ void MatchTexto()
     //Guardar texto reemplazo en symboltable
 }
 
-void Directiva(){      
-    GetNextToken(&token);
+void Directiva(){
+      GetNextToken(&token);   
+      
+    
     switch (token.type)
     {
     case Define:        
-        Match(Identificador);
+        Match(Identificador);        
         //#define MAX MIN 10\n        
         MatchTexto();
         //Match(TextoReemplazo);        
-        //Match(NewLine);
+        //Match(NewLine);        
         break;
 
     case Undefine:       
         Match(Identificador);           
-        Match(NewLine);
+        Match(NewLine);       
         break;
 
     case Include:        
         Match(LitCadena);        
         Match(NewLine);
+        tengoToken = false;
         break;
     
     case Ifdef:        
         Match(Identificador);        
         Match(NewLine);
+        tengoToken = false;
         //GetNextToken(&token);
         Grupo();
         Match(NewLine);        
         Match(Numeral);       
         Match(Endif);        
         Match(NewLine);
+        tengoToken = false;
         break;
 
     case LexError:
@@ -196,7 +203,7 @@ void Texto(){
     if (token.type == Identificador || token.type == Punctuator || token.type == ConstNumerica){        
         GetNextToken(&token);
         Texto();
-     } 
+     }
 }
 
 /*
@@ -210,37 +217,42 @@ Grupo ->
 */
 void Grupo(){    
     printf("\nEntro a Grupo");
+
+    
     GetNextToken(&token);
+     
+
     printf("\n%s\t%s",stringTokenType(token.type),token.val);
+
     switch (token.type)
     {
-    case Comentario:
+    case Comentario:      
         break;
 
     case Numeral:
-        Directiva();
+        Directiva();        
         break;
 
-    case Identificador: case Punctuator: case ConstNumerica:
-        Texto();
+    case Identificador: case Punctuator: case ConstNumerica:        
+        Texto();        
         break;
   
     case LParen:
-        //GetNextToken(&token);
+        //GetNextToken(&token);        
         Grupo();        
-        Match(RParen);
+        Match(RParen);        
         break;
 
     case LBrack:
-        //GetNextToken(&token);
+        //GetNextToken(&token);        
         Grupo();        
-        Match(RBrack);
+        Match(RBrack);        
         break;
 
     case LBrace:
-        //GetNextToken(&token);
+        //GetNextToken(&token);        
         Grupo();        
-        Match(RBrace);
+        Match(RBrace);        
         break;
 
     case LexError:
@@ -262,15 +274,21 @@ UnidadDeTraducción ->
 
 void UnidadDeTraduccion(){    
     printf("\nEntro a Unidad de Traduccion");
+
     Grupo();
-     
-    GetNextToken(&token);
+
+    if(!tengoToken){
+        GetNextToken(&token);
+        tengoToken = true;
+    }
+    
     printf("\n%s\t%s",stringTokenType(token.type),token.val);
+
     switch(token.type)
     {
         case FDT:
-            printf("Está todo bien");
-            break;
+            printf("Llegamos al token FDT");
+            break;            
 
         case LexError:
             printf("Hay un error léxico");
@@ -278,6 +296,7 @@ void UnidadDeTraduccion(){
 
         default:
             UnidadDeTraduccion();
+
     }
 }
 
@@ -289,7 +308,7 @@ void ErrorSintactico(){
 
 int main (){
     
-    //UnidadDeTraduccion();
+    UnidadDeTraduccion();
     
     while(GetNextToken(&token))
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
