@@ -1,0 +1,28 @@
+
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Numeral)	(null)
+(Identificador)	globo
+(ConstNumerica)	22
+(NewLine)	(null)
+Texto Reemplazo: 22 
+(Numeral)	(null)
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Numeral)	(null)
+(Identificador)	MAX
+(Identificador)	MIN
+(ConstNumerica)	10
+(NewLine)	(null)
+Texto Reemplazo: MIN 10 
+(Identificador)	int
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Identificador)	int
+(Identificador)	cont
+(Punctuator)	=
+(ConstNumerica)	0
+(Punctuator)	;
+(FDT)	(null)
+(FDT)	(null)Llegamos al token FDT
+(FDT)		(null)

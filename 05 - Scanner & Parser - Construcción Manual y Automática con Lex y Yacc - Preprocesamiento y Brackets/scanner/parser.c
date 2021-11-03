@@ -131,9 +131,10 @@ void MatchTexto()
 }
 
 void Directiva(){
-      GetNextToken(&token);   
-      
-    
+    if (!tengoToken){      
+        GetNextToken(&token);   
+        tengoToken = true;
+    } 
     switch (token.type)
     {
     case Define:        
@@ -141,12 +142,14 @@ void Directiva(){
         //#define MAX MIN 10\n        
         MatchTexto();
         //Match(TextoReemplazo);        
-        //Match(NewLine);        
+        //Match(NewLine);
+        tengoToken = false;
         break;
 
     case Undefine:       
         Match(Identificador);           
-        Match(NewLine);       
+        Match(NewLine);
+        tengoToken = false;
         break;
 
     case Include:        
@@ -202,6 +205,7 @@ Identificador Identificado Punctuator ConstNumerica Texto
 void Texto(){    
     if (token.type == Identificador || token.type == Punctuator || token.type == ConstNumerica){        
         GetNextToken(&token);
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         Texto();
      }
 }
@@ -216,43 +220,53 @@ Grupo ->
     { Grupo }
 */
 void Grupo(){    
-    printf("\nEntro a Grupo");
+    printf("\n----------------Entro a Grupo----------------");
 
-    
-    GetNextToken(&token);
-     
+    if(!tengoToken){
+        GetNextToken(&token);
+        tengoToken = true;
+    }
 
     printf("\n%s\t%s",stringTokenType(token.type),token.val);
 
     switch (token.type)
     {
-    case Comentario:      
+    case Comentario:
+        tengoToken = false;
         break;
 
     case Numeral:
+        tengoToken = false;
         Directiva();        
         break;
 
     case Identificador: case Punctuator: case ConstNumerica:        
-        Texto();        
+        Texto();
+        tengoToken = true;
         break;
   
     case LParen:
-        //GetNextToken(&token);        
+        //GetNextToken(&token);
+        tengoToken = false;
         Grupo();        
-        Match(RParen);        
+        Match(RParen);
+        tengoToken = false;
         break;
 
     case LBrack:
-        //GetNextToken(&token);        
+        //GetNextToken(&token);
+        tengoToken = false;
         Grupo();        
-        Match(RBrack);        
+        Match(RBrack);
+        tengoToken = false;
         break;
 
     case LBrace:
-        //GetNextToken(&token);        
+        //GetNextToken(&token);
+        tengoToken = false;
         Grupo();        
-        Match(RBrace);        
+        Match(RBrace);
+        tengoToken = false;
         break;
 
     case LexError:
@@ -273,7 +287,7 @@ UnidadDeTraducción ->
 */
 
 void UnidadDeTraduccion(){    
-    printf("\nEntro a Unidad de Traduccion");
+    printf("\n--------------Entro a Unidad de Traduccion----------------");
 
     Grupo();
 
