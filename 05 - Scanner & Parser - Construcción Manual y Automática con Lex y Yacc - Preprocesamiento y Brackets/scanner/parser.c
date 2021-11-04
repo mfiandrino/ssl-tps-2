@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../preprocessorSymbolTable/preprocessorSymbolTable.h"
+#include "../defineSymbolTable/defineSymbolTable.h"
 
 Token token;
 void ErrorSintactico();
@@ -288,7 +290,12 @@ void ErrorSintactico(){
 
 
 int main (){
-    
+    setPrep("define",idReservado);
+    setPrep("undef",idReservado);
+    setPrep("ifdef",idReservado);
+    setPrep("else",idReservado);
+    setPrep("endif",idReservado);
+    setPrep("include",idReservado);
     //UnidadDeTraduccion();
     
     while(GetNextToken(&token))

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../preprocessorSymbolTable/preprocessorSymbolTable.h"
 
 #define largoMaxIdentificador 32
 int contIdentificador;
@@ -34,6 +35,7 @@ int analisisComentario(Token*);
 int analisisIdentificador(Token*,int);
 int analisisConstNumerica(Token*,int);
 int analisisComillasDobles(Token*);
+TokenType tipoIdentificador(char*);
 
 
 //--------------ESTADOS--------------------
@@ -266,25 +268,39 @@ static int enIdentificador(int c, Token *token) //Caracteres aptos para un ident
             break;
 
         default: //EOC
-            if(strcmp(identificador,"define")==0)
-                llenarToken(token,Define,identificador);
-            else if(strcmp(identificador,"undef")==0)
-                llenarToken(token,Undefine,identificador);
-            else if(strcmp(identificador,"include")==0)
-                llenarToken(token,Include,identificador);
-            else if(strcmp(identificador,"ifdef")==0)
-                llenarToken(token,Ifdef,identificador);
-            else if(strcmp(identificador,"else")==0)
-                llenarToken(token,Else,identificador);
-            else if(strcmp(identificador,"endif")==0)
-                llenarToken(token,Endif,identificador);
-            else
-                llenarToken(token,Identificador,identificador);
-
+            llenarToken(token,tipoIdentificador(identificador),identificador);
             ungetc(c,stdin);
             return 1;
     }
     return 0;
+}
+
+TokenType tipoIdentificador(char *identificador)
+{
+    switch (getPrep(identificador))
+    {
+        case idReservado:
+            if(strcmp(identificador,"define")==0)
+                return Define;
+            else if(strcmp(identificador,"undef")==0)
+                return Undefine;
+            else if(strcmp(identificador,"include")==0)
+                return Include;
+            else if(strcmp(identificador,"ifdef")==0)
+                return Ifdef;
+            else if(strcmp(identificador,"else")==0)
+                return Else;
+            else if(strcmp(identificador,"endif")==0)
+                return Endif;
+            else
+            {
+                printf("Nunca deberias haber llegado aqui, posible error en la symbol table");
+                return LexError;
+            }
+            
+        default:
+            return Identificador;
+    }
 }
 
 int analisisIdentificador(Token *t, int c)

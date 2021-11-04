@@ -11,7 +11,7 @@ Grupo Nro 3 del curso K2051 Lunes TN
 
 
 /* hash: forma un valor hash para la cadena s */
-unsigned hash(char *s)
+unsigned hashPrep(char *s)
 {
     unsigned hashval;
 
@@ -25,7 +25,7 @@ unsigned hash(char *s)
 IdType getPrep(char *s)
 {
     struct nlist *np;
-    for (np = hashtab[hash(s)]; np != NULL; np = np->siguiente)
+    for (np = hashtab[hashPrep(s)]; np != NULL; np = np->siguiente)
     {
         if (strcmp(s, np->identificador) == 0)
         {
@@ -39,7 +39,7 @@ IdType getPrep(char *s)
 static struct nlist *getStruct(char *s)
 {
     struct nlist *np;
-    for (np = hashtab[hash(s)]; np != NULL; np = np->siguiente)
+    for (np = hashtab[hashPrep(s)]; np != NULL; np = np->siguiente)
     {
         if (strcmp(s, np->identificador) == 0)
         {
@@ -61,7 +61,7 @@ IdType setPrep(char *identificador, IdType idType1)
         np = (struct nlist *) malloc(sizeof(*np));
         if (np == NULL || (np->identificador = strdup(identificador)) == NULL)
             return Error;
-        hashval = hash(identificador);
+        hashval = hashPrep(identificador);
         np->siguiente = hashtab[hashval];
         hashtab[hashval] = np;
     } 
@@ -82,13 +82,13 @@ int deletePrep(char * identificador)
     if((np1 = getStruct(identificador)) == NULL) //No encontro el identificador
         return 0;
 
-    for (np1 = np2 = hashtab[hash(identificador)]; np1 != NULL;np2 = np1, np1 = np1->siguiente) 
+    for (np1 = np2 = hashtab[hashPrep(identificador)]; np1 != NULL;np2 = np1, np1 = np1->siguiente) 
     {
         if(strcmp(identificador, np1->identificador) == 0 ) //Encontro el identificador
         {
         //  Remuevo el nodo de la lista 
         if ( np1 == np2 )
-            hashtab[hash(identificador)] = np1->siguiente;
+            hashtab[hashPrep(identificador)] = np1->siguiente;
         else
             np2->siguiente = np1->siguiente;
 
