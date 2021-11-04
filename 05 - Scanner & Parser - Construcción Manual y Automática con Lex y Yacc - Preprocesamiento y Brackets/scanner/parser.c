@@ -6,6 +6,7 @@
 #include "../preprocessorSymbolTable/preprocessorSymbolTable.h"
 #include "../defineSymbolTable/defineSymbolTable.h"
 
+bool tengoToken = false;
 Token token;
 void ErrorSintactico();
 void Grupo();
@@ -96,6 +97,7 @@ void Match (TokenType ttype){
             
 }
 
+
 /*
 Comentario
  Directiva
@@ -130,37 +132,45 @@ void MatchTexto()
     //Guardar texto reemplazo en symboltable
 }
 
-void Directiva(){      
-    GetNextToken(&token);
+void Directiva(){
+    if (!tengoToken){      
+        GetNextToken(&token);   
+        tengoToken = true;
+    } 
     switch (token.type)
     {
     case Define:        
-        Match(Identificador);
+        Match(Identificador);        
         //#define MAX MIN 10\n        
         MatchTexto();
         //Match(TextoReemplazo);        
         //Match(NewLine);
+        tengoToken = false;
         break;
 
     case Undefine:       
         Match(Identificador);           
         Match(NewLine);
+        tengoToken = false;
         break;
 
     case Include:        
         Match(LitCadena);        
         Match(NewLine);
+        tengoToken = false;
         break;
     
     case Ifdef:        
         Match(Identificador);        
         Match(NewLine);
+        tengoToken = false;
         //GetNextToken(&token);
         Grupo();
         Match(NewLine);        
         Match(Numeral);       
         Match(Endif);        
         Match(NewLine);
+        tengoToken = false;
         break;
 
     case LexError:
@@ -197,8 +207,9 @@ Identificador Identificado Punctuator ConstNumerica Texto
 void Texto(){    
     if (token.type == Identificador || token.type == Punctuator || token.type == ConstNumerica){        
         GetNextToken(&token);
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         Texto();
-     } 
+     }
 }
 
 /*
@@ -211,38 +222,53 @@ Grupo ->
     { Grupo }
 */
 void Grupo(){    
-    printf("\nEntro a Grupo");
-    GetNextToken(&token);
+    printf("\n----------------Entro a Grupo----------------");
+
+    if(!tengoToken){
+        GetNextToken(&token);
+        tengoToken = true;
+    }
+
     printf("\n%s\t%s",stringTokenType(token.type),token.val);
+
     switch (token.type)
     {
     case Comentario:
+        tengoToken = false;
         break;
 
     case Numeral:
-        Directiva();
+        tengoToken = false;
+        Directiva();        
         break;
 
-    case Identificador: case Punctuator: case ConstNumerica:
+    case Identificador: case Punctuator: case ConstNumerica:        
         Texto();
+        tengoToken = true;
         break;
   
     case LParen:
         //GetNextToken(&token);
+        tengoToken = false;
         Grupo();        
         Match(RParen);
+        tengoToken = false;
         break;
 
     case LBrack:
         //GetNextToken(&token);
+        tengoToken = false;
         Grupo();        
         Match(RBrack);
+        tengoToken = false;
         break;
 
     case LBrace:
         //GetNextToken(&token);
+        tengoToken = false;
         Grupo();        
         Match(RBrace);
+        tengoToken = false;
         break;
 
     case LexError:
@@ -263,16 +289,22 @@ UnidadDeTraducción ->
 */
 
 void UnidadDeTraduccion(){    
-    printf("\nEntro a Unidad de Traduccion");
+    printf("\n--------------Entro a Unidad de Traduccion----------------");
+
     Grupo();
-     
-    GetNextToken(&token);
+
+    if(!tengoToken){
+        GetNextToken(&token);
+        tengoToken = true;
+    }
+    
     printf("\n%s\t%s",stringTokenType(token.type),token.val);
+
     switch(token.type)
     {
         case FDT:
-            printf("Está todo bien");
-            break;
+            printf("Llegamos al token FDT");
+            break;            
 
         case LexError:
             printf("Hay un error léxico");
@@ -280,6 +312,7 @@ void UnidadDeTraduccion(){
 
         default:
             UnidadDeTraduccion();
+
     }
 }
 
@@ -296,13 +329,13 @@ int main (){
     setPrep("else",idReservado);
     setPrep("endif",idReservado);
     setPrep("include",idReservado);
-    //UnidadDeTraduccion();
-    
+    UnidadDeTraduccion();
+    /*
     while(GetNextToken(&token))
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
     
     printf("\n%s\t\t%s",stringTokenType(token.type),token.val);
-    printf("\n");
+    printf("\n");*/
     
 }
 /*

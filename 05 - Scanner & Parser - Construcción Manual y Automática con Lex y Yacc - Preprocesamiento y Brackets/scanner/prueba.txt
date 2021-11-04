@@ -1,0 +1,3 @@
+#define globo 22
+#define MAX MIN 10
+int cont = 0;
