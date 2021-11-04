@@ -267,11 +267,11 @@ static int enIdentificador(int c, Token *token) //Caracteres aptos para un ident
 
         default: //EOC
             if(strcmp(identificador,"define")==0)
-                llenarToken(token,Define,identificador);                
+                llenarToken(token,Define,identificador);
             else if(strcmp(identificador,"undef")==0)
                 llenarToken(token,Undefine,identificador);
             else if(strcmp(identificador,"include")==0)
-                llenarToken(token,Include,identificador);   
+                llenarToken(token,Include,identificador);
             else if(strcmp(identificador,"ifdef")==0)
                 llenarToken(token,Ifdef,identificador);
             else if(strcmp(identificador,"else")==0)
