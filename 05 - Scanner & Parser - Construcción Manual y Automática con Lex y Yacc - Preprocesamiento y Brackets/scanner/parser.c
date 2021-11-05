@@ -113,6 +113,9 @@ void MatchTexto()
     char *textoReemplazo = (char*)malloc(largoMaxTextoReemplazo);
     memset(textoReemplazo,'\0',sizeof(char) * largoMaxTextoReemplazo);
     
+    Token tokenInterno = token;
+
+
     do{
         GetNextToken(&token);
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
@@ -128,6 +131,8 @@ void MatchTexto()
         }
     } while(token.type != NewLine);
 
+    set(tokenInterno.val, textoReemplazo);
+
     printf("\nTexto Reemplazo: %s",textoReemplazo);
     //Guardar texto reemplazo en symboltable
 }
@@ -139,17 +144,21 @@ void Directiva(){
     } 
     switch (token.type)
     {
-    case Define:        
-        Match(Identificador);        
+    case Define:                
+        Match(Identificador);
+        setPrep(token.val, idDefine);        
         //#define MAX MIN 10\n        
         MatchTexto();
+        set(identificador, )        
         //Match(TextoReemplazo);        
         //Match(NewLine);
         tengoToken = false;
         break;
 
     case Undefine:       
-        Match(Identificador);           
+        Match(Identificador);
+        deletePrep(token.val);
+        delete(token.val);         
         Match(NewLine);
         tengoToken = false;
         break;
