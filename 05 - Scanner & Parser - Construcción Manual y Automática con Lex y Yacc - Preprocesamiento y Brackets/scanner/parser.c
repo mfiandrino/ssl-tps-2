@@ -149,9 +149,6 @@ void Directiva(){
         setPrep(token.val, idDefine);        
         //#define MAX MIN 10\n        
         MatchTexto();
-        set(identificador, )        
-        //Match(TextoReemplazo);        
-        //Match(NewLine);
         tengoToken = false;
         break;
 
@@ -166,16 +163,25 @@ void Directiva(){
     case Include:        
         Match(LitCadena);        
         Match(NewLine);
+        //agregar funcion para traer el archivo
         tengoToken = false;
         break;
     
     case Ifdef:        
-        Match(Identificador);        
+        Match(Identificador);       
+        if (getPrep(token.val)==idDefine)
+            // imprimir hasta #else o #endif
         Match(NewLine);
         tengoToken = false;
         //GetNextToken(&token);
+        //agregar flag para definir si imprimimos o no
         Grupo();
-        Match(NewLine);        
+        Match(NewLine); 
+        /* Match(Numeral);
+        Match(Else);
+        Grupo();
+        Match(NewLine); 
+        tengoToken = false; */     //CHEQUEAR SI ESTO ES CORRECTO O NO HAY ELSE  
         Match(Numeral);       
         Match(Endif);        
         Match(NewLine);
@@ -215,6 +221,12 @@ Identificador Identificado Punctuator ConstNumerica Texto
 //TODO: Estamos leyendo un token al final, que estamos perdiendo porque se pisa con uno nuevo.
 void Texto(){    
     if (token.type == Identificador || token.type == Punctuator || token.type == ConstNumerica){        
+        if (token.type == Identificador){
+            char* textoAReemplazar = get(token.val);
+            if (textoAReemplazar != NULL) {
+                printf(textoAReemplazar);
+            }
+        }
         GetNextToken(&token);
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
         Texto();
