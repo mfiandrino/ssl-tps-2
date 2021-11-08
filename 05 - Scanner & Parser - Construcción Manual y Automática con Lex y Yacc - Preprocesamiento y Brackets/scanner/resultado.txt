@@ -1,22 +1,36 @@
 
 --------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
+(Numeral)	(null)
+(Identificador)	globo
+(ConstNumerica)	22
+(NewLine)	(null)
+Texto Reemplazo: 22 
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Numeral)	(null)
+(Identificador)	MAX
+(Identificador)	MIN
+(ConstNumerica)	10
+(NewLine)	(null)
+Texto Reemplazo: MIN 10 
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
 (Identificador)	int
-(Identificador)	a
-(LBrack)	(null)
---------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------
-(ConstNumerica)	10
-(ConstNumerica)	10
-(RBrack)	(null)
---------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------
-(Punctuator)	;
+(Identificador)	cont
+(Punctuator)	=
+(ConstNumerica)	0
 (Punctuator)	;
 (NewLine)	(null)
 --------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
-(Comentario)	(null) 
+(Identificador)	int
+(Identificador)	a
 --------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
-(NewLine)	(null)Ocurrió un Error Sintáctico
+(LBrack)	(null)
+(LBrack)	[
+----------------Entro a Grupo----------------
+(ConstNumerica)	10
+(ConstNumerica)	10
+(Punctuator)	;Ocurrió un Error Sintáctico

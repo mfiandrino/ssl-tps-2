@@ -260,10 +260,15 @@ void Grupo(){
     }
 
     printf("\n%s\t%s",stringTokenType(token.type),token.val); 
-    if (token.val == "["){
+    /*
+    if (token.type == LBrack){
         printf("ENCONTRE UN CORCHETE");
+    }else{
+        printf("\n%s", "NO ENCONTRE UN CORCHETE!!");
+        printf("\n%s",stringTokenType(token.type));
+        printf("\n%s","FIN NO ENCONTRE UN CORCHETE!!");
     }
-
+*/
     //TODO: Revisar caso de los brackts
       
     switch (token.type)
@@ -281,8 +286,12 @@ void Grupo(){
     case Identificador: case Punctuator: case ConstNumerica:
         puedoImprimir = false;         
         Texto();
-        printf("\n%s\t%s",stringTokenType(token.type),token.val); //Imprimos el NewLine, sino lo perdemos
-        tengoToken = false;
+        if (token.type == NewLine){
+            printf("\n%s\t%s",stringTokenType(token.type),token.val); //Imprimos el NewLine, sino lo perdemos
+            tengoToken = false;
+        }else{
+            tengoToken = true; //Caso del [
+        }
         break;
   
     case LParen:
@@ -296,8 +305,9 @@ void Grupo(){
 
     case LBrack:
         tengoToken = true;
-        printf("Prueba2");
+       // printf("Prueba2");
         printf("\n%s\t%s",stringTokenType(token.type),"[");
+        tengoToken = false;
         Grupo();        
         Match(RBrack);
         printf("\n%s\t%s",stringTokenType(token.type),"]");
