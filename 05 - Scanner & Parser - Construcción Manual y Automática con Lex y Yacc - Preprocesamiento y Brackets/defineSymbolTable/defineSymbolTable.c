@@ -24,7 +24,7 @@ unsigned hash(char *s)
 /* get: busca s en hashtab y devuelve el texto a reemplazar*/
 const char *get(char *s)
 {
-    struct nlist *np;
+    struct nlist2 *np;
     for (np = defineHashtab[hash(s)]; np != NULL; np = np->siguiente)
     {
         if (strcmp(s, np->identificador) == 0)
@@ -36,9 +36,9 @@ const char *get(char *s)
 }
 
 /* get2: busca s en hashtab y devuelve la estructura */
-static struct nlist *getStruct(char *s)
+static struct nlist2 *getStruct(char *s)
 {
-    struct nlist *np;
+    struct nlist2 *np;
     for (np = defineHashtab[hash(s)]; np != NULL; np = np->siguiente)
     {
         if (strcmp(s, np->identificador) == 0)
@@ -53,12 +53,12 @@ static struct nlist *getStruct(char *s)
 const char *set(char *identificador, char *define)
 {
     char *strdup (const char*);
-    struct nlist *np;
+    struct nlist2 *np;
     unsigned hashval;
 
     if ((np = getStruct(identificador)) == NULL)  /* no fue encontrado */
     {
-        np = (struct nlist *) malloc(sizeof(*np));
+        np = (struct nlist2 *) malloc(sizeof(*np));
         if (np == NULL || (np->identificador = strdup(identificador)) == NULL)
             return NULL;
         hashval = hash(identificador);
@@ -77,7 +77,7 @@ const char *set(char *identificador, char *define)
 /* delete: borra identificador dentro de hashtab y devuelve 1 en caso de exito, o 0 en caso contrario*/
 int delete(char * identificador)
 {
-    struct nlist *np1, *np2;
+    struct nlist2 *np1, *np2;
 
     if((np1 = getStruct(identificador)) == NULL) //No encontro el identificador
         return 0;

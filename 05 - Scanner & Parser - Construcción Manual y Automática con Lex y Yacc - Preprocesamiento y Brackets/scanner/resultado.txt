@@ -6,7 +6,6 @@
 (ConstNumerica)	22
 (NewLine)	(null)
 Texto Reemplazo: 22 
-(Numeral)	(null)
 --------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
 (Numeral)	(null)
@@ -15,7 +14,6 @@ Texto Reemplazo: 22
 (ConstNumerica)	10
 (NewLine)	(null)
 Texto Reemplazo: MIN 10 
-(Identificador)	int
 --------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
 (Identificador)	int
@@ -23,6 +21,4 @@ Texto Reemplazo: MIN 10
 (Punctuator)	=
 (ConstNumerica)	0
 (Punctuator)	;
-(FDT)	(null)
-(FDT)	(null)Llegamos al token FDT
-(FDT)		(null)
+(Identificador)	intOcurrió un Error Sintáctico
