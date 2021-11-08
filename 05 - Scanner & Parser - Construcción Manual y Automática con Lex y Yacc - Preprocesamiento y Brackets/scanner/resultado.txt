@@ -32,5 +32,4 @@ Texto Reemplazo: MIN 10
 (LBrack)	[
 ----------------Entro a Grupo----------------
 (ConstNumerica)	10
-(ConstNumerica)	10
 (Punctuator)	;Ocurrió un Error Sintáctico

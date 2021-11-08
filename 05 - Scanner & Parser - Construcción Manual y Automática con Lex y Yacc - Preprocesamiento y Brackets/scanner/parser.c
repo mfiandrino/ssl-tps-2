@@ -230,7 +230,7 @@ void Texto(){
                 printf("\n%s\t%s",stringTokenType(token.type),token.val);
             }
         }
-        else{
+        else if(puedoImprimir){
            // printf(token.val, "\n");
             printf("\n%s\t%s",stringTokenType(token.type),token.val);
             }
