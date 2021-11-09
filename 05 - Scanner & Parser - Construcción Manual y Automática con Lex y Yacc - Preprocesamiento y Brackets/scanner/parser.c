@@ -453,6 +453,6 @@ Directiva ->
     Texto ConstNumerica
 
 TODO: Consultar por token identificador, es texto o token?
-TODO: Consultar por el Else del ifdef. 
+TODO: Consultar por el Else del ifdef. El else está siempre. Asumimos eso para que sea mas facil
 
  */
