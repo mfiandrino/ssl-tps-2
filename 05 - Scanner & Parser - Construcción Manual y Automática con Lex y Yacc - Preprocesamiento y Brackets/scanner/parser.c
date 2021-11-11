@@ -169,22 +169,22 @@ void Directiva(){
     
     case Ifdef:        
         Match(Identificador);       
-        if (getPrep(token.val)==idDefine)
-            // imprimir hasta #else o #endif
-        Match(NewLine);
-        tengoToken = false;
-        //GetNextToken(&token);
-        //agregar flag para definir si imprimimos o no
-        Grupo();
-        Match(NewLine); 
-        /* Match(Numeral);
-        Match(Else);
-        Grupo();
-        Match(NewLine); 
-        tengoToken = false; */     //CHEQUEAR SI ESTO ES CORRECTO O NO HAY ELSE  
+        if (getPrep(token.val)==idDefine){
+            Grupo();
+            Match(NewLine);            
+        }else{
+            Match(Numeral);
+            Match(Else);
+            Grupo();
+            Match(NewLine); 
+        }
+            
+        tengoToken = false; 
+
         Match(Numeral);       
-        Match(Endif);        
+        Match(Endif);  
         Match(NewLine);
+
         tengoToken = false;
         break;
 
