@@ -90,7 +90,8 @@ char* stringTokenType(TokenType tokTyp)
 
 void Match (TokenType ttype){
     
-    GetNextToken(&token);
+    if(!tengoToken)
+        GetNextToken(&token);
     printf("\n%s\t%s",stringTokenType(token.type),token.val);
 
     if (ttype != token.type)       
@@ -145,7 +146,8 @@ void Directiva(){
     } 
     switch (token.type)
     {
-    case Define:                
+    case Define:
+        tengoToken = false;                
         Match(Identificador);
         setPrep(token.val, idDefine);               
         MatchTexto();
@@ -258,8 +260,13 @@ void Grupo(){
         GetNextToken(&token);
         tengoToken = true;
     }
-
-    printf("\n%s\t%s",stringTokenType(token.type),token.val); 
+    if (getPrep(token.val)!=idDefine){
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);            
+    } else {
+        char* TextoReemplazo2 = get(token.val);
+        printf("\n%s\t%s",stringTokenType(token.type),TextoReemplazo2); 
+    }
+    
     /*
     if (token.type == LBrack){
         printf("ENCONTRE UN CORCHETE");
@@ -295,8 +302,9 @@ void Grupo(){
         break;
   
     case LParen:
-        tengoToken = true;
         printf("\n%s\t%s",stringTokenType(token.type),"(");
+       
+        tengoToken=false;
         Grupo();        
         Match(RParen);
         printf("\n%s\t%s",stringTokenType(token.type),")");
@@ -308,7 +316,7 @@ void Grupo(){
        // printf("Prueba2");
         printf("\n%s\t%s",stringTokenType(token.type),"[");
         tengoToken = false;
-        Grupo();        
+        Grupo();      
         Match(RBrack);
         printf("\n%s\t%s",stringTokenType(token.type),"]");
         tengoToken = false;
@@ -317,6 +325,7 @@ void Grupo(){
     case LBrace:
         tengoToken = true;
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        tengoToken = false;
         Grupo();        
         Match(RBrace);
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
@@ -326,6 +335,10 @@ void Grupo(){
     case LexError:
         printf("Hay un error léxico");
         exit(-1);
+
+    case NewLine: 
+        tengoToken = false;
+        break;
     
     default:
         ErrorSintactico();
