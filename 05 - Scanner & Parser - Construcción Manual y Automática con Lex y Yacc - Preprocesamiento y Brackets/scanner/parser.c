@@ -322,14 +322,14 @@ void Grupo(){
         tengoToken = false;
         break;
 
-    case LBrace:
-        tengoToken = true;
+    case LBrace:            
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
         tengoToken = false;
+        Match(NewLine);        
         Grupo();        
         Match(RBrace);
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
-        tengoToken = false;
+        tengoToken = false; 
         break;
 
     case LexError:
