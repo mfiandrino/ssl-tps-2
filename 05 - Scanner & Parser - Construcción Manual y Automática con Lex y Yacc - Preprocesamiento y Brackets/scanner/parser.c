@@ -232,7 +232,7 @@ void Texto(){
                 printf("\n%s\t%s",stringTokenType(token.type),token.val);
             }
         }
-        else if(puedoImprimir){
+        else{
            // printf(token.val, "\n");
             printf("\n%s\t%s",stringTokenType(token.type),token.val);
             }
@@ -262,10 +262,15 @@ void Grupo(){
     }
 
     //Si no validamos que sea un identificador, nos devuelve un seg fault
-    if ( token.type == Identificador){    
-        if ( getPrep(token.val)!=idDefine){
+    if ( token.type == Identificador){
+
+        IdType tipoToken = getPrep(token.val);    
+        printf(stringTokenType(tipoToken));
+        printf("\n");
+        if ( tipoToken != idDefine){
             printf("\n%s\t%s",stringTokenType(token.type),token.val);            
         } else {
+            //printf("Prueba MAX");
             char* TextoReemplazo2 = get(token.val);
             printf("\n%s\t%s",stringTokenType(token.type),TextoReemplazo2); 
         }
@@ -305,8 +310,8 @@ void Grupo(){
         break;
   
     case LParen:
+        printf("PRUEBA");
         printf("\n%s\t%s",stringTokenType(token.type),"(");
-       
         tengoToken=false;
         Grupo();        
         Match(RParen);
@@ -315,8 +320,7 @@ void Grupo(){
         break;
 
     case LBrack:
-        tengoToken = true;
-       // printf("Prueba2");
+        //tengoToken = true;
         printf("\n%s\t%s",stringTokenType(token.type),"[");
         tengoToken = false;
         Grupo();      
@@ -326,12 +330,12 @@ void Grupo(){
         break;
 
     case LBrace:            
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        printf("\n%s\t%s",stringTokenType(token.type),"{");
         tengoToken = false;
         Match(NewLine);        
         Grupo();        
         Match(RBrace);
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        printf("\n%s\t%s",stringTokenType(token.type),"}");
         tengoToken = false; 
         break;
 
@@ -341,8 +345,12 @@ void Grupo(){
 
     case NewLine: 
         tengoToken = false;
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         break;
-    
+    case LitCadena:
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        tengoToken = false;
+        break;
     default:
         ErrorSintactico();
     }
