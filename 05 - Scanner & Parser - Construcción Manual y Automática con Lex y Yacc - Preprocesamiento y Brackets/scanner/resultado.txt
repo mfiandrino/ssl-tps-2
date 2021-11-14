@@ -1,0 +1,60 @@
+
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Identificador)	globo
+(ConstNumerica)	22
+(NewLine)	(null)
+Texto Reemplazo: 22 
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Identificador)	MAX
+(Identificador)	MIN
+(ConstNumerica)	10
+(NewLine)	(null)
+Texto Reemplazo: MIN 10 
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Identificador)	int
+(Identificador)	cont
+(Punctuator)	=
+(ConstNumerica)	0
+(Punctuator)	;
+(NewLine)	(null)
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Identificador)	int
+(Identificador)	a
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(LBrack)	[
+----------------Entro a Grupo----------------
+(RBrack)	(null)
+(RBrack)	]
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(NewLine)	(null)
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo---------------- 
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Identificador)	if
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(LParen)	(
+----------------Entro a Grupo----------------
+(Identificador)	(null)
+(Punctuator)	==
+(ConstNumerica)	9
+(RParen)	(null)
+(RParen)	)
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(LBrace)	(null)
+(NewLine)	(null)
+----------------Entro a Grupo----------------
+(Identificador)	printf
+(LParen)	(null)Ocurrió un Error Sintáctico

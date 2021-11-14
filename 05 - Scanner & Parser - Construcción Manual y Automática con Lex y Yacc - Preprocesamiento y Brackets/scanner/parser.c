@@ -260,13 +260,16 @@ void Grupo(){
         GetNextToken(&token);
         tengoToken = true;
     }
-    if (getPrep(token.val)!=idDefine){
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);            
-    } else {
-        char* TextoReemplazo2 = get(token.val);
-        printf("\n%s\t%s",stringTokenType(token.type),TextoReemplazo2); 
+
+    //Si no validamos que sea un identificador, nos devuelve un seg fault
+    if ( token.type == Identificador){    
+        if ( getPrep(token.val)!=idDefine){
+            printf("\n%s\t%s",stringTokenType(token.type),token.val);            
+        } else {
+            char* TextoReemplazo2 = get(token.val);
+            printf("\n%s\t%s",stringTokenType(token.type),TextoReemplazo2); 
+        }
     }
-    
     /*
     if (token.type == LBrack){
         printf("ENCONTRE UN CORCHETE");
