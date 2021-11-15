@@ -13,8 +13,7 @@ Texto Reemplazo: 22
 (NewLine)	(null)
 Texto Reemplazo: MIN 10 
 --------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------(Undefine)
-
+----------------Entro a Grupo----------------
 (Identificador)	int
 (Identificador)	cont
 (Punctuator)	=
@@ -22,48 +21,11 @@ Texto Reemplazo: MIN 10
 (Punctuator)	;
 (NewLine)	(null)
 --------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------(Undefine)
-
+----------------Entro a Grupo----------------
 (Identificador)	int
 (Identificador)	a
---------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
 (LBrack)	[
 ----------------Entro a Grupo----------------
 (ConstNumerica)	10
-(RBrack)	(null)
-(RBrack)	]
---------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------
-(Punctuator)	;
-(NewLine)	(null)
---------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo---------------- 
---------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------
-(NewLine)	(null)
---------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------(Undefine)
-
-(Identificador)	if
---------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------PRUEBA
-(LParen)	(
-----------------Entro a Grupo----------------(Define)
-
-(Identificador)	(null)
-(Punctuator)	==
-(ConstNumerica)	9
-(RParen)	(null)
-(RParen)	)
---------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------
-(NewLine)	(null)
---------------Entro a Unidad de Traduccion----------------
-----------------Entro a Grupo----------------
-(LBrace)	{
-(NewLine)	(null)
-----------------Entro a Grupo----------------(Undefine)
-
-(Identificador)	printf
-(LParen)	(null)Ocurrió un Error Sintáctico
+----------------Entro a Grupo----------------Ocurrió un Error Sintáctico

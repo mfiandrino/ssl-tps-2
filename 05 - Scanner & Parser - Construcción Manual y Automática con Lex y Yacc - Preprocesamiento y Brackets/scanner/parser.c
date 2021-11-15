@@ -262,17 +262,20 @@ void Grupo(){
     }
 
     //Si no validamos que sea un identificador, nos devuelve un seg fault
+    /*
+    idComun, idReservado, idDefine
+    */
     if ( token.type == Identificador){
 
         IdType tipoToken = getPrep(token.val);    
-        printf(stringTokenType(tipoToken));
-        printf("\n");
+        //printf(stringTokenType(tipoToken));
+        //printf("\n");
         if ( tipoToken != idDefine){
             printf("\n%s\t%s",stringTokenType(token.type),token.val);            
         } else {
             //printf("Prueba MAX");
             char* TextoReemplazo2 = get(token.val);
-            printf("\n%s\t%s",stringTokenType(token.type),TextoReemplazo2); 
+            printf("\n%s\t%s",stringTokenType(token.type),TextoReemplazo2);
         }
     }
     /*
@@ -305,7 +308,8 @@ void Grupo(){
             printf("\n%s\t%s",stringTokenType(token.type),token.val); //Imprimos el NewLine, sino lo perdemos
             tengoToken = false;
         }else{
-            tengoToken = true; //Caso del [
+            tengoToken = true;//Caso del [
+            //Grupo();  -> TODO: Revisar este punto
         }
         break;
   
