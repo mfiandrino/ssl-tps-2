@@ -274,7 +274,7 @@ void Grupo(){
             printf("\n%s\t%s",stringTokenType(token.type),token.val);            
         } else {
             //printf("Prueba MAX");
-            char* TextoReemplazo2 = get(token.val);
+            const char* TextoReemplazo2 = get(token.val);
             printf("\n%s\t%s",stringTokenType(token.type),TextoReemplazo2);
         }
     }
@@ -309,7 +309,7 @@ void Grupo(){
             tengoToken = false;
         }else{
             tengoToken = true;//Caso del [
-            //Grupo();  -> TODO: Revisar este punto
+            Grupo();  //-> TODO: Revisar este punto
         }
         break;
   
