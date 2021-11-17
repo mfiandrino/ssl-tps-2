@@ -1,6 +1,6 @@
-#define globo 22
+//#define globo 22
 #define MAX MIN 10
-int cont = 0;
+// int cont = 0;
 int a[10];
 // comentario de prueba
 if(MAX == 9)

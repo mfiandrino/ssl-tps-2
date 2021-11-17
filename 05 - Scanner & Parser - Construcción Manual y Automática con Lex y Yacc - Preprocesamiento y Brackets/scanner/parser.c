@@ -110,14 +110,17 @@ Comentario
  { Grupo }
 */
 #define largoMaxTextoReemplazo 100
+#define largoMaxIdentifcador 100
 void MatchTexto()
 {    
     char *textoReemplazo = (char*)malloc(largoMaxTextoReemplazo);
     memset(textoReemplazo,'\0',sizeof(char) * largoMaxTextoReemplazo);
+
+    char *tokenInterno = (char*)malloc(largoMaxIdentifcador);
+    memset(tokenInterno,'\0',sizeof(char) * largoMaxIdentifcador);
+
+    tokenInterno = strcat(tokenInterno,token.val);
     
-    Token tokenInterno = token;
-
-
     do{
         GetNextToken(&token);
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
@@ -132,8 +135,8 @@ void MatchTexto()
             }
         }
     } while(token.type != NewLine);
-
-    set(tokenInterno.val, textoReemplazo);
+       
+    set(tokenInterno, textoReemplazo);
 
     printf("\nTexto Reemplazo: %s",textoReemplazo);
     //Guardar texto reemplazo en symboltable
@@ -149,7 +152,7 @@ void Directiva(){
     case Define:
         tengoToken = false;                
         Match(Identificador);
-        setPrep(token.val, idDefine);               
+        setPrep(token.val, idDefine);  
         MatchTexto();
         tengoToken = false;
         break;
@@ -265,30 +268,24 @@ void Grupo(){
     /*
     idComun, idReservado, idDefine
     */
+
+
+     
     if ( token.type == Identificador){
 
         IdType tipoToken = getPrep(token.val);    
         //printf(stringTokenType(tipoToken));
         //printf("\n");
-        if ( tipoToken != idDefine){
+        if ( tipoToken != idDefine){           
             printf("\n%s\t%s",stringTokenType(token.type),token.val);            
-        } else {
-            //printf("Prueba MAX");
+        } else {            
             const char* TextoReemplazo2 = get(token.val);
             printf("\n%s\t%s",stringTokenType(token.type),TextoReemplazo2);
         }
     }
-    /*
-    if (token.type == LBrack){
-        printf("ENCONTRE UN CORCHETE");
-    }else{
-        printf("\n%s", "NO ENCONTRE UN CORCHETE!!");
-        printf("\n%s",stringTokenType(token.type));
-        printf("\n%s","FIN NO ENCONTRE UN CORCHETE!!");
-    }
-*/
-    //TODO: Revisar caso de los brackts
-      
+          
+
+
     switch (token.type)
     {
     case Comentario:
@@ -309,7 +306,7 @@ void Grupo(){
             tengoToken = false;
         }else{
             tengoToken = true;//Caso del [
-            Grupo();  //-> TODO: Revisar este punto
+            //Grupo();  //-> TODO: Revisar este punto
         }
         break;
   
