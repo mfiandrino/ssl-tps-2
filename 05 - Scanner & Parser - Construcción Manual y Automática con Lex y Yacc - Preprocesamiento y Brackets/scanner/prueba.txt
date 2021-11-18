@@ -1,13 +1,62 @@
-//#define globo 22
-#define MAX MIN 10
-// int cont = 0;
-int a[10];
-// comentario de prueba
-if(MAX == 9)
-{
-    printf("Esta mal");
+#include "printf.h"
+#define MAX 10
+int main(void){
+    /* Declara un arreglo y un puntero
+    para demostrar algunas
+    diferencias y similitudes */
+    char s[]="hola", *p="chau";
+
+
+UnidadDeTraduccion
+Grupo UnidadDeTraduccion
+Directiva UnidadDeTraduccion
+Numeral Include LitCadena NewLine UnidadDeTraduccion
+
+Grupo UnidadDeTraduccion
+Texto UnidadDeTraduccion
+Identificador Texto UnidadDeTraduccion
+Identificador Identificador UnidadDeTraduccion
+Identificador Identificador Grupo UnidadDeTraduccion
+Identificador Identificador ( Grupo ) UnidadDeTraduccion
+Identificador Identificador ( Texto ) UnidadDeTraduccion
+Identificador Identificador ( Identificador ) UnidadDeTraduccion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#ifdef MAX
+    int a[M];
+#else
+    int a;
+#endif
+    printf("%d\t%d\n", sizeof s, sizeof p);
+#undef MAX
+    p=s;
+    printf("%p\t%p\t%p\t%p\n", s, &s, s, &s);
+#ifdef MAX
+    // muestra el contenido de los primeros MAX ints
+    for(unsigned i=0;i<MAX;++i)
+    printf("%d\t", a[i]);
+#else
+    printf("%p", &a); // muestra la dirección de a
+#endif
+    printf("\n");
 }
-else
-{
-    print("Esta bien");
-}
+
+
+

@@ -59,3 +59,9 @@ Texto Reemplazo: MIN 10
 ----------------Entro a Grupo----------------
 (Identificador)	printf
 (LParen)	(null)Ocurrió un Error Sintáctico
+
+
+
+tengoToken = true
+puedoImprimir = true
+token = (

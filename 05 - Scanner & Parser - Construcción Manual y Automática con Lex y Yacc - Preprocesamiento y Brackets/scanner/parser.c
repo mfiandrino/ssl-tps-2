@@ -114,7 +114,7 @@ Comentario
 void MatchTexto()
 {    
     char *textoReemplazo = (char*)malloc(largoMaxTextoReemplazo);
-    memset(textoReemplazo,'\0',sizeof(char) * largoMaxTextoReemplazo);
+    memset(textoReemplazo,'\0',sizeof(char) * largoMaxTextoReemplazo);   
 
     char *tokenInterno = (char*)malloc(largoMaxIdentifcador);
     memset(tokenInterno,'\0',sizeof(char) * largoMaxIdentifcador);
@@ -459,9 +459,30 @@ Grupo ->
     Directiva
     Comentario
     Texto
+    Epsilon
+    Directiva Grupo
+    Comentario Grupo
+    Texto Grupo
     ( Grupo )
+    ( Grupo ) Grupo
     [ Grupo ]
+    [ Grupo ] Grupo
     { Grupo }
+    { Grupo } Grupo
+    { Texto Grupo }
+
+//Leer K&R & Muchnik y buscar alternativas
+
+    UnidadDeTraduccion
+    Grupo UnidadDeTraduccion
+    { Grupo } UnidadDeTraduccion
+    { Texto Grupo } UnidadDeTraduccion
+    { Identificador Grupo } UnidadDeTraduccion
+    { printf Grupo } UnidadDeTraduccion
+    { printf ( Grupo ) Grupo } UnidadDeTraduccion 
+    { printf ( Texto ) Texto } UnidadDeTraduccion 
+    { printf ( LitCadena ) Punctuator } UnidadDeTraduccion
+    
 
 Directiva ->
     Numeral Define Identificador TEXTODEREEMPLAZO NewLine
@@ -473,9 +494,11 @@ Directiva ->
     Identifcador
     Punctuator
     ConstNumerica
-    Texto Identificador
-    Texto Punctuator   
-    Texto ConstNumerica
+    LitCadena
+    Identificador Texto 
+    Punctuator Texto    
+    ConstNumerica Texto 
+    LitCadena Texto 
 
 TODO: Consultar por token identificador, es texto o token?
 TODO: Consultar por el Else del ifdef. El else está siempre. Asumimos eso para que sea mas facil
