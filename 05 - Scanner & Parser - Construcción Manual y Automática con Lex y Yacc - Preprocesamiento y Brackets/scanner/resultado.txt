@@ -1,10 +1,9 @@
 
 --------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo---------------- 
+--------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
-(Identificador)	globo
-(ConstNumerica)	22
 (NewLine)	(null)
-Texto Reemplazo: 22 
 --------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
 (Identificador)	MAX
@@ -13,19 +12,56 @@ Texto Reemplazo: 22
 (NewLine)	(null)
 Texto Reemplazo: MIN 10 
 --------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo---------------- 
+--------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
-(Identificador)	int
-(Identificador)	cont
-(Punctuator)	=
-(ConstNumerica)	0
-(Punctuator)	;
 (NewLine)	(null)
 --------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
 (Identificador)	int
 (Identificador)	a
+--------------Entro a Unidad de Traduccion----------------
 ----------------Entro a Grupo----------------
 (LBrack)	[
 ----------------Entro a Grupo----------------
 (ConstNumerica)	10
-----------------Entro a Grupo----------------Ocurrió un Error Sintáctico
+(RBrack)	(null)
+(RBrack)	]
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Punctuator)	;
+(NewLine)	(null)
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo---------------- 
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(NewLine)	(null)
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(Identificador)	if
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------PRUEBA
+(LParen)	(
+----------------Entro a Grupo----------------
+(Identificador)	MIN 10 
+(Identificador)	MAX
+(Punctuator)	==
+(ConstNumerica)	9
+(RParen)	(null)
+(RParen)	)
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(NewLine)	(null)
+--------------Entro a Unidad de Traduccion----------------
+----------------Entro a Grupo----------------
+(LBrace)	{
+(NewLine)	(null)
+----------------Entro a Grupo----------------
+(Identificador)	printf
+(LParen)	(null)Ocurrió un Error Sintáctico
+
+
+
+tengoToken = true
+puedoImprimir = true
+token = (

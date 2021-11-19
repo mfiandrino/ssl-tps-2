@@ -101,6 +101,18 @@ int GetNextToken(Token *token)
             llenarToken(token,Punctuator,"!");
             return 1;
 
+        case '%':
+            llenarToken(token,Punctuator,"%");
+            return 1;
+
+        case '<':
+            llenarToken(token,Punctuator,"<");
+            return 1;
+
+        case '>':
+            llenarToken(token,Punctuator,">");
+            return 1;
+
         case '=':
             if((c=getchar()) == '=')
                 llenarToken(token,Punctuator,"==");
