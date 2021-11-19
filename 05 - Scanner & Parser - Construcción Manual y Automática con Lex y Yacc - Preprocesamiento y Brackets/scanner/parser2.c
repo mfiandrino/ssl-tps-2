@@ -2,10 +2,7 @@
 #include <stdlib.h>
 #include "scanner.h"
 
-#define largoMaxTextoReemplazo 100
-
 Token token;
-Token tokenAnterior;
 
 void ErrorSintactico()
 {
@@ -80,18 +77,23 @@ void Match (TokenType ttype)
         ErrorSintactico();     
 }
 
+#define largoMaxTextoReemplazo 100
+#define largoMaxIdentifcador 100
 void MatchTexto()
 {    
     char *textoReemplazo = (char*)malloc(largoMaxTextoReemplazo);
-    memset(textoReemplazo,'\0',sizeof(char) * largoMaxTextoReemplazo);
+    memset(textoReemplazo,'\0',sizeof(char) * largoMaxTextoReemplazo);   
+
+    char *tokenInterno = (char*)malloc(largoMaxIdentifcador);
+    memset(tokenInterno,'\0',sizeof(char) * largoMaxIdentifcador);
+
+    tokenInterno = strcat(tokenInterno,token.val);
     
-    Token tokenInterno = token;
     do{
         GetNextToken(&token);
-
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         if(token.type == LexError || token.type == FDT)
             ErrorSintactico();
-
         else
         {
             if(token.val)
@@ -101,8 +103,8 @@ void MatchTexto()
             }
         }
     } while(token.type != NewLine);
-
-    set(tokenInterno.val, textoReemplazo);
+       
+    set(tokenInterno, textoReemplazo);
 
     printf("\nTexto Reemplazo: %s",textoReemplazo);
 }
