@@ -185,7 +185,8 @@ static int posibleComentario(int c, Token* token) //Llego una / vemos siguiente 
             break;
 
         default: //EOC
-            llenarToken(token,LexError,NULL);
+            llenarToken(token,Punctuator,"/");
+            ungetc(c,stdin);
             return 1;
     }
     return 0;

@@ -38,14 +38,8 @@ char* stringTokenType(TokenType tokTyp)
     case Include:
         return "(Include)";
 
-    case Path:
-        return "(Path)";
-
     case Identificador:
         return "(Identificador)";
-
-    case TextoReemplazo:
-        return "(TextoReemp)";
 
     case LParen:
         return "(LParen)";
@@ -398,7 +392,7 @@ void UnidadDeTraduccion(){
 
 void ErrorSintactico(){
     printf("Ocurrió un Error Sintáctico");
-    exit(-1);   
+    exit(-1);
 }
 
 
