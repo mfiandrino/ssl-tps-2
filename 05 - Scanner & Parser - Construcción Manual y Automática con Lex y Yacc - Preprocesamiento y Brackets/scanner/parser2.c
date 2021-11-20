@@ -17,13 +17,22 @@ void ErrorLexico()
     exit(-1);   
 }
 
+void verificarToken()
+{
+    if (!tengoToken)
+    { 
+        GetNextToken(&token);
+        tengoToken=true;
+    }   
+}
+
 void GruposOpcionales()
 {
     while(1)
     {
-        //Deberiamos agregar el if tengo token?
-        GetNextToken(&token);
+        verificarToken();
 
+        // Deberiamos agregar los tengoToken=false para cada caso
         switch (token.type)
         {
         case Numeral: 
@@ -49,11 +58,11 @@ void GruposOpcionales()
 
 void TextosOpcionales()
 {
-    //Deberiamos agregar el if tengo token?
     while(1)
     {
-        GetNextToken(&token);
-
+        verificarToken();
+        
+        // Deberiamos agregar los tengoToken=false para cada caso
         switch (token.type)
         {
         case Identificador: 
@@ -115,11 +124,7 @@ void MatchTexto()
 
 void Texto()
 {
-    if (!tengoToken)
-    { 
-        GetNextToken(&token);
-        tengoToken=true;
-    }
+    verificarToken();
 
     switch (token.type)
     {
@@ -154,14 +159,16 @@ void Texto()
 
 void Directiva()
 {
-    GetNextToken(&token);
+    verificarToken();
 
     switch (token.type)
     {
     case Define:
+        tengoToken=false;
         Match(Identificador);
         MatchTexto(); //Aca se agrega a la symbolTable
         Match(NewLine);
+        tengoToken=false;
         break;
 
     case Undefine:
@@ -171,6 +178,7 @@ void Directiva()
         break;
 
     case Include:
+        tengoToken=false;
         Match(LitCadena);
         Match(NewLine);
         //Traer el archivo
@@ -203,11 +211,7 @@ void Directiva()
 
 void Grupo()
 {
-    if (!tengoToken)
-    { 
-        GetNextToken(&token);
-        tengoToken=true;
-    }
+    verificarToken();
 
     switch (token.type)
     {
