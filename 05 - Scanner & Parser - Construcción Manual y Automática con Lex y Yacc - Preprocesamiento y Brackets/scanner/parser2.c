@@ -6,6 +6,7 @@
 
 Token token;
 bool tengoToken = false;
+const char* textoReemplazo;
 
 typedef enum {    
     ARCHIVO_INEXISTENTE
@@ -101,6 +102,17 @@ void verificarToken()
         GetNextToken(&token);
         tengoToken=true;
     }   
+}
+
+void imprimirIdentificador(){
+    IdType tipoToken = getPrep(token.val);    
+      
+    if ( tipoToken != idDefine){           
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);            
+    } else {            
+        textoReemplazo = get(token.val);
+        printf("\n%s\t%s",stringTokenType(token.type),textoReemplazo);
+    }
 }
 
 void GruposOpcionales()
@@ -225,21 +237,25 @@ void Texto()
     case Identificador:
         //Verificar id en la symbolTable
         //Imprimir lo que corresponda, el id si no esta, o el texto si esta
+        imprimirIdentificador();
         TextosOpcionales();
         break;
 
     case Punctuator:
         //Imprimirlo
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         TextosOpcionales();
         break;
 
     case ConstNumerica:
         //Imprimirlo
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         TextosOpcionales();
         break;
 
     case LitCadena:
         //Imprimirlo
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         TextosOpcionales();
         break;
 
