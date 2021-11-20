@@ -1,9 +1,86 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "scanner.h"
+#include "../preprocessorSymbolTable/preprocessorSymbolTable.h"
+#include "../defineSymbolTable/defineSymbolTable.h"
 
 Token token;
 bool tengoToken = false;
+
+typedef enum {    
+    ARCHIVO_INEXISTENTE
+}error;
+
+
+char* stringTokenType(TokenType tokTyp)
+{
+    switch (tokTyp)
+    {
+    case Comentario:
+        return "(Comentario)";
+
+    case Numeral:
+        return "(Numeral)";
+
+    case Define:
+        return "(Define)";
+    
+    case Undefine:
+        return "(Undefine)";
+
+    case Ifdef:
+        return "(Ifdef)";
+
+    case Endif:
+        return "(Endif)";
+
+    case Include:
+        return "(Include)";
+
+    case Identificador:
+        return "(Identificador)";
+
+    case LParen:
+        return "(LParen)";
+
+    case RParen:
+        return "(RParen)";
+
+    case LBrack:
+        return "(LBrack)";
+
+    case RBrack:
+        return "(RBrack)";
+    
+    case LBrace:
+        return "(LBrace)";
+
+    case RBrace:
+        return "(RBrace)";
+
+    case Punctuator:
+        return "(Punctuator)";
+
+    case LexError:
+        return "(LexError)";
+
+    case LitCadena:
+        return "(LitCadena)";
+
+    case NewLine:
+        return "(NewLine)";
+
+    case ConstNumerica:
+        return "(ConstNumerica)";
+
+    case FDT:
+        return "(FDT)";
+
+    default: // No deberia pasar
+        return "Error, no deberia haber llegado aca";
+    }
+}
+
 
 void ErrorSintactico()
 {
@@ -122,6 +199,23 @@ void MatchTexto()
     printf("\nTexto Reemplazo: %s",textoReemplazo);
 }
 
+/*
+static void traerArchivoInclude()
+{
+    int nc;
+    FILE *arch = fopen (path, "r");
+    if (arch == NULL)
+        manejoDeErrores(ARCHIVO_INEXISTENTE);
+    else
+    {
+        while ((nc = fgetc(arch))!= EOF)
+            putchar(nc);
+
+        fclose(arch);
+    }
+}
+*/
+
 void Texto()
 {
     verificarToken();
@@ -166,36 +260,40 @@ void Directiva()
     case Define:
         tengoToken=false;
         Match(Identificador);
-        MatchTexto(); //Aca se agrega a la symbolTable
+        setPrep(token.val, idDefine); 
+        MatchTexto(); 
         Match(NewLine);
         tengoToken=false;
         break;
 
     case Undefine:
         Match(Identificador);
-        Match(NewLine);
-        //Eliminar el id de la symbolTable
+        deletePrep(token.val);
+        delete(token.val); 
+        Match(NewLine);        
         break;
 
     case Include:
         tengoToken=false;
         Match(LitCadena);
         Match(NewLine);
-        //Traer el archivo
+        traerArchivoInclude();
         break;
 
     case Ifdef:
         Match(Identificador);
-        //If id esta en la tabla de simbolos
-        Match(NewLine);
-        GruposOpcionales();
-        //Hasta aca
-        //else
-        Match(Numeral);
-        Match(Else);
-        Match(NewLine);
-        GruposOpcionales();
-        //Hasta aca
+        //Si el id esta en la tabla de simbolos
+        if (getPrep(token.val) == idDefine){            
+            Match(NewLine);
+            GruposOpcionales();
+            Match(NewLine);                
+        }else{
+            Match(Numeral);
+            Match(Else);
+            Match(NewLine);
+            GruposOpcionales();
+            Match(NewLine);
+        }        
         Match(Numeral);
         Match(Endif);
         Match(NewLine);
@@ -254,7 +352,9 @@ void Grupo()
     case LexError:
         ErrorLexico();
 
-    //Faltaria caso con New Line?
+    case NewLine:
+        tengoToken = false;
+        break;    
 
     default:
         ErrorSintactico();
@@ -275,6 +375,13 @@ void UnidadDeTraduccion()
 
 int main ()
 {
+    setPrep("define",idReservado);
+    setPrep("undef",idReservado);
+    setPrep("ifdef",idReservado);
+    setPrep("else",idReservado);
+    setPrep("endif",idReservado);
+    setPrep("include",idReservado);
+
     UnidadDeTraduccion();
 }
 
