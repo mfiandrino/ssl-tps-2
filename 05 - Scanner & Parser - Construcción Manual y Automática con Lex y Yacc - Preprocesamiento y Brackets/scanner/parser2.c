@@ -3,6 +3,7 @@
 #include "scanner.h"
 
 Token token;
+bool tengoToken = false;
 
 void ErrorSintactico()
 {
@@ -20,6 +21,7 @@ void GruposOpcionales()
 {
     while(1)
     {
+        //Deberiamos agregar el if tengo token?
         GetNextToken(&token);
 
         switch (token.type)
@@ -47,6 +49,7 @@ void GruposOpcionales()
 
 void TextosOpcionales()
 {
+    //Deberiamos agregar el if tengo token?
     while(1)
     {
         GetNextToken(&token);
@@ -71,6 +74,7 @@ void TextosOpcionales()
 
 void Match (TokenType ttype)
 {
+    if(!tengoToken)
     GetNextToken(&token);
     
     if (ttype != token.type)       
@@ -111,7 +115,11 @@ void MatchTexto()
 
 void Texto()
 {
-    GetNextToken(&token);
+    if (!tengoToken)
+    { 
+        GetNextToken(&token);
+        tengoToken=true;
+    }
 
     switch (token.type)
     {
@@ -195,15 +203,21 @@ void Directiva()
 
 void Grupo()
 {
-    GetNextToken(&token);
+    if (!tengoToken)
+    { 
+        GetNextToken(&token);
+        tengoToken=true;
+    }
 
     switch (token.type)
     {
     case Comentario:
         printf(" ");
+        tengoToken=false;
         break;
     
     case Numeral:
+        tengoToken=false;
         Directiva();
         break;
 
@@ -212,25 +226,31 @@ void Grupo()
     case ConstNumerica: 
     case LitCadena:
         Texto();
+        tengoToken=false;
         break;
 
     case LParen:
         GruposOpcionales();
         Match(RParen);
+        tengoToken=false;
         break;
 
     case LBrack:
         GruposOpcionales(); 
         Match(RBrack);
+        tengoToken=false;
         break;
 
     case LBrace:
         GruposOpcionales();
         Match(RBrace);
+        tengoToken=false;
         break;
 
     case LexError:
         ErrorLexico();
+
+    //Faltaria caso con New Line?
 
     default:
         ErrorSintactico();
