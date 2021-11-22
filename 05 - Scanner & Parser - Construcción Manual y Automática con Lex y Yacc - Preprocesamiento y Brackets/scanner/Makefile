@@ -10,8 +10,8 @@ $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(BIN)
 
 #Creo el codigo objeto para el ejecutable
-parser.o: parser.c scanner.h ../defineSymbolTable/defineSymbolTable.h ../preprocessorSymbolTable/preprocessorSymbolTable.h
-	$(CC) $(CFLAGS) -c parser.c -o parser.o 
+parser.o: parser2.c scanner.h ../defineSymbolTable/defineSymbolTable.h ../preprocessorSymbolTable/preprocessorSymbolTable.h
+	$(CC) $(CFLAGS) -c parser2.c -o parser.o 
 
 #Creo el codigo objeto del modulo scanner
 scanner.o: scanner.c scanner.h ../preprocessorSymbolTable/preprocessorSymbolTable.h

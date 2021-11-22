@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "scanner.h"
 #include "../preprocessorSymbolTable/preprocessorSymbolTable.h"
 #include "../defineSymbolTable/defineSymbolTable.h"
@@ -8,9 +9,24 @@ Token token;
 bool tengoToken = false;
 const char* textoReemplazo;
 
-typedef enum {    
-    ARCHIVO_INEXISTENTE
-}error;
+char *strdup (const char*);
+
+void ErrorSintactico();
+void ErrorLexico();
+void verificarToken();
+void imprimirIdentificador();
+void GruposOpcionales();
+void TextosOpcionales();
+void Match (TokenType);
+void MatchTexto();
+static void traerArchivoInclude(char*);
+void Texto();
+void Directiva();
+void Grupo();
+void ListaDeGrupos();
+void UnidadDeTraduccion();
+
+
 
 
 char* stringTokenType(TokenType tokTyp)
@@ -100,6 +116,8 @@ void verificarToken()
     if (!tengoToken)
     { 
         GetNextToken(&token);
+        printf("\nToken pedido:");
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         tengoToken=true;
     }   
 }
@@ -117,8 +135,10 @@ void imprimirIdentificador(){
 
 void GruposOpcionales()
 {
+    printf("\nEntro a GruposOpcionales\n");
     while(1)
     {
+        tengoToken = false;
         verificarToken();
 
         // Deberiamos agregar los tengoToken=false para cada caso
@@ -133,6 +153,7 @@ void GruposOpcionales()
         case LParen: 
         case LBrack:
         case LBrace:
+        case NewLine:
             Grupo();
             break;
 
@@ -147,8 +168,10 @@ void GruposOpcionales()
 
 void TextosOpcionales()
 {
+    printf("\nEntro a TextosOpcionales\n");
     while(1)
     {
+        
         verificarToken();
         
         // Deberiamos agregar los tengoToken=false para cada caso
@@ -165,6 +188,7 @@ void TextosOpcionales()
             ErrorLexico();    
         
         default:
+            printf("\nEntro al default de textos opcionales\n");
             return;
         }
     }
@@ -211,13 +235,17 @@ void MatchTexto()
     printf("\nTexto Reemplazo: %s",textoReemplazo);
 }
 
-/*
-static void traerArchivoInclude()
+
+static void traerArchivoInclude(char *path)
 {
+    printf("\nEntro a traerArchivoInclude\n");
     int nc;
     FILE *arch = fopen (path, "r");
     if (arch == NULL)
-        manejoDeErrores(ARCHIVO_INEXISTENTE);
+    {
+        printf("No existe el archivo");
+        exit(-1);
+    }
     else
     {
         while ((nc = fgetc(arch))!= EOF)
@@ -226,18 +254,17 @@ static void traerArchivoInclude()
         fclose(arch);
     }
 }
-*/
 
 void Texto()
 {
+    printf("\nEntro a Texto\n");
     verificarToken();
 
     switch (token.type)
     {
     case Identificador:
-        //Verificar id en la symbolTable
-        //Imprimir lo que corresponda, el id si no esta, o el texto si esta
         imprimirIdentificador();
+        tengoToken = false;
         TextosOpcionales();
         break;
 
@@ -269,6 +296,7 @@ void Texto()
 
 void Directiva()
 {
+    printf("\nEntro a Directiva\n");
     verificarToken();
 
     switch (token.type)
@@ -278,7 +306,7 @@ void Directiva()
         Match(Identificador);
         setPrep(token.val, idDefine); 
         MatchTexto(); 
-        Match(NewLine);
+        //Match(NewLine);
         tengoToken=false;
         break;
 
@@ -293,8 +321,10 @@ void Directiva()
     case Include:
         tengoToken=false;
         Match(LitCadena);
+        char *path = strdup(token.val);
         Match(NewLine);
-        traerArchivoInclude();
+        traerArchivoInclude(path);
+        //free(path);
         tengoToken=false; 
         break;
 
@@ -329,6 +359,7 @@ void Directiva()
 
 void Grupo()
 {
+    printf("\nEntro a Grupo\n");
     verificarToken();
 
     switch (token.type)
@@ -352,20 +383,26 @@ void Grupo()
         break;
 
     case LParen:
+        printf("(");
         GruposOpcionales();
         Match(RParen);
+        printf(")");
         tengoToken=false;
         break;
 
     case LBrack:
+        printf("[");
         GruposOpcionales(); 
         Match(RBrack);
+        printf("]");
         tengoToken=false;
         break;
 
     case LBrace:
+        printf("{");
         GruposOpcionales();
         Match(RBrace);
+        printf("}");
         tengoToken=false;
         break;
 
@@ -373,6 +410,7 @@ void Grupo()
         ErrorLexico();
 
     case NewLine:
+        printf("\n");
         tengoToken = false;
         break;    
 
@@ -383,12 +421,14 @@ void Grupo()
 
 void ListaDeGrupos()
 {
+    printf("\nEntro a ListaDeGrupos\n");
     Grupo();
     GruposOpcionales();
 }
 
 void UnidadDeTraduccion()
 {
+    printf("\nEntro a UnidadDeTraduccion\n");
     ListaDeGrupos();
     Match(FDT);
 }
@@ -401,7 +441,7 @@ int main ()
     setPrep("else",idReservado);
     setPrep("endif",idReservado);
     setPrep("include",idReservado);
-
+    
     UnidadDeTraduccion();
 }
 
