@@ -286,7 +286,8 @@ void Directiva()
         Match(Identificador);
         deletePrep(token.val);
         delete(token.val); 
-        Match(NewLine);        
+        Match(NewLine);    
+        tengoToken=false;    
         break;
 
     case Include:
@@ -294,6 +295,7 @@ void Directiva()
         Match(LitCadena);
         Match(NewLine);
         traerArchivoInclude();
+        tengoToken=false; 
         break;
 
     case Ifdef:
@@ -309,10 +311,12 @@ void Directiva()
             Match(NewLine);
             GruposOpcionales();
             Match(NewLine);
-        }        
+        }       
+        tengoToken=false;  
         Match(Numeral);
         Match(Endif);
         Match(NewLine);
+        tengoToken=false; 
         break;
 
     case LexError:
