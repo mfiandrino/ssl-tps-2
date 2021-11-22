@@ -138,10 +138,8 @@ void GruposOpcionales()
     printf("\nEntro a GruposOpcionales\n");
     while(1)
     {
-        tengoToken = false;
         verificarToken();
 
-        // Deberiamos agregar los tengoToken=false para cada caso
         switch (token.type)
         {
         case Numeral: 
@@ -174,7 +172,6 @@ void TextosOpcionales()
         
         verificarToken();
         
-        // Deberiamos agregar los tengoToken=false para cada caso
         switch (token.type)
         {
         case Identificador: 
@@ -271,18 +268,21 @@ void Texto()
     case Punctuator:
         //Imprimirlo
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        tengoToken = false;
         TextosOpcionales();
         break;
 
     case ConstNumerica:
         //Imprimirlo
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        tengoToken = false;
         TextosOpcionales();
         break;
 
     case LitCadena:
         //Imprimirlo
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        tengoToken = false;
         TextosOpcionales();
         break;
 
@@ -304,6 +304,7 @@ void Directiva()
     case Define:
         tengoToken=false;
         Match(Identificador);
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         setPrep(token.val, idDefine); 
         MatchTexto(); 
         //Match(NewLine);
@@ -329,13 +330,17 @@ void Directiva()
         break;
 
     case Ifdef:
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        tengoToken = false;
         Match(Identificador);
         //Si el id esta en la tabla de simbolos
         if (getPrep(token.val) == idDefine){            
             Match(NewLine);
             GruposOpcionales();
             Match(NewLine);                
+           // leerTokenHastaNumeral();
         }else{
+           // leerTokenHastaNumeral();
             Match(Numeral);
             Match(Else);
             Match(NewLine);
@@ -343,6 +348,7 @@ void Directiva()
             Match(NewLine);
         }       
         tengoToken=false;  
+        //leerTokenHastaNumeral();
         Match(Numeral);
         Match(Endif);
         Match(NewLine);
@@ -379,11 +385,12 @@ void Grupo()
     case ConstNumerica: 
     case LitCadena:
         Texto();
-        tengoToken=false;
+        
         break;
 
     case LParen:
         printf("(");
+        tengoToken = false;
         GruposOpcionales();
         Match(RParen);
         printf(")");
@@ -392,6 +399,7 @@ void Grupo()
 
     case LBrack:
         printf("[");
+        tengoToken = false;
         GruposOpcionales(); 
         Match(RBrack);
         printf("]");
@@ -400,6 +408,7 @@ void Grupo()
 
     case LBrace:
         printf("{");
+        tengoToken = false;
         GruposOpcionales();
         Match(RBrace);
         printf("}");
