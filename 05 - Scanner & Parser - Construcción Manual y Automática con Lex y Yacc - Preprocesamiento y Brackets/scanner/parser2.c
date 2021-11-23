@@ -310,21 +310,21 @@ void Texto()
         break;
 
     case Punctuator:
-        //Imprimirlo
+        //printf(token.val);
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
         tengoToken = false;
         TextosOpcionales();
         break;
 
     case ConstNumerica:
-        //Imprimirlo
+        //printf(token.val);
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
         tengoToken = false;
         TextosOpcionales();
         break;
 
     case LitCadena:
-        //Imprimirlo
+        //printf(token.val);
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
         tengoToken = false;
         TextosOpcionales();
