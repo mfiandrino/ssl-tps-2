@@ -26,6 +26,9 @@ void Grupo();
 void ListaDeGrupos();
 void UnidadDeTraduccion();
 
+void GruposOpcionalesDirectiva();
+void leerTokenHastaNumeral();
+
 
 
 
@@ -162,6 +165,47 @@ void GruposOpcionales()
             return;
         }
     }
+}
+
+void GruposOpcionalesDirectiva()
+{
+    printf("\nEntro a GruposOpcionalesDirectiva\n");
+    while(1)
+    {
+        verificarToken();
+
+        switch (token.type)
+        {        
+        case Comentario: 
+        case Identificador: 
+        case Punctuator: 
+        case ConstNumerica: 
+        case LitCadena: 
+        case LParen: 
+        case LBrack:
+        case LBrace:
+        case NewLine:
+            Grupo();
+            break;
+
+        case LexError:
+            ErrorLexico();
+        
+        default:
+            return;
+        }
+    }
+}
+
+void leerTokenHastaNumeral()
+{
+    verificarToken();
+
+    while(token.type != Numeral)
+    {
+        tengoToken=false;
+        verificarToken();
+    }    
 }
 
 void TextosOpcionales()
@@ -335,21 +379,26 @@ void Directiva()
         Match(Identificador);
         //Si el id esta en la tabla de simbolos
         if (getPrep(token.val) == idDefine){            
-            Match(NewLine);
-            GruposOpcionales();
-            Match(NewLine);                
-           // leerTokenHastaNumeral();
+            //Match(NewLine);
+            //GruposOpcionales();
+            GruposOpcionalesDirectiva();            
+            //Match(NewLine);
+            tengoToken = false;                
+            leerTokenHastaNumeral();
         }else{
            // leerTokenHastaNumeral();
-            Match(Numeral);
+            //Match(Numeral);
             Match(Else);
             Match(NewLine);
             GruposOpcionales();
             Match(NewLine);
         }       
-        tengoToken=false;  
+        tengoToken = true;
+        printf("\nLlegué al último numeral");
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         //leerTokenHastaNumeral();
         Match(Numeral);
+        tengoToken = false;
         Match(Endif);
         Match(NewLine);
         tengoToken=false; 
@@ -482,6 +531,9 @@ Directiva ->
     Numeral Include LitCadena NewLine
     Numeral Ifdef Identificador NewLine <GruposOpcionales> NewLine Numeral Else NewLine <GruposOpcionales> NewLine Numeral EndIf NewLine
  
+<GruposOpcionesDirectiva> -> {<Grupos>}
+
+
  Texto ->
     Identifcador <TextosOpcionales>
     Punctuator <TextosOpcionales>
