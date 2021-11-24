@@ -125,6 +125,15 @@ void verificarToken()
     }   
 }
 
+void verificarTokenElse()
+{
+    if (!tengoToken)
+    { 
+        GetNextToken(&token);        
+        tengoToken=true;
+    }   
+}
+
 void imprimirIdentificador(){
     IdType tipoToken = getPrep(token.val);    
       
@@ -199,12 +208,12 @@ void GruposOpcionalesDirectiva()
 
 void leerTokenHastaNumeral()
 {
-    verificarToken();
+    verificarTokenElse();
 
     while(token.type != Numeral)
     {
         tengoToken=false;
-        verificarToken();
+        verificarTokenElse();
     }    
 }
 
@@ -237,8 +246,10 @@ void TextosOpcionales()
 
 void Match (TokenType ttype)
 {
+
     if(!tengoToken)
     GetNextToken(&token);
+    printf("\n%s\t%s",stringTokenType(token.type),token.val);
     
     if (ttype != token.type)       
         ErrorSintactico();     
@@ -356,7 +367,15 @@ void Directiva()
         break;
 
     case Undefine:
+        printf("\nLlegué hasta aca");
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        tengoToken = false;          
         Match(Identificador);
+        printf("\n++++++++++++++++++++++++++++");
+        printf("\n++++++++++++++++++++++++++++");
+        printf("\n++++++++++++++++++++++++++++");
+        printf("\n++++++++++++++++++++++++++++");
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         deletePrep(token.val);
         delete(token.val); 
         Match(NewLine);    
@@ -376,8 +395,11 @@ void Directiva()
     case Ifdef:
         printf("\n%s\t%s",stringTokenType(token.type),token.val);
         tengoToken = false;
+
         Match(Identificador);
         //Si el id esta en la tabla de simbolos
+        printf("Maxi quiere saber que devuelve esto");
+        printf("%d",getPrep(token.val) == idDefine);
         if (getPrep(token.val) == idDefine){            
             //Match(NewLine);
             //GruposOpcionales();
@@ -386,9 +408,11 @@ void Directiva()
             tengoToken = false;                
             leerTokenHastaNumeral();
         }else{
-           // leerTokenHastaNumeral();
-            //Match(Numeral);
+            leerTokenHastaNumeral();
+            Match(Numeral);
+            tengoToken = false;
             Match(Else);
+            tengoToken = false;
             Match(NewLine);
             GruposOpcionales();
             Match(NewLine);
@@ -400,6 +424,8 @@ void Directiva()
         Match(Numeral);
         tengoToken = false;
         Match(Endif);
+        tengoToken = false;
+
         Match(NewLine);
         tengoToken=false; 
         break;
@@ -493,13 +519,20 @@ void UnidadDeTraduccion()
 
 int main ()
 {
+    
     setPrep("define",idReservado);
     setPrep("undef",idReservado);
     setPrep("ifdef",idReservado);
     setPrep("else",idReservado);
     setPrep("endif",idReservado);
     setPrep("include",idReservado);
+    /*
+while(GetNextToken(&token))
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);
     
+    printf("\n%s\t\t%s",stringTokenType(token.type),token.val);
+    printf("\n");
+*/
     UnidadDeTraduccion();
 }
 

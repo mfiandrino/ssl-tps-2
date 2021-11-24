@@ -1,397 +1,151 @@
 
-Entro a UnidadDeTraduccion
-
-Entro a ListaDeGrupos
-
-Entro a Grupo
-
-Token pedido:
 (Numeral)	(null)
-Entro a Directiva
-
-Token pedido:
 (Include)	include
-Entro a traerArchivoInclude
-int printf(const char * restrict, ...);
-Entro a GruposOpcionales
-
-Token pedido:
+(LitCadena)	printf.h
+(NewLine)	(null)
 (Numeral)	(null)
-Entro a Grupo
-
-Entro a Directiva
-
-Token pedido:
 (Define)	define
 (Identificador)	MAX
 (ConstNumerica)	10
 (NewLine)	(null)
-Texto Reemplazo: 10 
-Token pedido:
 (Identificador)	int
-Entro a Grupo
-
-Entro a Texto
-
-(Identificador)	int
-Entro a TextosOpcionales
-
-Token pedido:
 (Identificador)	main
-Entro a Texto
-
-(Identificador)	main
-Entro a TextosOpcionales
-
-Token pedido:
 (LParen)	(null)
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro a Grupo
-(
-Entro a GruposOpcionales
-
-Token pedido:
 (Identificador)	void
-Entro a Grupo
-
-Entro a Texto
-
-(Identificador)	void
-Entro a TextosOpcionales
-
-Token pedido:
 (RParen)	(null)
-Entro al default de textos opcionales
-)
-Token pedido:
 (NewLine)	(null)
-Entro a Grupo
-
-
-Token pedido:
 (LBrace)	(null)
-Entro a Grupo
-{
-Entro a GruposOpcionales
-
-Token pedido:
 (NewLine)	(null)
-Entro a Grupo
-
-
-Token pedido:
 (Comentario)	(null)
-Entro a Grupo
- 
-Token pedido:
 (NewLine)	(null)
-Entro a Grupo
-
-
-Token pedido:
 (Identificador)	char
-Entro a Grupo
-
-Entro a Texto
-
-(Identificador)	char
-Entro a TextosOpcionales
-
-Token pedido:
 (Identificador)	s
-Entro a Texto
-
-(Identificador)	s
-Entro a TextosOpcionales
-
-Token pedido:
 (LBrack)	(null)
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro a Grupo
-[
-Entro a GruposOpcionales
-
-Token pedido:
-(RBrack)	(null)]
-Token pedido:
-(Punctuator)	=
-Entro a Grupo
-
-Entro a Texto
-
-(Punctuator)	=
-Entro a TextosOpcionales
-
-Token pedido:
-(LitCadena)	hola
-Entro a Texto
-
-(LitCadena)	hola
-Entro a TextosOpcionales
-
-Token pedido:
-(Punctuator)	,
-Entro a Texto
-
-(Punctuator)	,
-Entro a TextosOpcionales
-
-Token pedido:
-(Punctuator)	*
-Entro a Texto
-
-(Punctuator)	*
-Entro a TextosOpcionales
-
-Token pedido:
-(Identificador)	p
-Entro a Texto
-
-(Identificador)	p
-Entro a TextosOpcionales
-
-Token pedido:
-(Punctuator)	=
-Entro a Texto
-
-(Punctuator)	=
-Entro a TextosOpcionales
-
-Token pedido:
-(LitCadena)	chau
-Entro a Texto
-
-(LitCadena)	chau
-Entro a TextosOpcionales
-
-Token pedido:
-(Punctuator)	;
-Entro a Texto
-
-(Punctuator)	;
-Entro a TextosOpcionales
-
-Token pedido:
-(NewLine)	(null)
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro a Grupo
-
-
-Token pedido:
-(Numeral)	(null)
-Entro a Grupo
-
-Entro a Directiva
-
-Token pedido:
-(Ifdef)	ifdef
-(Ifdef)	ifdef
-Entro a GruposOpcionalesDirectiva
-
-Token pedido:
-(NewLine)	(null)
-Entro a Grupo
-
-
-Token pedido:
-(Identificador)	int
-Entro a Grupo
-
-Entro a Texto
-
-(Identificador)	int
-Entro a TextosOpcionales
-
-Token pedido:
-(Identificador)	a
-Entro a Texto
-
-(Identificador)	a
-Entro a TextosOpcionales
-
-Token pedido:
-(LBrack)	(null)
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro a Grupo
-[
-Entro a GruposOpcionales
-
-Token pedido:
-(Identificador)	MAX
-Entro a Grupo
-
-Entro a Texto
-
-(Identificador)	10 
-Entro a TextosOpcionales
-
-Token pedido:
 (RBrack)	(null)
-Entro al default de textos opcionales
-]
-Token pedido:
+(Punctuator)	=
+(LitCadena)	hola
+(Punctuator)	,
+(Punctuator)	*
+(Identificador)	p
+(Punctuator)	=
+(LitCadena)	chau
 (Punctuator)	;
-Entro a Grupo
-
-Entro a Texto
-
-(Punctuator)	;
-Entro a TextosOpcionales
-
-Token pedido:
 (NewLine)	(null)
-Entro al default de textos opcionales
-
-Entro a Grupo
-
-
-Token pedido:
 (Numeral)	(null)
-Token pedido:
-Error, no deberia haber llegado aca	else
-Token pedido:
+(Ifdef)	ifdef
+(Identificador)	MAX
 (NewLine)	(null)
-Token pedido:
 (Identificador)	int
-Token pedido:
 (Identificador)	a
-Token pedido:
+(LBrack)	(null)
+(Identificador)	MAX
+(RBrack)	(null)
 (Punctuator)	;
-Token pedido:
 (NewLine)	(null)
-Token pedido:
 (Numeral)	(null)
-Llegué al último numeral
+Error, no deberia haber llegado aca	else
+(NewLine)	(null)
+(Identificador)	int
+(Identificador)	a
+(Punctuator)	;
+(NewLine)	(null)
 (Numeral)	(null)
-Token pedido:
+(Endif)	endif
+(NewLine)	(null)
 (Identificador)	printf
-Entro a Grupo
-
-Entro a Texto
-
-(Identificador)	printf
-Entro a TextosOpcionales
-
-Token pedido:
 (LParen)	(null)
-Entro al default de textos opcionales
-
-Entro a Grupo
-(
-Entro a GruposOpcionales
-
-Token pedido:
 (LitCadena)	%d\t%d\n
-Entro a Grupo
-
-Entro a Texto
-
-(LitCadena)	%d\t%d\n
-Entro a TextosOpcionales
-
-Token pedido:
 (Punctuator)	,
-Entro a Texto
-
-(Punctuator)	,
-Entro a TextosOpcionales
-
-Token pedido:
 (Identificador)	sizeof
-Entro a Texto
-
-(Identificador)	sizeof
-Entro a TextosOpcionales
-
-Token pedido:
 (Identificador)	s
-Entro a Texto
-
-(Identificador)	s
-Entro a TextosOpcionales
-
-Token pedido:
 (Punctuator)	,
-Entro a Texto
-
-(Punctuator)	,
-Entro a TextosOpcionales
-
-Token pedido:
 (Identificador)	sizeof
-Entro a Texto
-
-(Identificador)	sizeof
-Entro a TextosOpcionales
-
-Token pedido:
 (Identificador)	p
-Entro a Texto
-
-(Identificador)	p
-Entro a TextosOpcionales
-
-Token pedido:
 (RParen)	(null)
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-
-Entro al default de textos opcionales
-)
-Token pedido:
 (Punctuator)	;
-Entro a Grupo
-
-Entro a Texto
-
-(Punctuator)	;
-Entro a TextosOpcionales
-
-Token pedido:
 (NewLine)	(null)
-Entro al default de textos opcionales
-
-Entro a Grupo
-
-
-Token pedido:
 (Numeral)	(null)
-Entro a Grupo
-
-Entro a Directiva
-
-Token pedido:
-(Undefine)	undefOcurrió un Error Sintáctico
+(Undefine)	undef
+(Identificador)	MAX
+(NewLine)	(null)
+(Identificador)	p
+(Punctuator)	=
+(Identificador)	s
+(Punctuator)	;
+(NewLine)	(null)
+(Identificador)	printf
+(LParen)	(null)
+(LitCadena)	%p\t%p\t%p\t%p\n
+(Punctuator)	,
+(Identificador)	s
+(Punctuator)	,
+(Punctuator)	&
+(Identificador)	s
+(Punctuator)	,
+(Identificador)	s
+(Punctuator)	,
+(Punctuator)	&
+(Identificador)	s
+(RParen)	(null)
+(Punctuator)	;
+(NewLine)	(null)
+(Numeral)	(null)
+(Ifdef)	ifdef
+(Identificador)	MAX
+(NewLine)	(null)
+(Comentario)	(null)
+(NewLine)	(null)
+(Identificador)	for
+(LParen)	(null)
+(Identificador)	unsigned
+(Identificador)	i
+(Punctuator)	=
+(ConstNumerica)	0
+(Punctuator)	;
+(Identificador)	i
+(Punctuator)	<
+(Identificador)	MAX
+(Punctuator)	;
+(Punctuator)	+
+(Punctuator)	+
+(Identificador)	i
+(RParen)	(null)
+(NewLine)	(null)
+(Identificador)	printf
+(LParen)	(null)
+(LitCadena)	%d\t
+(Punctuator)	,
+(Identificador)	a
+(LBrack)	(null)
+(Identificador)	i
+(RBrack)	(null)
+(RParen)	(null)
+(Punctuator)	;
+(NewLine)	(null)
+(Numeral)	(null)
+Error, no deberia haber llegado aca	else
+(NewLine)	(null)
+(Identificador)	printf
+(LParen)	(null)
+(LitCadena)	%p
+(Punctuator)	,
+(Punctuator)	&
+(Identificador)	a
+(RParen)	(null)
+(Punctuator)	;
+(Comentario)	(null)
+(NewLine)	(null)
+(Numeral)	(null)
+(Endif)	endif
+(NewLine)	(null)
+(Identificador)	printf
+(LParen)	(null)
+(LitCadena)	\n
+(RParen)	(null)
+(Punctuator)	;
+(NewLine)	(null)
+(RBrace)	(null)
+(NewLine)	(null)
+(NewLine)	(null)
+(Comentario)	(null)
+(FDT)		(null)
