@@ -414,13 +414,11 @@ void Directiva()
             Match(Else);
             tengoToken = false;
             Match(NewLine);
-            GruposOpcionales();
-            Match(NewLine);
+            GruposOpcionalesDirectiva(); 
         }       
         tengoToken = true;
         printf("\nLlegué al último numeral");
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
-        //leerTokenHastaNumeral();
+        printf("\n%s\t%s",stringTokenType(token.type),token.val);        
         Match(Numeral);
         tengoToken = false;
         Match(Endif);
