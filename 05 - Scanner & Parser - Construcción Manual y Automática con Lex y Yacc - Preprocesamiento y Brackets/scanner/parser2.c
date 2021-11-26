@@ -119,8 +119,6 @@ void verificarToken()
     if (!tengoToken)
     { 
         GetNextToken(&token);
-        printf("\nToken pedido:");
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         tengoToken=true;
     }   
 }
@@ -138,16 +136,15 @@ void imprimirIdentificador(){
     IdType tipoToken = getPrep(token.val);    
       
     if ( tipoToken != idDefine){           
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);            
+        printf("%s ",token.val);
     } else {            
         textoReemplazo = get(token.val);
-        printf("\n%s\t%s",stringTokenType(token.type),textoReemplazo);
+        printf("%s ",textoReemplazo);
     }
 }
 
 void GruposOpcionales()
 {
-    printf("\nEntro a GruposOpcionales\n");
     while(1)
     {
         verificarToken();
@@ -178,7 +175,6 @@ void GruposOpcionales()
 
 void GruposOpcionalesDirectiva()
 {
-    printf("\nEntro a GruposOpcionalesDirectiva\n");
     while(1)
     {
         verificarToken();
@@ -219,7 +215,6 @@ void leerTokenHastaNumeral()
 
 void TextosOpcionales()
 {
-    printf("\nEntro a TextosOpcionales\n");
     while(1)
     {
         
@@ -238,7 +233,6 @@ void TextosOpcionales()
             ErrorLexico();    
         
         default:
-            printf("\nEntro al default de textos opcionales\n");
             return;
         }
     }
@@ -249,7 +243,6 @@ void Match (TokenType ttype)
 
     if(!tengoToken)
     GetNextToken(&token);
-    printf("\n%s\t%s",stringTokenType(token.type),token.val);
     
     if (ttype != token.type)       
         ErrorSintactico();     
@@ -269,7 +262,6 @@ void MatchTexto()
     
     do{
         GetNextToken(&token);
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         if(token.type == LexError || token.type == FDT)
             ErrorSintactico();
         else
@@ -284,13 +276,11 @@ void MatchTexto()
        
     set(tokenInterno, textoReemplazo);
 
-    printf("\nTexto Reemplazo: %s",textoReemplazo);
 }
 
 
 static void traerArchivoInclude(char *path)
 {
-    printf("\nEntro a traerArchivoInclude\n");
     int nc;
     FILE *arch = fopen (path, "r");
     if (arch == NULL)
@@ -304,12 +294,12 @@ static void traerArchivoInclude(char *path)
             putchar(nc);
 
         fclose(arch);
+        printf("\n");
     }
 }
 
 void Texto()
 {
-    printf("\nEntro a Texto\n");
     verificarToken();
 
     switch (token.type)
@@ -321,22 +311,19 @@ void Texto()
         break;
 
     case Punctuator:
-        //printf(token.val);
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        printf("%s",token.val);
         tengoToken = false;
         TextosOpcionales();
         break;
 
     case ConstNumerica:
-        //printf(token.val);
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        printf("%s",token.val);
         tengoToken = false;
         TextosOpcionales();
         break;
 
     case LitCadena:
-        //printf(token.val);
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
+        printf("%s ",token.val);
         tengoToken = false;
         TextosOpcionales();
         break;
@@ -351,7 +338,6 @@ void Texto()
 
 void Directiva()
 {
-    printf("\nEntro a Directiva\n");
     verificarToken();
 
     switch (token.type)
@@ -359,23 +345,14 @@ void Directiva()
     case Define:
         tengoToken=false;
         Match(Identificador);
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         setPrep(token.val, idDefine); 
         MatchTexto(); 
-        //Match(NewLine);
         tengoToken=false;
         break;
 
     case Undefine:
-        printf("\nLlegué hasta aca");
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         tengoToken = false;          
         Match(Identificador);
-        printf("\n++++++++++++++++++++++++++++");
-        printf("\n++++++++++++++++++++++++++++");
-        printf("\n++++++++++++++++++++++++++++");
-        printf("\n++++++++++++++++++++++++++++");
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         deletePrep(token.val);
         delete(token.val); 
         Match(NewLine);    
@@ -393,18 +370,11 @@ void Directiva()
         break;
 
     case Ifdef:
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);
         tengoToken = false;
 
         Match(Identificador);
-        //Si el id esta en la tabla de simbolos
-        printf("Maxi quiere saber que devuelve esto");
-        printf("%d",getPrep(token.val) == idDefine);
         if (getPrep(token.val) == idDefine){            
-            //Match(NewLine);
-            //GruposOpcionales();
             GruposOpcionalesDirectiva();            
-            //Match(NewLine);
             tengoToken = false;                
             leerTokenHastaNumeral();
         }else{
@@ -417,8 +387,6 @@ void Directiva()
             GruposOpcionalesDirectiva(); 
         }       
         tengoToken = true;
-        printf("\nLlegué al último numeral");
-        printf("\n%s\t%s",stringTokenType(token.type),token.val);        
         Match(Numeral);
         tengoToken = false;
         Match(Endif);
@@ -438,7 +406,6 @@ void Directiva()
 
 void Grupo()
 {
-    printf("\nEntro a Grupo\n");
     verificarToken();
 
     switch (token.type)
@@ -503,14 +470,12 @@ void Grupo()
 
 void ListaDeGrupos()
 {
-    printf("\nEntro a ListaDeGrupos\n");
     Grupo();
     GruposOpcionales();
 }
 
 void UnidadDeTraduccion()
 {
-    printf("\nEntro a UnidadDeTraduccion\n");
     ListaDeGrupos();
     Match(FDT);
 }
