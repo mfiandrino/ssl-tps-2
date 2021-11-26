@@ -1,27 +1,40 @@
 %{
 	#include <stdio.h>
-	#include "y.tab.h"
-	void yyerror(char *);
+	#include <stdlib.h>
+	#include <string.h>	
+	#include "scanner.h"
 %}
 
 %option noyywrap
 
-NUMERO				[0-9]+
-NUMERAL				\#
-DEFINE				define
-UNDEF               undef
-INCLUDE             include
-IFDEF               ifdef
-ELSE                else
-ENDIF               endif
-PUNTO_Y_COMA		[";"]
-INICIO_COMENTARIO	["/*""//"]
-FIN_COMENTARIO		["*/""\n"]
-LETRA				[a-zA-Z]
-GUIONES				[-_]
-LPAREN              ["("]
-LBRACK              ["["]
-LBRACE              ["{"]
- 
-IDENTIFICADOR		{LETRA}({LETRA}|{NUMERO}|{GUIONES})*
-TEXTOREEMPLAZO		({NUMERO}|{LETRA}|" ")+$
+%%
+
+\#	return Numeral; // TODO: Falta hacer el comentario 
+"define"	return Define;
+"undef"	return Undef;
+"ifdef"	return Ifdef;
+"else"	return Else;
+"endif"	return Endif;
+"include"	return Include;
+[==]	return Punctuator;
+[.&*+-;:!%<>=;]	return Punctuator; //TODO: Falta el ==. 
+[a-zA-Z0-9] return Identificador;
+\n return Newline;
+\(	return LParen;              
+\[	return LBrack;             
+\{	return LBrace;              
+\)	return RParen;
+\]	return RBrack;              
+\}	return RBrace;  
+[0-9]+    {yylval.intVal=atoi(yytext);return ConstNumerica;}
+[_-a-zA-Z]*	{strcpy(yylval.strVal, yytext);return Identificador;}
+<<EOF>> return FDT;
+.	return LexError;
+	          
+
+%%
+
+
+int GetNextToken(){
+	return yylex();
+}
