@@ -16,21 +16,21 @@
 "else"	return Else;
 "endif"	return Endif;
 "include"	return Include;
-[==]	return Punctuator;
-[.&*+-;:!%<>=;]	return Punctuator; //TODO: Falta el ==. 
+"=="	return Punctuator;
+[.&*+-;:!%<>=;]	return Punctuator; 
 [a-zA-Z0-9] return Identificador;
 \n return Newline;
-\(	return LParen;              
-\[	return LBrack;             
-\{	return LBrace;              
-\)	return RParen;
-\]	return RBrack;              
-\}	return RBrace;  
+"("	return LParen;              
+"["	return LBrack;             
+"{"	return LBrace;              
+")"	return RParen;
+"]"	return RBrack;              
+"}"	return RBrace;  
 [0-9]+    {yylval.intVal=atoi(yytext);return ConstNumerica;}
 [_-a-zA-Z]*	{strcpy(yylval.strVal, yytext);return Identificador;}
 <<EOF>> return FDT;
 .	return LexError;
-	          
+( \/ \/(.)\n | \/ \* ( . | \n) \* \/ ) 	return Comentario; 	          
 
 %%
 
