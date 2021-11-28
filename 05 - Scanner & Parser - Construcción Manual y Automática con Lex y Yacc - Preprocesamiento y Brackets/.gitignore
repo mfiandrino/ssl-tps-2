@@ -1,2 +1,6 @@
 scanner/parser
+scanner/testeo
 testSymbolTable
+.cproject
+.project
+.settings
