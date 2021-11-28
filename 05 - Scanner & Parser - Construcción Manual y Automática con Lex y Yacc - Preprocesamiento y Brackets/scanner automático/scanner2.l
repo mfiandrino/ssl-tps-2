@@ -20,7 +20,7 @@
 [.&*+-;:!%<>=;]	return Punctuator; 
 [a-zA-Z0-9] return Identificador;
 \n return Newline;
-"("	return LParen;              
+\(	return LParen;              
 "["	return LBrack;             
 "{"	return LBrace;              
 ")"	return RParen;
