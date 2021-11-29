@@ -123,15 +123,6 @@ void verificarToken()
     }   
 }
 
-void verificarTokenElse()
-{
-    if (!tengoToken)
-    { 
-        GetNextToken(&token);        
-        tengoToken=true;
-    }   
-}
-
 void imprimirIdentificador(){
     IdType tipoToken = getPrep(token.val);    
       
@@ -204,12 +195,12 @@ void GruposOpcionalesDirectiva()
 
 void leerTokenHastaNumeral()
 {
-    verificarTokenElse();
+    verificarToken();
 
     while(token.type != Numeral)
     {
         tengoToken=false;
-        verificarTokenElse();
+        verificarToken();
     }    
 }
 
@@ -323,7 +314,7 @@ void Texto()
         break;
 
     case LitCadena:
-        printf("%s ",token.val);
+        printf("\"%s\"",token.val);
         tengoToken = false;
         TextosOpcionales();
         break;
@@ -365,7 +356,6 @@ void Directiva()
         char *path = strdup(token.val);
         Match(NewLine);
         traerArchivoInclude(path);
-        //free(path);
         tengoToken=false; 
         break;
 
@@ -525,10 +515,17 @@ Directiva ->
     Numeral Define Identificador TextoReemplazo NewLine
     Numeral Undefine Identificador NewLine
     Numeral Include LitCadena NewLine
-    Numeral Ifdef Identificador NewLine <GruposOpcionales> NewLine Numeral Else NewLine <GruposOpcionales> NewLine Numeral EndIf NewLine
+    Numeral Ifdef Identificador NewLine <GruposOpcionalesDirectiva> NewLine Numeral Else NewLine <GruposOpcionalesDirectiva> NewLine Numeral EndIf NewLine
  
-<GruposOpcionesDirectiva> -> {<Grupos>}
+<GruposOpcionalesDirectiva> -> {<GruposDirectiva>}
 
+GrupoDirectiva -> 
+    <Texto> 
+    NewLine
+    Comentario
+    ( <GruposOpcionalesDirectiva> )
+    [ <GruposOpcionalesDirectiva> ]
+    { <GruposOpcionalesDirectiva> }
 
  Texto ->
     Identifcador <TextosOpcionales>

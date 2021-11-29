@@ -5,7 +5,7 @@ int main(void)
     /*  Declara un arreglo y un puntero
         para demostrar algunas
         diferencias y similitudes */
-    char s[]="hola", *p=="chau";
+    char s[]="hola", *p="chau";
 #ifdef MAX
     int a[MAX];
 #else
