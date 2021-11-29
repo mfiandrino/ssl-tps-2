@@ -1,56 +1,60 @@
 %{
+    #include <stdarg.h>
     #include <stdio.h>
     #include <stdlib.h>
-    #include <string.h> 
+    #include <string.h>     
     #include "../preprocessorSymbolTable/preprocessorSymbolTable.h"
     #include "../defineSymbolTable/defineSymbolTable.h"
-
-    int yylex(void);
-    void yyerror(char const *s){printf ("Error en el Parser: %s\n", s);} ;
     
+    void yyerror(char const *s) {printf ("Error en el Parser: %s\n", s);}
+    int yylex(void);
+
+    int deletePrep(char*);
  %}
  
- %option noyywrap 
+
  
-%union {    
+%union {   
     char strVal[100];
+    int intVal;
 }
 
-%token <strVal> NEWLINE COMENTARIO FDT NUMERAL DEFINE IDENTIFICADOR TEXTOREEMPLAZO UNDEFINE INCLUDE LITCADENA IFDEF ELSE ENDIF PUNCTUATOR CONSTNUMERICA 
 
-%type <strVal> unidadDeTraducción listaDeGrupos grupo gruposOpcionales directiva texto gruposOpcionesDirectiva textosOpcionales
+
+%token <strVal> NEWLINE COMENTARIO  NUMERAL DEFINE IDENTIFICADOR TEXTOREEMPLAZO UNDEFINE INCLUDE LITCADENA IFDEF ELSE ENDIF PUNCTUATOR CONSTNUMERICA FDT 0
+
+%type <strVal> unidadDeTraduccion listaDeGrupos grupo gruposOpcionales directiva texto gruposOpcionesDirectiva textosOpcionales
 
 %%
 
-unidadDeTraducción: listaDeGrupos FDT;
+unidadDeTraduccion: listaDeGrupos FDT;
 
 listaDeGrupos: grupo gruposOpcionales;
 
-grupo: 
-  directiva
+gruposOpcionales: grupo;
+
+grupo: directiva
 |    texto 
 |    NEWLINE
 |    COMENTARIO
-|    ( <GruposOpcionales> )
-|    [ <GruposOpcionales> ]
-|    { <GruposOpcionales> }
+|    gruposOpcionales 
 ;
 
-directiva:
-|    NUMERAL DEFINE IDENTIFICADOR CONSTNUMERICA NEWLINE  {set($3,$4);}
+directiva:  NUMERAL DEFINE IDENTIFICADOR CONSTNUMERICA NEWLINE {printf("\n El identificador es %s", $3);}
 |    NUMERAL UNDEFINE IDENTIFICADOR NEWLINE
 |    NUMERAL INCLUDE LITCADENA NEWLINE
-|    NUMERAL IFDEF IDENTIFICADOR NEWLINE <GruposOpcionales> NEWLINE NUMERAL ELSE NEWLINE <GruposOpcionales> NEWLINE NUMERAL ENDIF NEWLINE
+|    NUMERAL IFDEF IDENTIFICADOR NEWLINE gruposOpcionesDirectiva NEWLINE NUMERAL ELSE NEWLINE gruposOpcionesDirectiva NEWLINE NUMERAL ENDIF NEWLINE
 ;
 
-Texto: 
-    Identificador <TextosOpcionales>  printf 
-    Punctuator <TextosOpcionales>
-    ConstNumerica <TextosOpcionales>
-    LitCadena <TextosOpcionales>
+gruposOpcionesDirectiva: grupo;
 
+texto:  IDENTIFICADOR textosOpcionales
+|    PUNCTUATOR textosOpcionales
+|    CONSTNUMERICA textosOpcionales
+|    LITCADENA textosOpcionales
+;
 
-
+textosOpcionales: texto;
 
 %%
 
@@ -63,7 +67,7 @@ Texto:
 void parser(){
 
     if(yyparse())   
-        printf("\n Error \n");
+        printf("\n Error sintactico\n");
     else        
         return;
         
@@ -72,33 +76,3 @@ void parser(){
     
 
 }
-
-
-
-
-
-
-%%
- {Textoreemplazo}   {printf("(Textoreemplazo) (%s)", yytext);}
- {ConstNumerica}    {printf("(ConstNumerica) (%s)", yytext);}
- {Numeral}  {printf("(Numeral) (%s)", yytext);}
- {Define}   {printf("(Define) (%s)", yytext);}
- {Undefine} {printf("(Undefine) (%s)", yytext);}
- {Ifdef}    {printf("(Ifdef) (%s)", yytext);}
- {Endif}    {printf("(Endif) (%s)", yytext);}
- {Include}  {printf("(Include) (%s)", yytext);}
- {Punctuator}   {printf("(Punctuator) (%s)", yytext);} 
- {Comentario}   {printf("(Comentario) (%s)", yytext);}
- {Identificador}    {printf("(Identificador) (%s)", yytext);}
- {LParen}   {printf("(LParen) (%s)", yytext);}
- {RParen}   {printf("(RParen) (%s)", yytext);}
- {LBrack}   {printf("(LBrack) (%s)", yytext);}
- {RBrack}   {printf("(RBrack) (%s)", yytext);}
- {LBrace}   {printf("(LBrace) (%s)", yytext);}
- {RBrace}   {printf("(RBrace) (%s)", yytext);}
- {LexError}  {printf("(LexError) (%s)", yytext);}    
- {LitCadena} {printf("(LitCadena) (%s)", yytext);}
- {NewLine} {printf("(NewLine) (%s)", yytext);}
- {FDT}   {printf("(FDT) (%s)", yytext);}
-.   {return "Error, no deberia haber llegado;}
-%%

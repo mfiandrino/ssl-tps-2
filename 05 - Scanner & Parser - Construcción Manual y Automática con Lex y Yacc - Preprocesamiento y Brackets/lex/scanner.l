@@ -1,5 +1,7 @@
 %{
 	#include <stdio.h>
+    #include <string.h>
+    #include "y.tab.h"
 
 	typedef enum {
     Comentario,
@@ -22,8 +24,10 @@
     LitCadena,
     NewLine,
     ConstNumerica,
-    FDT
+    Fdt
 	} TokenType;
+
+    extern YYSTYPE yyval;
 %}
 
 NUMERO		    [0-9]+
@@ -48,7 +52,7 @@ include                 return Include;
 {NUMERO}"."{NUMERO}		|
 {NUMERO}?"."{NUMERO}	return ConstNumerica;
 \n						return NewLine;
-{IDENTIFICADOR}         return Identificador;
+{IDENTIFICADOR}         {strcpy(yylval.strVal, yytext);return Identificador;}
 \(                      return LParen; 
 \)                      return RParen; 
 \[                      return LBrack; 
@@ -58,7 +62,7 @@ include                 return Include;
 {PUNCTUATOR}            return Punctuator;
 .                       {printf("\nHubo un error lexico con: %s\n",yytext);exit(0);}
 \"[^\n\"]*\"            return LitCadena;
-<<EOF>>				    return FDT;
+<<EOF>>				    return Fdt;
 %%
 
 char* stringTokenType(TokenType);
@@ -136,8 +140,8 @@ char* stringTokenType(TokenType tokTyp)
     case ConstNumerica:
         return "(ConstNumerica)";
 
-    case FDT:
-        return "(FDT)";
+    case Fdt:
+        return "(Fdt)";
 
     default: // No deberia pasar
         return "Error, no deberia haber llegado aca";
