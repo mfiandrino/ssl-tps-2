@@ -1,7 +1,7 @@
 %{
 	#include <stdio.h>
     #include <string.h>
-    #include "y.tab.h"
+
 
 	typedef enum {
     Comentario,
@@ -26,8 +26,7 @@
     ConstNumerica,
     Fdt
 	} TokenType;
-
-    extern YYSTYPE yyval;
+   
 %}
 
 NUMERO		    [0-9]+
@@ -52,7 +51,7 @@ include                 return Include;
 {NUMERO}"."{NUMERO}		|
 {NUMERO}?"."{NUMERO}	return ConstNumerica;
 \n						return NewLine;
-{IDENTIFICADOR}         {strcpy(yylval.strVal, yytext);return Identificador;}
+{IDENTIFICADOR}         return Identificador;
 \(                      return LParen; 
 \)                      return RParen; 
 \[                      return LBrack; 
@@ -70,7 +69,7 @@ char* stringTokenType(TokenType);
 int main()
 {
     int token;
-	while((token = yylex()) != FDT)
+	while((token = yylex()) != Fdt)
         printf("\n%s\t%s",stringTokenType(token),yytext);
     printf("\n%s\t%s",stringTokenType(token),yytext);
 }

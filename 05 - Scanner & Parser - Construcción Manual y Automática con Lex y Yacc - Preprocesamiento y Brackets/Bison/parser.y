@@ -5,11 +5,11 @@
     #include <string.h>     
     #include "../preprocessorSymbolTable/preprocessorSymbolTable.h"
     #include "../defineSymbolTable/defineSymbolTable.h"
-    
+   
     void yyerror(char const *s) {printf ("Error en el Parser: %s\n", s);}
     int yylex(void);
 
-    int deletePrep(char*);
+    
  %}
  
 
@@ -40,8 +40,8 @@ grupo: directiva
 |    gruposOpcionales 
 ;
 
-directiva:  NUMERAL DEFINE IDENTIFICADOR CONSTNUMERICA NEWLINE {printf("\n El identificador es %s", $3);}
-|    NUMERAL UNDEFINE IDENTIFICADOR NEWLINE
+directiva:  NUMERAL DEFINE IDENTIFICADOR CONSTNUMERICA NEWLINE  {set($3,$4); printf("\n El identificador es %s", $3);}
+|    NUMERAL UNDEFINE IDENTIFICADOR NEWLINE {delete($3); deletePrep($3);}
 |    NUMERAL INCLUDE LITCADENA NEWLINE
 |    NUMERAL IFDEF IDENTIFICADOR NEWLINE gruposOpcionesDirectiva NEWLINE NUMERAL ELSE NEWLINE gruposOpcionesDirectiva NEWLINE NUMERAL ENDIF NEWLINE
 ;
