@@ -1,0 +1,49 @@
+digraph Histograma {
+    GruposOpcionales1 [label= "(GruposOpcionales1)"];
+    GruposOpcionales2 [label= "{GruposOpcionales2}"];
+    Texto2 [label= "(Texto2)"];
+    Identificador1 [label= "Identificador(int)"];
+    Identificador2 [label= "Identificador(main)"];
+    Identificador3 [label= "(Identificador)(void)"];
+    
+    UnidadDeTraduccion -> ListaDeGrupos;
+    UnidadDeTraduccion -> FDT;
+
+    ListaDeGrupos -> Grupo
+    ListaDeGrupos -> GruposOpcionales
+
+    Grupo -> Directiva1
+
+    GruposOpcionales -> Directiva2
+    GruposOpcionales -> Texto1
+    GruposOpcionales -> GruposOpcionales1
+
+    GruposOpcionales -> GruposOpcionales2    
+
+    Directiva1 -> Numeral1
+    Directiva1 -> Include
+    Directiva1 -> LitCadena
+    Directiva1 -> NewLine
+
+    Directiva2 -> Numeral2
+    Directiva2 -> Define
+    Directiva2 -> Identificador
+    Directiva2 -> TextoReemplazo
+
+    Texto1 -> Identificador1
+    Texto1 -> TextosOpcionales1
+
+    TextosOpcionales1 -> Identificador2
+
+    GruposOpcionales1 -> Texto2
+
+    Texto2 -> Identificador3
+    
+}
+
+/* Para descargar el Graphviz y sumarlo al PATH https://graphviz.org/download/
+    Esta Linux, Windows, MAC 
+    En VSC ir a extenciones y agregar el Graphviz (dot)
+    Para correr por consola -> dot -Tpng histograma.gv -o histograma.png 
+    Despues del -T se pueden agregar otros formatos soportados por Graphviz
+*/

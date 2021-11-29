@@ -1,6 +1,6 @@
 #include "printf.h"
 #define MAX 10
-int main(void)
+int main
 {
     /*  Declara un arreglo y un puntero
         para demostrar algunas

@@ -1,0 +1,95 @@
+UnidadDeTraducción ->
+    Grupo
+    Grupo UnidadDeTraducción
+
+Grupo ->
+    Comentario
+    Directiva
+    GrupoIf
+    Texto
+    ( Grupo )
+    [ Grupo ]
+    { Grupo }
+
+Directiva ->
+    Numeral Define Identificador TextoDeReemplazo NuevaLínea
+    Numeral Undefine Identificador NuevaLínea
+    Numeral Include Path NuevaLínea
+
+GrupoIf ->
+    Numeral Ifdef Identificador NuevaLínea Grupo Numeral Endif
+    NuevaLínea
+
+Texto ->
+    Identificador
+    Punctuator
+    Identificador Texto
+    Punctuator Texto
+
+
+UnidadDeTraducción
+Grupo UnidadDeTraducción
+Directiva UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Grupo UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Directiva UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea Grupo UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea Texto UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea Identificador Texto UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea Identificador Identificador UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea Identificador Identificador Grupo UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea Identificador Identificador (Grupo) UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea Identificador Identificador (Texto) UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea Identificador Identificador (Identificador) UnidadDeTraduccion
+Numeral Include LitCadena NuevaLínea Numeral Define Identificador TextoDeReemplazo NuevaLínea Identificador Identificador (Identificador) Grupo UnidadDeTraduccion
+
+Identificador Identificador (Identificador) Grupo UnidadDeTraduccion
+Identificador Identificador (Identificador) {Grupo} UnidadDeTraduccion
+Identificador Identificador (Identificador) {Grupo} UnidadDeTraduccion
+
+
+El problema es cuando dentro de un bracket tengo mas de un grupo
+
+
+<UnidadDeTraducción> -> <ListaDeGrupos> FDT
+
+<ListaDeGrupos> -> <Grupo> <GruposOpcionales>
+
+<GruposOpcionales> -> {<Grupo>}
+
+Grupo -> 
+    <Directiva>
+    <Texto> 
+    NewLine
+    Comentario
+    ( <GruposOpcionales> )
+    [ <GruposOpcionales> ]
+    { <GruposOpcionales> }
+    
+Directiva ->
+    Numeral Define Identificador TextoReemplazo NewLine
+    Numeral Undefine Identificador NewLine
+    Numeral Include LitCadena NewLine
+    Numeral Ifdef Identificador NewLine <GruposOpcionales> NewLine Numeral Else NewLine <GruposOpcionales> NewLine Numeral EndIf NewLine
+ 
+ Texto ->
+    Identifcador <TextosOpcionales>
+    Punctuator <TextosOpcionales>
+    ConstNumerica <TextosOpcionales>
+    LitCadena <TextosOpcionales>
+
+<TextosOpcionales> -> {<Texto>}
+
+
+
+printf("hola");
+
+UnidadDeTraduccion
+ListaDeGrupos FDT
+Grupo FDT
+Texto Grupo FDT
+Identifcador Grupo FDT
+Identifcador (Grupo) Grupo FDT
+Identifcador (LitCadena) Texto FDT
+Identificador (LitCadena) Punctuator FDT
